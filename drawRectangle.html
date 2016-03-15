@@ -35,10 +35,10 @@ function initMap() {
         WritelineConsole("Height of div is "+height);
         
         WritelineConsole("Writing Map Bounds");
-        WritelineConsole("North East Latitude is "+getNorthEast().lat());//getNorthEast().lat(), getNorthEast().lng()
-        WritelineConsole("North East Longitude is "+getNorthEast().lng());//getNorthEast().lat(), getNorthEast().lng()
-        WritelineConsole("South West Latitude is "+getSouthWest().lat());//getNorthEast().lat(), getNorthEast().lng()
-        WritelineConsole("South West Longitude is "+getSouthWest().lng());//getNorthEast().lat(), getNorthEast().lng()
+        WritelineConsole("North East Latitude is "+bounds.getNorthEast().lat());//getNorthEast().lat(), getNorthEast().lng()
+        WritelineConsole("North East Longitude is "+bounds.getNorthEast().lng());//getNorthEast().lat(), getNorthEast().lng()
+        WritelineConsole("South West Latitude is "+bounds.getSouthWest().lat());//getNorthEast().lat(), getNorthEast().lng()
+        WritelineConsole("South West Longitude is "+bounds.getSouthWest().lng());//getNorthEast().lat(), getNorthEast().lng()
         
         var rectangle = new google.maps.Rectangle({
           strokeColor: '#FF0000',
@@ -62,6 +62,6 @@ google.maps.event.addDomListener(window, 'load', initMap);
 
 <body>
 <div id="map" style="width:500px;height:380px;"></div>
-<p id="console"></p>
+<textarea id="console"></textarea>
 </body>
 </html>
