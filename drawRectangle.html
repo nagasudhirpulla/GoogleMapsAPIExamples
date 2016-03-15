@@ -24,7 +24,7 @@ function initMap() {
         map.fitBounds(rectBounds);
         
         //Get the bounds of map here
-        new google.maps.LatLngBounds bounds = map.getBounds();
+        bounds = map.getBounds();
         // returns (south-west latitude, longitude),(north-east latitude, longitude) --> type LatLngBounds
         
         var width = document.getElementById("map").offsetWidth;
