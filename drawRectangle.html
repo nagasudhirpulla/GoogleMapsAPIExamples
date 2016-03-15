@@ -6,6 +6,9 @@ src="http://maps.googleapis.com/maps/api/js?sensor=false">
 </script>
 
 <script>
+function WritelineConsole(str){
+        document.getElementById("console").innerHTML += str+"\n";
+}
 var myCenter=new google.maps.LatLng(51.508742,-0.120850);
 
 function initMap() {
@@ -59,6 +62,6 @@ google.maps.event.addDomListener(window, 'load', initMap);
 
 <body>
 <div id="map" style="width:500px;height:380px;"></div>
-<p id="demo"></p>
+<p id="console"></p>
 </body>
 </html>
