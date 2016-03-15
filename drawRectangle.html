@@ -1,74 +1,111 @@
 <!DOCTYPE html>
 <html>
-<head>
-<script
-src="http://maps.googleapis.com/maps/api/js?sensor=false">
-</script>
-
-<script>
-function WritelineConsole(str){
-        document.getElementById("console").innerHTML += str+"\n";
-}
-var myCenter=new google.maps.LatLng(51.508742,-0.120850);
-
-function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 1,
-        });
-        
-        //Enter WR bounds here
-        //LatLngBounds(LatLng southwest, LatLng northeast)
-        rectBounds = new google.maps.LatLngBounds(
-          new google.maps.LatLng(-34, 149),
-          new google.maps.LatLng(-33, 152));
-        map.fitBounds(rectBounds);
-        
-        //Get the bounds of map here
-        bounds = map.getBounds();
-        // returns (south-west latitude, longitude),(north-east latitude, longitude) --> type LatLngBounds
-        
-        var width = document.getElementById("map").offsetWidth;
-        var height = document.getElementById("map").offsetHeight;
-        
-        WritelineConsole("Writing DIV dimensions");
-        WritelineConsole("Width of div is "+width);
-        WritelineConsole("Height of div is "+height);
-        
-        
-        var rectangle = new google.maps.Rectangle({
-          strokeColor: '#FF0000',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: '#FF0000',
-          fillOpacity: 0.35,
-          map: map,
-          bounds: {
-            north: 33.685,
-            south: 33.671,
-            east: -116.234,
-            west: -116.251
-          }
-        });
-      }
-
-google.maps.event.addDomListener(window, 'load', initMap);
-google.maps.event.addListener(map,'bounds_changed', function() 
-      {
-        var bounds = new google.maps.LatLngBounds();
-        bounds = map.getBounds();
-        var ne = bounds.getNorthEast();
-        var sw = bounds.getSouthWest();
-        WritelineConsole("Writing Map Bounds");
-        WritelineConsole("North East Latitude is "+ne.lat());//getNorthEast().lat(), getNorthEast().lng()
-        WritelineConsole("North East Longitude is "+ne.lng());//getNorthEast().lat(), getNorthEast().lng()
-        WritelineConsole("South West Latitude is "+sw.lat());//getNorthEast().lat(), getNorthEast().lng()
-        WritelineConsole("South West Longitude is "+sw.lng());//getNorthEast().lat(), getNorthEast().lng()
-     }); // end of listener callbck
-</script>
-</head>
-
-<body>
-<div id="map" style="width:500px;height:380px;"></div>
-<textarea style="width:100px;height:100px"id="console"></textarea>
-</body>
+	<head>
+		<script
+		src="http://maps.googleapis.com/maps/api/js?sensor=false">
+		</script>
+		
+		<script>
+			function WritelineConsole(str){
+				document.getElementById("console").innerHTML += str+"\n";
+			}
+			
+			function measureBounds() 
+			{
+				var bounds = new google.maps.LatLngBounds();
+				bounds = map.getBounds();
+				ne = bounds.getNorthEast();
+				sw = bounds.getSouthWest();
+				WritelineConsole("Writing DIV dimensions in degrees");
+				WritelineConsole("North East Latitude is "+ne.lat());//getNorthEast().lat(), getNorthEast().lng()
+				WritelineConsole("North East Longitude is "+ne.lng());//getNorthEast().lat(), getNorthEast().lng()
+				WritelineConsole("South West Latitude is "+sw.lat());//getNorthEast().lat(), getNorthEast().lng()
+				WritelineConsole("South West Longitude is "+sw.lng());//getNorthEast().lat(), getNorthEast().lng()
+				WritelineConsole("Writing DIV width and length in degrees");
+				WritelineConsole("Map Width is ")
+				WritelineConsole(ne.lng()-sw.lng());
+				WritelineConsole("Map Height is ")
+				WritelineConsole(ne.lat()-sw.lat());
+				WritelineConsole("Writing number of lats/longs per pixel");
+				WritelineConsole("lats/pixel is ")
+				WritelineConsole((ne.lng()-sw.lng())/width);
+				WritelineConsole("longs/pixel is ")
+				WritelineConsole((ne.lat()-sw.lat())/height);
+			}
+			var myCenter=new google.maps.LatLng(51.508742,-0.120850);
+			var map;
+			var topleft=new google.maps.LatLng(-31.74347340418175,147.75341796875);
+			
+			var topright=new google.maps.LatLng(-31.74347340418175,153.24658203125);
+			var botleft=new google.maps.LatLng(-35.22442483093894,147.75341796875);
+			
+			var botright=new google.maps.LatLng(-35.22442483093894,153.24658203125);
+			var ne;
+			var sw;
+			var width;
+			var height;
+			function initMap() {
+				map = new google.maps.Map(document.getElementById('map'), {
+					zoom: 1,
+				});
+				
+				//Enter WR bounds here
+				//LatLngBounds(LatLng southwest, LatLng northeast)
+				rectBounds = new google.maps.LatLngBounds(
+				new google.maps.LatLng(-34, 149),
+				new google.maps.LatLng(-33, 152));
+				map.fitBounds(rectBounds);
+				
+				//Get the bounds of map here
+				bounds = map.getBounds();
+				// returns (south-west latitude, longitude),(north-east latitude, longitude) --> type LatLngBounds
+				
+				width = document.getElementById("map").offsetWidth;
+				height = document.getElementById("map").offsetHeight;
+				
+				WritelineConsole("Writing DIV dimensions in pixels");
+				WritelineConsole("Width of div is "+width);
+				WritelineConsole("Height of div is "+height);
+				
+				//not used for now
+				var rectangle = new google.maps.Rectangle({
+					strokeColor: '#FF0000',
+					strokeOpacity: 0.8,
+					strokeWeight: 2,
+					fillColor: '#FF0000',
+					fillOpacity: 0.35,
+					map: map,
+					bounds: {
+						north: 33.685,
+						south: 33.671,
+						east: -116.234,
+						west: -116.251
+					}
+				});
+				
+				//polygon to verify that the bounds returned are correct
+				var myTrip=[topleft,topright,botright,botleft];
+				var flightPath=new google.maps.Polygon({
+					path:myTrip,
+					strokeColor:"#0000FF",
+					strokeOpacity:0.8,
+					strokeWeight:2,
+					fillColor:"#0000FF",
+					fillOpacity:0.4
+				});				
+				flightPath.setMap(map);				
+				
+				
+				
+				google.maps.event.addListener(map,'bounds_changed', measureBounds); // end of listener callbck
+			}
+			google.maps.event.addDomListener(window, 'load', initMap);
+			
+		</script>
+	</head>
+	
+	<body>
+		<div id="map" style="width:500px;height:380px;"></div>
+		<textarea style="width:100px;height:100px"id="console"></textarea>
+	</body>
 </html>
