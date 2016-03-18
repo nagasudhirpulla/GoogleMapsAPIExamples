@@ -1,0 +1,122 @@
+<html>
+	<head>
+		<style>
+			#wrapper { position: relative;width:900px;height:500px; }
+			#over_map { position: absolute; top: 80px;right: 0;width: 200px;height: 100px;border: 3px solid #73AD21; z-index: 99;color:red; }
+			#myCanvas { position: absolute; top: 0px;left: 0; z-index: 98;width:100%;height:100%;pointer-events:none; }
+		</style>
+		<script src="http://maps.googleapis.com/maps/api/js"></script>
+		<!--Map Setting Script-->
+		<script>
+			var myCenter=new google.maps.LatLng(22.532853026644325,78.16772421874998); var marker; var map;
+			var ctx;var c;
+			var xp; var yp;
+			var latx1; var latx2; var longy1; var longy2;
+			var lat_width; var long_hgt;
+			var npx; var npy; var npxRatioSquare;
+			var sources;
+			var canvasData = [];
+			/*LatLong to pixel conversion function*/
+			function LatLongToPixelCoordinates(latx, longy){
+				return [(xp/lat_width)*(latx - latx1), (yp/long_hgt )*(longy2-longy)];
+			}
+			
+			/*Get all Voltage sources locations and p.u values as a [nx3] array */
+			function getVoltagePoints(){
+				// [[1,2],[3,4]];//items[0][0] = 1
+				return [[22.532853026644325,78.16772421874998,1.5]];
+			}
+			//After bounds can be measured
+			function measureBounds() 
+			{
+				//Canvas initialization
+				c = document.getElementById("myCanvas");
+				ctx = c.getContext("2d");
+				//Get the Width and Length of canvas				
+				xp = getComputedStyle(c,null).getPropertyValue('width');
+				yp = getComputedStyle(c,null).getPropertyValue('height');
+				//get mapbounds
+				var ne = map.getBounds().getNorthEast();//topRight
+				var sw = map.getBounds().getSouthWest();//bottomLeft
+				latx1 = sw.lat();
+				latx2 = ne.lat();
+				longy1 = sw.lng();
+				longy2 = ne.lng();
+				//View Port Width in degrees
+				lat_width =  latx2 - latx1;
+				long_hgt = longy2 - longy1;
+				//No of pixels per degree on X axis
+				npx = xp/lat_width;
+				//No of pixels per degree on Y axis
+				npy  = yp/lng_height;
+				//npxRatio = npy/npx;
+				npxRatioSquare = (npy*npy)/(npx*npx);
+				sources = getVoltagePoints();
+				/*
+					calculate npx, npxRatioSquare
+					
+					clear the result image data array
+					
+					foreach source
+					calculate the per unit value of source voltage
+					get the source location in pixels
+					foreach canvaspixel
+					calcualate pixel intensity according to the formula and add it to result image data array
+					
+					end
+					end
+					
+					foreach result image data array pixel
+					update maximum intensity value
+					update minimum intensity value
+					end
+					
+					calculate normalisation factor for result image data array
+					
+					multiply each pixel of result image data array with normalisation factor to get the hue of the pixel
+					
+					assign each pixel the hue obtained from normalised image data array
+					
+					Javascript implementation
+				*/
+				
+				//For each source
+				for(var i=0;i<sources.length;i++){
+					var value = sources[i][2];
+					
+				}
+			}
+			function initialize()
+			{
+				var mapProp = {
+					center:myCenter,
+					zoom:6,
+					mapTypeId:google.maps.MapTypeId.ROADMAP
+				};
+				
+				map=new google.maps.Map(document.getElementById("google_map"),mapProp);
+				
+				var marker=new google.maps.Marker({
+					position:myCenter,
+					animation:google.maps.Animation.BOUNCE
+				});
+				
+				marker.setMap(map);
+				google.maps.event.addListener(map,'bounds_changed', measureBounds); // end of listener callbck
+				}
+				google.maps.event.addDomListener(window, 'load', initialize);		
+				</script>		
+				</head>
+				<body>
+				<div id="wrapper">
+				<div id="google_map" style="width:100%;height:100%;">
+				
+			</div>
+			<div id="over_map">
+				<p>Iam over map</p>
+			</div>
+			<canvas id="myCanvas" style="border:3px solid #0000d3;">
+			Your browser does not support the HTML5 canvas tag.</canvas>
+		</div>
+	</body>
+</html>
