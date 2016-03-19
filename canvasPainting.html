@@ -40,7 +40,7 @@
 				ctx.fillStyle = 'rgba(0, 0, 0, 0)';
 				//ctx.fillStyle = "blue";
 				//ctx.fillStyle = "rgb(255, 0, 0)";
-				//Get the Width and Length of canvas				
+				//Get the Width and LengtSTUh of canvas				
 				xp = getComputedStyle(c,null).getPropertyValue('width');
 				xp = xp.substring(0, xp.length-2);
 				ctx.canvas.width = xp;
@@ -157,6 +157,9 @@
 				} //x iterator
 				
 				ctx.putImageData(imageData, 0, 0);
+				
+				ctx.strokeStyle='blue';
+				ctx.fillStyle = 'rgba(0, 0, 0, 0)';
 				for(var i=0;i<sources.length;i++){
 					[xpsource, ypsource] = LatLongToPixelCoordinates(sources[i][0], sources[i][1]);
 					ctx.beginPath(); // Start the path
