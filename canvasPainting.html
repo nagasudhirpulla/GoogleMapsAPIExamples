@@ -3,7 +3,7 @@
 		<style>
 			#wrapper { position: relative;width:900px;height:500px; }
 			#over_map { position: absolute; top: 80px;right: 0;width: 200px;height: 100px;border: 3px solid #73AD21; z-index: 99;color:red; }
-			#myCanvas { position: absolute; top: 0px;left: 0; z-index: 98;width:900px;height:500px;pointer-events:none; }
+			#myCanvas { position: absolute; top: 0px;left: 0; z-index: 98;width:100%;height:100%;pointer-events:none; }
 		</style>
 		<script src="http://maps.googleapis.com/maps/api/js"></script>		
 		<script>
@@ -31,6 +31,7 @@
 				// [[1,2],[3,4]];//items[0][0] = 1
 				return [[22.532853026644325,78.16772421874998,1.5], [21.2016592,81.1051448,1.1]];
 			}
+			
 			//Compute Canvas Parameters - Do this if canvas measurements change
 			function computeCanvasParams(){
 				//Canvas initialization
@@ -48,7 +49,8 @@
 				yp = yp.substring(0, yp.length-2);
 				ctx.canvas.height = yp;
 			}
-			//After bounds can be measured
+			
+			//After the canvas bounds can be measured and when canvas bounds are changed
 			function measureBounds() 
 			{
 				//get mapbounds
@@ -62,17 +64,15 @@
 				lat_width =  latx2 - latx1;
 				long_hgt = longy2 - longy1;
 				//No of degrees per pixel on X axis
-				//npx = xp/lat_width;
 				npx = lat_width/xp;
 				//No of degrees per pixel on Y axis
-				//npy  = yp/long_hgt;
 				npy  = long_hgt/yp;
 				//npxRatio = npy/npx;
 				npxRatioSquare = (npy*npy)/(npx*npx);
 				sources = getVoltagePoints();
 				/*
 					******************Algorithm******************
-					calculate npx, npxRatioSquare which change when bounds change
+					calculate npx, npxRatioSquare which change when map bounds change
 					
 					clear the result image data array
 					
@@ -96,6 +96,8 @@
 					
 					assign each pixel the hue obtained from normalised image data array
 				*/
+				
+				//clear and initialize
 				canvasData = [];
 				for(var iter=0;iter<xp*yp;iter++){
 					canvasData[iter] = 0;
@@ -123,9 +125,9 @@
 					for(var ypdest=0;ypdest<yp;ypdest++){
 						//xpdest = x axis iterator; ypdest = y axis iterator
 						var val =  canvasData[(xpdest+ypdest*xp)];
-						if(val<minVal){
+						if(val < minVal){
 							minVal = val;
-							} else if(val>maxVal){
+							} else if(val > maxVal){
 							maxVal = val;
 						}
 					} //y iterator						
@@ -135,11 +137,11 @@
 				//normalisedValue = hueDiff * (1 - value/(maxval-minval));
 				//normalisedValue = hueDiff * (1 - value/(valDiff)); where valDiff = maxval-minval;
 				valDiff = maxVal-minVal;
-				for(var xpdest=0;xpdest<xp;xpdest++){
-					for(var ypdest=0;ypdest<yp;ypdest++){
+				for(var xpdest=0; xpdest < xp; xpdest++){
+					for(var ypdest=0; ypdest < yp; ypdest++){
 						//i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
 						//normalisedCanvasData[xpdest,ypdest] = hueDiff * (1 - canvasData[xpdest,ypdest]/(valDiff));//Use this for hue version
-						normalisedCanvasData[(xpdest+ypdest*xp)] = hueDiff * ((canvasData[(xpdest+ypdest*xp)] - minVal)/(valDiff));//Use this for RGB version
+						normalisedCanvasData[(xpdest + ypdest*xp)] = hueDiff * ((canvasData[(xpdest + ypdest*xp)] - minVal)/(valDiff));//Use this for RGB version
 					} //y iterator						
 				} //x iterator
 				//canvas putImageData reference - http://www.w3schools.com/tags/canvas_putimagedata.asp
@@ -147,12 +149,12 @@
 				
 				imageData = ctx.getImageData(0, 0, xp, yp);//imageData context.getImageData(x,y,width,height);
 				
-				for(var xpdest=0;xpdest<xp;xpdest++){
-					for(var ypdest=0;ypdest<yp;ypdest++){
+				for(var xpdest = 0;xpdest < xp; xpdest++){
+					for(var ypdest = 0;ypdest < yp; ypdest++){
 						//i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
-						hue = maxHue - normalisedCanvasData[(xpdest+ypdest*xp)];
-						[imageData.data[(ypdest*xp+xpdest)*4], imageData.data[(ypdest*xp+xpdest)*4+1], imageData.data[(ypdest*xp+xpdest)*4+2]] = hsvToRgb(hue, 1, 1);
-						imageData.data[(ypdest*xp+xpdest)*4 + 3] = 80;
+						hue = maxHue - normalisedCanvasData[(xpdest + ypdest*xp)];
+						[imageData.data[(ypdest*xp + xpdest)*4], imageData.data[(ypdest*xp + xpdest)*4 + 1], imageData.data[(ypdest*xp + xpdest)*4 + 2]] = hsvToRgb(hue, 1, 1);
+						imageData.data[(ypdest*xp + xpdest)*4 + 3] = 80;
 					} //y iterator						
 				} //x iterator
 				
@@ -172,8 +174,10 @@
 			}
 			function initialize()
 			{
+			  //initialize canvas varibles
 				computeCanvasParams();
 				
+				//initialize map
 				var mapProp = {
 					center:myCenter,
 					zoom:6,
@@ -182,101 +186,100 @@
 				
 				map=new google.maps.Map(document.getElementById("google_map"),mapProp);
 				
+				//set marker
 				var marker=new google.maps.Marker({
 					position:myCenter,
 					animation:google.maps.Animation.BOUNCE
 				});
 				
 				marker.setMap(map);
+				
+				//add listener for map bounds being changed
 				google.maps.event.addListener(map,'bounds_changed', measureBounds); // end of listener callbck
 			}
+			
+			//DOM load initialization function
 			google.maps.event.addDomListener(window, 'load', initialize);
 			
 			
-			
-			/**
-				* HSV to RGB color conversion
-				*
-				* H runs from 0 to 360 degrees
-				* S and V run from 0 to 1
-				* 
-				* Ported from the excellent java algorithm by Eugene Vishnevsky at:
-				* http://www.cs.rit.edu/~ncs/color/t_convert.html
-				*/
-				function hsvToRgb(h, s, v) {
-					var r, g, b;
-					var i;
-					var f, p, q, t;
-					
-					// Make sure our arguments stay in-range
-					h = Math.max(0, Math.min(360, h));
-					////s = Math.max(0, Math.min(1, s));
-					////v = Math.max(0, Math.min(1, v));
-					
-					/****if(s == 0) {
-						// Achromatic (grey)
-						r = g = b = v;
-						return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-					}****/
-					
-					h /= 60; // sector 0 to 5
-					i = Math.floor(h);
-					f = h - i; // factorial part of h
-					p = v * (1 - s);
-					q = v * (1 - s * f);
-					t = v * (1 - s * (1 - f));
-					
-					switch(i) {
-						case 0:
-						r = v;
-						g = t;
-						b = p;
-						break;
-						
-						case 1:
-						r = q;
-						g = v;
-						b = p;
-						break;
-						
-						case 2:
-						r = p;
-						g = v;
-						b = t;
-						break;
-						
-						case 3:
-						r = p;
-						g = q;
-						b = v;
-						break;
-						
-						case 4:
-						r = t;
-						g = p;
-						b = v;
-						break;
-						
-						default: // case 5:
-						r = v;
-						g = p;
-						b = q;
-					}
-					
+			/*
+			* HSV to RGB color conversion
+			*
+			* H runs from 0 to 360 degrees
+			* S and V run from 0 to 1
+			* 
+			* Ported from the excellent java algorithm by Eugene Vishnevsky at:
+			* http://www.cs.rit.edu/~ncs/color/t_convert.html
+			*/
+			function hsvToRgb(h, s, v) {
+				var r, g, b;
+				var i;
+				var f, p, q, t;
+				
+				// Make sure our arguments stay in-range
+				h = Math.max(0, Math.min(360, h));
+				////s = Math.max(0, Math.min(1, s));
+				////v = Math.max(0, Math.min(1, v));
+				
+				/****if(s == 0) {
+					// Achromatic (grey)
+					r = g = b = v;
 					return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-				}
-			</script>		
-		</head>
-		<body>
-			<div id="wrapper">
-				<div id="google_map" style="width:100%;height:100%;">
+				}****/
+				
+				h /= 60; // sector 0 to 5
+				i = Math.floor(h);
+				f = h - i; // factorial part of h
+				p = v * (1 - s);
+				q = v * (1 - s * f);
+				t = v * (1 - s * (1 - f));
+				
+				switch(i) {
+					case 0:
+					r = v;
+					g = t;
+					b = p;
+					break;
 					
-				</div>
-				<div id="over_map">
-					<p>Iam over map</p>
-				</div>
-				<canvas id="myCanvas" style="border:3px solid #0000d3;">
-				Your browser does not support the HTML5 canvas tag.</canvas>
-		</div>
+					case 1:
+					r = q;
+					g = v;
+					b = p;
+					break;
+					
+					case 2:
+					r = p;
+					g = v;
+					b = t;
+					break;
+					
+					case 3:
+					r = p;
+					g = q;
+					b = v;
+					break;
+					
+					case 4:
+					r = t;
+					g = p;
+					b = v;
+					break;
+					
+					default: // case 5:
+					r = v;
+					g = p;
+					b = q;
+				}
+				
+				return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+			}
+		</script>		
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="google_map" style="width:100%;height:100%;"></div>
+			<div id="over_map"><p>Iam over map</p></div>
+			<canvas id="myCanvas" style="border:3px solid #0000d3;">Your browser does not support the HTML5 canvas tag.</canvas>
+	  </div>
 	</body>
 </html>
