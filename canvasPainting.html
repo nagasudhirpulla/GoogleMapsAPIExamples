@@ -223,6 +223,7 @@
 			/*Alpha getter*/
 			function getAlpha() {
 				document.getElementById("alphaTextControl").value = "" + alpha;
+				document.getElementById("alphaTextControl").style.color = 'blue';
 			}
 			/*Numeric text input listener*/
 			function numericListener(e) {
@@ -327,7 +328,7 @@
 	 	<div id="controlInputs" style="margin:10px 5px 5px 10px;"><!--top right bottom left-->
 	 		<h3>Alpha</h3>
 	 		<input id="alphaTextControl" style="width:50px;" type='text' onkeypress='numericListener(event)' />
-	 		<button onclick="getAlpha()" style="margin:0px 10px;">GetAlpha</button><button onclick="setAlpha()">\SetAlpha</button>
+	 		<button onclick="getAlpha()" style="margin:0px 10px;">GetAlpha</button><button onclick="setAlpha()">SetAlpha</button>
 	 	</div>
 	</body>
 </html>
