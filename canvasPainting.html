@@ -212,11 +212,11 @@
 			function setAlpha() {
 				var num = Number(document.getElementById("alphaTextControl").value);
 				if(!isNaN(num)){
-					Number(document.getElementById("alphaTextControl").style.color = 'black';
+					document.getElementById("alphaTextControl").style.color = 'black';
 					alpha = num;
 					measureBounds();
 				}else{
-					Number(document.getElementById("alphaTextControl").style.color = 'red';
+					document.getElementById("alphaTextControl").style.color = 'red';
 				}
 				
 			}
