@@ -37,7 +37,9 @@
 				//Canvas initialization
 				c = document.getElementById("myCanvas");
 				ctx = c.getContext("2d");
-				ctx.fillStyle = "rgb(255, 0, 0)";
+				ctx.strokeStyle="#0000FF";
+				ctx.fillStyle = "#0000FF";
+				//ctx.fillStyle = "rgb(255, 0, 0)";
 				//Get the Width and Length of canvas				
 				xp = getComputedStyle(c,null).getPropertyValue('width');
 				xp = xp.substring(0, xp.length-2);
@@ -55,32 +57,33 @@
 				//View Port Width in degrees
 				lat_width =  latx2 - latx1;
 				long_hgt = longy2 - longy1;
-				//No of pixels per degree on X axis
+				//No of degrees per pixel on X axis
 				//npx = xp/lat_width;
 				npx = lat_width/xp;
-				//No of pixels per degree on Y axis
+				//No of degrees per pixel on Y axis
 				//npy  = yp/long_hgt;
 				npy  = long_hgt/yp;
 				//npxRatio = npy/npx;
 				npxRatioSquare = (npy*npy)/(npx*npx);
 				sources = getVoltagePoints();
 				/*
-					calculate npx, npxRatioSquare
+					******************Algorithm******************
+					calculate npx, npxRatioSquare which change when bounds change
 					
 					clear the result image data array
 					
 					foreach source
 					calculate the per unit value of source voltage
 					get the source location in pixels
-					foreach canvaspixel
-					calcualate pixel intensity according to the formula and add it to result image data array
+						foreach canvaspixel
+							calcualate pixel intensity according to the formula and add it to result image data array
 					
-					end
+						end
 					end
 					
 					foreach result image data array pixel
-					update maximum intensity value
-					update minimum intensity value
+						update maximum intensity value
+						update minimum intensity value
 					end
 					
 					calculate normalisation factor for result image data array
@@ -88,8 +91,6 @@
 					multiply each pixel of result image data array with normalisation factor to get the hue of the pixel
 					
 					assign each pixel the hue obtained from normalised image data array
-					
-					Javascript implementation
 				*/
 				canvasData = [];
 				for(var iter=0;iter<xp*yp;iter++){
@@ -112,7 +113,7 @@
 					} //x iterator
 				} //source iterator
 				
-				//Find max and min voltege value in canvasData
+				//Find max and min voltage value in canvasData
 				minVal = 1000; maxVal = 0;
 				for(var xpdest=0;xpdest<xp;xpdest++){
 					for(var ypdest=0;ypdest<yp;ypdest++){
@@ -137,26 +138,28 @@
 						normalisedCanvasData[(xpdest+ypdest*xp)] = hueDiff * ((canvasData[(xpdest+ypdest*xp)] - minVal)/(valDiff));//Use this for RGB version
 					} //y iterator						
 				} //x iterator
-				//canvas putImageData reference http://www.w3schools.com/tags/canvas_putimagedata.asp
-				//canvas createImageData reference http://www.w3schools.com/tags/canvas_createimagedata.asp
+				//canvas putImageData reference - http://www.w3schools.com/tags/canvas_putimagedata.asp
+				//canvas createImageData reference - http://www.w3schools.com/tags/canvas_createimagedata.asp
 				
-				imageData = ctx.getImageData(0, 0, xp, yp);//context.getImageData(x,y,width,height);
+				imageData = ctx.getImageData(0, 0, xp, yp);//imageData context.getImageData(x,y,width,height);
 				
 				for(var xpdest=0;xpdest<xp;xpdest++){
 					for(var ypdest=0;ypdest<yp;ypdest++){
 						//i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
 						hue = maxHue - normalisedCanvasData[(xpdest+ypdest*xp)];
 						[imageData.data[(ypdest*xp+xpdest)*4], imageData.data[(ypdest*xp+xpdest)*4+1], imageData.data[(ypdest*xp+xpdest)*4+2]] = hsvToRgb(hue, 1, 1);
-						imageData.data[(ypdest*xp+xpdest)*4+3] = 80;
+						imageData.data[(ypdest*xp+xpdest)*4 + 3] = 80;
 					} //y iterator						
 				} //x iterator
 				
 				ctx.putImageData(imageData, 0, 0);
-				
-				/*ctx.beginPath(); // Start the path
-					ctx.arc(xpsource, ypsource, 5, 0, Math.PI*2, false); // Draw a circle
+				for(var i=0;i<sources.length;i++){
+					[xpsource, ypsource] = LatLongToPixelCoordinates(sources[i][0], sources[i][1]);
+					ctx.beginPath(); // Start the path
+					ctx.arc(xpsource, ypsource, 5, 0, Math.PI*2, false); // Draw a circle - void ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
 					ctx.closePath(); // Close the path
-				ctx.fill(); // Fill the path*/
+					ctx.fill(); // Fill the path
+				}
 			}
 			function initialize()
 			{
