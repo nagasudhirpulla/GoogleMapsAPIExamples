@@ -11,6 +11,8 @@
 		<script src="ElementQueries.js"></script>
 		<script>
 			<!--Map Setting Script-->
+			//TODO APPEND BEFORE FOR CONSOLE OUTPUT
+			//TODO TIMER FOR MAP REFRESH
 			var myCenter=new google.maps.LatLng(22.532853026644325,78.16772421874998); var marker; var map;
 			var ctx;var c;
 			var xp; var yp;
@@ -19,10 +21,104 @@
 			var npx; var npy; var npxRatioSquare;
 			var sources = [[22.532853026644325,78.16772421874998,1.5], [21.2016592,81.1051448,1.1]];
 			var alpha = 1.5;
+			var transparency = 80;//between 0 - 255
 			var canvasData = [];var normalisedCanvasData = [];var imageData = [];
 			var minVal; var maxVal; var valDiff;
 			var maxHue = 120; var minHue = 0; var hueDiff = maxHue - minHue; //Lets go for red color for now
 			var xpsource; var ypsource;var vsource;
+			var mConsole;
+			
+			//Utility Functions
+			function doStyling(style, tag){
+					style.display = 'block';
+					style.fontSize = '0.9em';
+					style.fontFamily = "Courier New";
+					if(tag == 'error'){
+						style.color = 'red';
+					}else if(tag == 'warning'){
+						style.color = '#FF8C00';
+					} else if(tag == 'info'){
+						style.color = 'blue';
+					} else if(tag == 'success'){
+						style.color = 'blue';
+					}
+			}
+			
+			//Utility Functions
+			function WritelineConsole(str, tag){
+				var currentdate = new Date();
+				var para = document.createElement("span");
+				var n = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds()+" - ";
+				var node = document.createTextNode(n+str);
+				para.appendChild(node);
+				//mConsole.appendChild(para);
+				mConsole.insertBefore(para, mConsole.firstChild);
+				doStyling(para.style,tag);				
+			}
+			
+			//Utility Functions
+			function clearConsole(str, tag){				
+				mConsole.innerHTML = "";
+			}
+			
+			//Utility Functions
+			//Numeric text input listener
+			//http://stackoverflow.com/questions/33251052/allow-only-numbers-and-ctrla-ctrlv-ctrlc-to-a-textbox
+			function numericListener(e) {
+				// Allow: backspace, delete, tab, escape, enter and .
+				if ([46, 8, 9, 27, 13, 110, 190].indexOf(e.keyCode) !== -1 ||
+				// Allow: Ctrl+A
+				(e.keyCode == 65 && e.ctrlKey === true) ||
+				// Allow: Ctrl+C
+				(e.keyCode == 67 && e.ctrlKey === true) ||
+				// Allow: Ctrl+X
+				(e.keyCode == 88 && e.ctrlKey === true) ||
+				// Allow: home, end, left, right
+				(e.keyCode >= 35 && e.keyCode <= 39)) {
+					// let it happen, don't do anything
+					return;
+				}
+				// Ensure that it is a number and stop the keypress
+				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+					e.preventDefault();
+				}
+			}
+			
+			//Utility Functions
+			function showHide(el) {
+				//Toggle Display button for the table
+				var div = findSibling(el, "hidingClass");
+				if (div.style.display !== "none") {
+					div.style.display = "none";
+					} else {
+					div.style.display = "block";
+				}
+			}
+			
+			//Utility Functions
+			function findSibling(el, cls) {
+				while (!el.classList.contains(cls)) {
+					el = el.nextElementSibling;
+				}
+				return el;
+			}
+			
+			//Utility Functions
+			function isNumberKey(evt) {
+				//charcodes info http://www.cambiaresearch.com/articles/15/javascript-key-codes
+				evt = (evt) ? evt : window.event;
+				var charCode = (evt.which) ? evt.which : evt.keyCode;
+				if (charCode < 32 || (charCode > 47 && charCode < 58) || (charCode == 46)) {
+					return true;
+				}
+				return false;
+			}
+			
 			/*LatLong to pixel conversion function*/
 			function LatLongToPixelCoordinates(latx, longy){
 				return [parseInt((xp/lat_width)*(longy - latx1)), parseInt((yp/long_hgt )*(longy2-latx))];
@@ -37,6 +133,9 @@
 			
 			//Compute Canvas Parameters - Do this if canvas measurements change
 			function computeCanvasParams(){
+				//get Console object
+				mConsole = document.getElementById("console");
+				
 				//Canvas initialization
 				ctx = c.getContext("2d");
 				ctx.strokeStyle='blue';
@@ -50,6 +149,11 @@
 				yp = getComputedStyle(c,null).getPropertyValue('height');
 				yp = yp.substring(0, yp.length-2);
 				ctx.canvas.height = yp;
+				WritelineConsole("*********************************", "warning");
+				WritelineConsole("Writing DIV dimensions in pixels");
+				WritelineConsole("Width of div is "+xp);
+				WritelineConsole("Height of div is "+yp);
+				WritelineConsole("*********************************", "info");
 			}
 			
 			//After the canvas bounds can be measured and when canvas bounds are changed
@@ -72,6 +176,15 @@
 				//npxRatio = npy/npx;
 				npxRatioSquare = (npy*npy)/(npx*npx);
 				sources = getVoltagePoints();
+				WritelineConsole("*********************************", "warning");
+				WritelineConsole("Writing DIV dimensions in degrees");
+				WritelineConsole("Width of div is "+lat_width);
+				WritelineConsole("Height of div is "+long_hgt);
+				WritelineConsole("Longitude bounds are "+latx1 + " and "+latx2);
+				WritelineConsole("Latitude bounds are "+longy1 + " and "+longy1);
+				WritelineConsole("degrees / pixel on X axis is "+npx);
+				WritelineConsole("degrees / pixel on Y axis is "+npy);
+				WritelineConsole("*********************************", "info");
 				/*
 					******************Algorithm******************
 					calculate npx, npxRatioSquare which change when map bounds change
@@ -81,15 +194,15 @@
 					foreach source
 					calculate the per unit value of source voltage
 					get the source location in pixels
-						foreach canvaspixel
-							calcualate pixel intensity according to the formula and add it to result image data array
+					foreach canvaspixel
+					calcualate pixel intensity according to the formula and add it to result image data array
 					
-						end
+					end
 					end
 					
 					foreach result image data array pixel
-						update maximum intensity value
-						update minimum intensity value
+					update maximum intensity value
+					update minimum intensity value
 					end
 					
 					calculate normalisation factor for result image data array
@@ -156,7 +269,7 @@
 						//i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
 						hue = maxHue - normalisedCanvasData[(xpdest + ypdest*xp)];
 						[imageData.data[(ypdest*xp + xpdest)*4], imageData.data[(ypdest*xp + xpdest)*4 + 1], imageData.data[(ypdest*xp + xpdest)*4 + 2]] = hsvToRgb(hue, 1, 1);
-						imageData.data[(ypdest*xp + xpdest)*4 + 3] = 80;
+						imageData.data[(ypdest*xp + xpdest)*4 + 3] = transparency;
 					} //y iterator						
 				} //x iterator
 				
@@ -168,12 +281,13 @@
 				for(var i=0;i<sources.length;i++){
 					[xpsource, ypsource] = LatLongToPixelCoordinates(sources[i][0], sources[i][1]);
 					ctx.beginPath(); // Start the path
-					ctx.arc(xpsource, ypsource, 2, 0, Math.PI*2, false); // Draw a circle - void ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+					ctx.arc(xpsource, ypsource, 2, 0, Math.PI*2, false); //void ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
 					ctx.closePath(); // Close the path
 					ctx.stroke();
 					//ctx.fill(); // Fill the path
 				}
 			}
+			
 			function initialize()
 			{
 			  	//initialize canvas varibles
@@ -203,10 +317,17 @@
 				//add listener for map bounds being changed
 				google.maps.event.addListener(map,'bounds_changed', measureBounds); // end of listener callbck
 				getAlpha();
+				getTrans();
 			}
 			
 			//DOM load initialization function
 			google.maps.event.addDomListener(window, 'load', initialize);
+						
+			/*Alpha getter*/
+			function getAlpha() {
+				document.getElementById("alphaTextControl").value = "" + alpha;
+				document.getElementById("alphaTextControl").style.color = 'blue';
+			}	
 			
 			/*Alpha setter*/
 			function setAlpha() {
@@ -214,46 +335,44 @@
 				if(!isNaN(num)){
 					document.getElementById("alphaTextControl").style.color = 'black';
 					alpha = num;
+					WritelineConsole("Set the canvas Alpha to " + num, "success");
 					measureBounds();
-				}else{
+					}else{
+					WritelineConsole("Please enter numeric Input ", "error");
 					document.getElementById("alphaTextControl").style.color = 'red';
 				}
+			
+			}
+			
+			/*Transperency getter*/
+			function getTrans() {
+				document.getElementById("transControl").value = "" + transparency;
+				document.getElementById("transControl").style.color = 'blue';
+			}
+			
+			/*Transperency setter*/
+			function setTrans() {
+				var num = Number(document.getElementById("transControl").value);
+				if(!isNaN(num)){
+					document.getElementById("transControl").style.color = 'black';
+					WritelineConsole("Set the canvas Transperency to " + num, "success");
+					transparency = num;
+					measureBounds();
+					}else{
+					WritelineConsole("Please enter numeric Input ", "error");
+					document.getElementById("transControl").style.color = 'red';
+				}
 				
-			}
-			/*Alpha getter*/
-			function getAlpha() {
-				document.getElementById("alphaTextControl").value = "" + alpha;
-				document.getElementById("alphaTextControl").style.color = 'blue';
-			}
-			/*Numeric text input listener*/
-			function numericListener(e) {
-			        // Allow: backspace, delete, tab, escape, enter and .
-			        if ([46, 8, 9, 27, 13, 110, 190].indexOf(e.keyCode) !== -1 ||
-			             // Allow: Ctrl+A
-			            (e.keyCode == 65 && e.ctrlKey === true) ||
-			             // Allow: Ctrl+C
-			            (e.keyCode == 67 && e.ctrlKey === true) ||
-			             // Allow: Ctrl+X
-			            (e.keyCode == 88 && e.ctrlKey === true) ||
-			             // Allow: home, end, left, right
-			            (e.keyCode >= 35 && e.keyCode <= 39)) {
-			                 // let it happen, don't do anything
-			                 return;
-			            }
-			        // Ensure that it is a number and stop the keypress
-			        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-			            e.preventDefault();
-			        }
-			    }
-			  
+			}			
+			
 			/*
-			* HSV to RGB color conversion
-			*
-			* H runs from 0 to 360 degrees
-			* S and V run from 0 to 1
-			* 
-			* Ported from the excellent java algorithm by Eugene Vishnevsky at:
-			* http://www.cs.rit.edu/~ncs/color/t_convert.html
+				* HSV to RGB color conversion
+				*
+				* H runs from 0 to 360 degrees
+				* S and V run from 0 to 1
+				* 
+				* Ported from the excellent java algorithm by Eugene Vishnevsky at:
+				* http://www.cs.rit.edu/~ncs/color/t_convert.html
 			*/
 			function hsvToRgb(h, s, v) {
 				var r, g, b;
@@ -269,70 +388,73 @@
 					// Achromatic (grey)
 					r = g = b = v;
 					return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-				}****/
-				
-				h /= 60; // sector 0 to 5
-				i = Math.floor(h);
-				f = h - i; // factorial part of h
-				p = v * (1 - s);
-				q = v * (1 - s * f);
-				t = v * (1 - s * (1 - f));
-				
-				switch(i) {
-					case 0:
-					r = v;
-					g = t;
-					b = p;
-					break;
+					}****/
 					
-					case 1:
-					r = q;
-					g = v;
-					b = p;
-					break;
+					h /= 60; // sector 0 to 5
+					i = Math.floor(h);
+					f = h - i; // factorial part of h
+					p = v * (1 - s);
+					q = v * (1 - s * f);
+					t = v * (1 - s * (1 - f));
 					
-					case 2:
-					r = p;
-					g = v;
-					b = t;
-					break;
-					
-					case 3:
-					r = p;
-					g = q;
-					b = v;
-					break;
-					
-					case 4:
-					r = t;
-					g = p;
-					b = v;
-					break;
-					
-					default: // case 5:
-					r = v;
-					g = p;
-					b = q;
+					switch(i) {
+						case 0:
+						r = v;
+						g = t;
+						b = p;
+						break;
+						
+						case 1:
+						r = q;
+						g = v;
+						b = p;
+						break;
+						
+						case 2:
+						r = p;
+						g = v;
+						b = t;
+						break;
+						
+						case 3:
+						r = p;
+						g = q;
+						b = v;
+						break;
+						
+						case 4:
+						r = t;
+						g = p;
+						b = v;
+						break;
+						
+						default: // case 5:
+						r = v;
+						g = p;
+						b = q;
+					}				
+					return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 				}
-				
-				return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-			}
-		</script>		
-	</head>
-	<body>
-		<div id="wrapper">
-			<div id="google_map" style="width:100%;height:100%;"></div>
-			<div id="over_map"><p>Iam over map</p></div>
-			<canvas id="myCanvas" style="border:3px solid #0000d3;">Your browser does not support the HTML5 canvas tag.</canvas>
-	 	</div>
-	 	<div id="controlInputs" style="margin:10px 5px 5px 10px;"><!--top right bottom left-->
-	 		<h3>Alpha</h3>
-	 		<input id="alphaTextControl" style="width:50px;" type='text' onkeypress='numericListener(event)' />
-	 		<button onclick="getAlpha()" style="margin:0px 10px;">GetAlpha</button><button onclick="setAlpha()">SetAlpha</button>
-	 		<h3>Console</h3>
-	 		<div id="console" style="border: 1px solid black;width: 600px;margin:0px 10px;height: 400px;overflow: scroll;">
-	 		</div>
-	 	</div>
-	 	
-	</body>
-</html>
+			</script>
+		</head>
+		<body>
+			<div id="wrapper">
+				<div id="google_map" style="width:100%;height:100%;"></div>
+				<canvas id="myCanvas" style="border:3px solid #0000d3;">Your browser does not support the HTML5 canvas tag.</canvas>
+			</div>
+			<div id="controlInputs" style="margin:10px 5px 5px 10px;"><!--top right bottom left-->
+				<h3>Alpha</h3>
+				<input id="alphaTextControl" style="width:50px;" type="text" onkeypress="return isNumberKey()" />
+				<button onclick="getAlpha()" style="margin:0px 10px;">GetAlpha</button><button onclick="setAlpha()">SetAlpha</button>
+				<h3>Transperency</h3>
+				<input id="transControl" style="width:50px;" type="text" onkeypress="return isNumberKey()" />
+				<!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
+				<button onclick="getTrans()" style="margin:0px 10px;">GetTransperency</button><button onclick="setTrans()">SetTransperency</button>
+				<br><br><h3 onclick="showHide(this)" style="display:inline">Console</h3><br>
+				<div id="console" class="hidingClass" style="border: 1px solid black;width: 95%;height: 400px;overflow: scroll;">
+				</div>
+				<br><button onclick="clearConsole()">ClearConsole</button>
+			</div>
+			
+		</body>
+	</html>		
