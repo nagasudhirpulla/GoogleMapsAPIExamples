@@ -158,13 +158,13 @@
 				
 				ctx.putImageData(imageData, 0, 0);
 				
-				ctx.strokeStyle='blue';
-				ctx.lineWidth=2;//LINE WIDTH IN PIXELS
-				ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+				ctx.strokeStyle='black';
+				ctx.lineWidth=1;//LINE WIDTH IN PIXELS
+				//ctx.fillStyle = 'rgba(0, 0, 0, 0)';
 				for(var i=0;i<sources.length;i++){
 					[xpsource, ypsource] = LatLongToPixelCoordinates(sources[i][0], sources[i][1]);
 					ctx.beginPath(); // Start the path
-					ctx.arc(xpsource, ypsource, 5, 0, Math.PI*2, false); // Draw a circle - void ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+					ctx.arc(xpsource, ypsource, 2, 0, Math.PI*2, false); // Draw a circle - void ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
 					ctx.closePath(); // Close the path
 					ctx.stroke();
 					//ctx.fill(); // Fill the path
