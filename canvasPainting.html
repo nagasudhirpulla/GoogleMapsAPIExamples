@@ -202,11 +202,28 @@
 				
 				//add listener for map bounds being changed
 				google.maps.event.addListener(map,'bounds_changed', measureBounds); // end of listener callbck
+				getAlpha();
 			}
 			
 			//DOM load initialization function
 			google.maps.event.addDomListener(window, 'load', initialize);
 			
+			/*Alpha setter*/
+			function setAlpha() {
+				var num = Number(document.getElementById("alphaTextControl").value);
+				if(!isNaN(num)){
+					Number(document.getElementById("alphaTextControl").style.color = 'black';
+					alpha = num;
+					measureBounds();
+				}else{
+					Number(document.getElementById("alphaTextControl").style.color = 'red';
+				}
+				
+			}
+			/*Alpha getter*/
+			function getAlpha() {
+				document.getElementById("alphaTextControl").value = "" + alpha;
+			}
 			/*Numeric text input listener*/
 			function numericListener(e) {
 			        // Allow: backspace, delete, tab, escape, enter and .
@@ -227,6 +244,7 @@
 			            e.preventDefault();
 			        }
 			    }
+			  
 			/*
 			* HSV to RGB color conversion
 			*
@@ -306,8 +324,10 @@
 			<div id="over_map"><p>Iam over map</p></div>
 			<canvas id="myCanvas" style="border:3px solid #0000d3;">Your browser does not support the HTML5 canvas tag.</canvas>
 	 	</div>
-	 	<div id="controlInputs">
+	 	<div id="controlInputs" style="margin:10px 5px 5px 10px;"><!--top right bottom left-->
+	 		<h3>Alpha</h3>
 	 		<input id="alphaTextControl" style="width:50px;" type='text' onkeypress='numericListener(event)' />
+	 		<button id="getAlpha()" style="margin:0px 10px;">GetAlpha</button><button id="setAlpha()">\SetAlpha</button>
 	 	</div>
 	</body>
 </html>
