@@ -31,14 +31,13 @@
 				// [[1,2],[3,4]];//items[0][0] = 1
 				return [[22.532853026644325,78.16772421874998,1.5], [21.2016592,81.1051448,1.1]];
 			}
-			//After bounds can be measured
-			function measureBounds() 
-			{
+			//Compute Canvas Parameters - Do this if canvas measurements change
+			function computeCanvasParams(){
 				//Canvas initialization
 				c = document.getElementById("myCanvas");
 				ctx = c.getContext("2d");
-				ctx.strokeStyle="#0000FF";
-				ctx.fillStyle = "#0000FF";
+				ctx.strokeStyle="blue";
+				//ctx.fillStyle = "blue";
 				//ctx.fillStyle = "rgb(255, 0, 0)";
 				//Get the Width and Length of canvas				
 				xp = getComputedStyle(c,null).getPropertyValue('width');
@@ -47,6 +46,10 @@
 				yp = getComputedStyle(c,null).getPropertyValue('height');
 				yp = yp.substring(0, yp.length-2);
 				ctx.canvas.height = yp;
+			}
+			//After bounds can be measured
+			function measureBounds() 
+			{
 				//get mapbounds
 				var ne = map.getBounds().getNorthEast();//topRight
 				var sw = map.getBounds().getSouthWest();//bottomLeft
@@ -163,6 +166,8 @@
 			}
 			function initialize()
 			{
+				computeCanvasParams();
+				
 				var mapProp = {
 					center:myCenter,
 					zoom:6,
