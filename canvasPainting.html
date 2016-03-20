@@ -72,7 +72,7 @@
 			
 			//Utility Functions
 			function addRow() {
-				//var rowCount = table.rows.length;
+				//var rowCount = mSourceTable.rows.length;
 				//var colCount = table.rows[0].cells.length;
 				var row = mSourceTable.insertRow(0);//if row to inserted at last then insert at rowCount
 				for (var i = 0; i < arguments.length; i++) {
@@ -110,13 +110,15 @@
 			}
 			
 			//Utility Functions
-			function showHide(el) {
+			function showHide(el, txt1, txt2) {
 				//Toggle Display button for the table
 				var div = findSibling(el, "hidingClass");
 				if (div.style.display !== "none") {
 					div.style.display = "none";
+					el.textContent = txt1;
 					} else {
 					div.style.display = "block";
+					el.textContent = txt2;
 				}
 			}
 			
@@ -175,6 +177,9 @@
 				WritelineConsole("Width of div is "+xp, "info");
 				WritelineConsole("Height of div is "+yp, "info");
 				//WritelineConsole("*********************************", "info");
+				for(var i=0;i<sources.length;i++){
+					//addRow(i+1, "name", sources[i][0], sources[i][0], sources[i][0]);
+				}
 			}
 			
 			//After the canvas bounds can be measured and when canvas bounds are changed
@@ -205,6 +210,7 @@
 				WritelineConsole("Latitude bounds are "+longy1 + " and "+longy1, "info");
 				WritelineConsole("degrees / pixel on X axis is "+npx, "info");
 				WritelineConsole("degrees / pixel on Y axis is "+npy, "info");
+				
 				//WritelineConsole("*********************************", "info");
 				/*
 					******************Algorithm******************
@@ -472,13 +478,13 @@
 				<input id="transControl" style="width:50px;" type="text" onkeypress="return isNumberKey()" />
 				<!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
 				<button onclick="getTrans()" style="margin:0px 10px;">GetTransperency</button><button onclick="setTrans()">SetTransperency</button>
-				<br><br><h3 onclick="showHide(this)" style="display:inline">Console</h3><br>
-				<table><thead><tr><td>header1</td><td>header1</td><td>header1</td></tr></thead><tbody id="mSourceTable"></tbody></table>
-				<div id="console" class="hidingClass" style="border: 1px solid black;width: 95%;height: 400px;overflow: scroll;">
+				<table style="border: 1px solid black;border-collapse: collapse;"><thead><tr><td>SNo</td><td>Name</td><td>Latitude</td><td>Longitude</td><td>Value</td></tr></thead><tbody id="mSourceTable"></tbody></table>
+				<br><br><h3 onclick="showHide(this,'> Console','^ Console')" style="display:inline"> > Console</h3><br>
+				<div id="console" class="hidingClass" style="display:none;border: 1px solid black;width: 95%;height: 400px;overflow: scroll;">
 				</div>
 				<br><button onclick="clearConsole()">ClearConsole</button>
 			</div>
 			<!-- Do stuff after a timeout clearing previous timeouts - http://stackoverflow.com/questions/9252493/google-maps-event-addlistenermap-idle-function-is-it-possible-to-specif -->
 			<!-- A complete interactive experience of google maps API- http://gmaps-samples-v3.googlecode.com/svn/trunk/map_events/map_events.html -->
 		</body>
-	</html>		
+	</html>	
