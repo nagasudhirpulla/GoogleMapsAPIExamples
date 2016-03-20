@@ -11,8 +11,8 @@
 		<script src="ElementQueries.js"></script>
 		<script>
 			<!--Map Setting Script-->
-			//TODO APPEND BEFORE FOR CONSOLE OUTPUT
-			//TODO TIMER FOR MAP REFRESH
+			//TODO APPEND BEFORE FOR CONSOLE OUTPUT - DONE
+			//TODO TIMER FOR MAP REFRESH - DONE BY USING idle listener event of maps API
 			var myCenter=new google.maps.LatLng(22.532853026644325,78.16772421874998); var marker; var map;
 			var ctx;var c;
 			var xp; var yp;
@@ -151,9 +151,9 @@
 				ctx.canvas.height = yp;
 				WritelineConsole("*********************************", "warning");
 				WritelineConsole("Writing DIV dimensions in pixels");
-				WritelineConsole("Width of div is "+xp);
-				WritelineConsole("Height of div is "+yp);
-				WritelineConsole("*********************************", "info");
+				WritelineConsole("Width of div is "+xp, "info");
+				WritelineConsole("Height of div is "+yp, "info");
+				//WritelineConsole("*********************************", "info");
 			}
 			
 			//After the canvas bounds can be measured and when canvas bounds are changed
@@ -178,13 +178,13 @@
 				sources = getVoltagePoints();
 				WritelineConsole("*********************************", "warning");
 				WritelineConsole("Writing DIV dimensions in degrees");
-				WritelineConsole("Width of div is "+lat_width);
-				WritelineConsole("Height of div is "+long_hgt);
-				WritelineConsole("Longitude bounds are "+latx1 + " and "+latx2);
-				WritelineConsole("Latitude bounds are "+longy1 + " and "+longy1);
-				WritelineConsole("degrees / pixel on X axis is "+npx);
-				WritelineConsole("degrees / pixel on Y axis is "+npy);
-				WritelineConsole("*********************************", "info");
+				WritelineConsole("Width of div is "+lat_width, "info");
+				WritelineConsole("Height of div is "+long_hgt, "info");
+				WritelineConsole("Longitude bounds are "+latx1 + " and "+latx2, "info");
+				WritelineConsole("Latitude bounds are "+longy1 + " and "+longy1, "info");
+				WritelineConsole("degrees / pixel on X axis is "+npx, "info");
+				WritelineConsole("degrees / pixel on Y axis is "+npy, "info");
+				//WritelineConsole("*********************************", "info");
 				/*
 					******************Algorithm******************
 					calculate npx, npxRatioSquare which change when map bounds change
