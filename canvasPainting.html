@@ -315,7 +315,8 @@
 				marker.setMap(map);
 				
 				//add listener for map bounds being changed
-				google.maps.event.addListener(map,'bounds_changed', measureBounds); // end of listener callbck
+				//google.maps.event.addListener(map,'bounds_changed', measureBounds); // end of listener callbck
+				google.maps.event.addListener(map,'idle', measureBounds);
 				getAlpha();
 				getTrans();
 			}
