@@ -30,6 +30,7 @@
 			var maxHue = 120; var minHue = 0; var hueDiff = maxHue - minHue; //Lets go for red color for now
 			var xpsource; var ypsource;var vsource;
 			var mConsole;
+			var mSourceTable;
 			
 			//Utility Functions
 			function doStyling(style, tag){
@@ -67,6 +68,22 @@
 			//Utility Functions
 			function clearConsole(str, tag){				
 				mConsole.innerHTML = "";
+			}
+			
+			//Utility Functions
+			function addRow() {
+				//var rowCount = table.rows.length;
+				//var colCount = table.rows[0].cells.length;
+				var row = mSourceTable.insertRow(0);//if row to inserted at last then insert at rowCount
+				for (var i = 0; i < arguments.length; i++) {
+					//alert(arguments[i]);
+					var newCell = row.insertCell(0);
+					var t = document.createTextNode(arguments[i]);
+					var s = document.createElement("span");
+					s.appendChild(t);
+					newCell.appendChild(s);
+				}
+				//row inserted in to the table
 			}
 			
 			//Utility Functions
@@ -136,8 +153,9 @@
 			
 			//Compute Canvas Parameters - Do this if canvas measurements change
 			function computeCanvasParams(){
-				//get Console object
+				//get Console and SourceTable objects
 				mConsole = document.getElementById("console");
+				mSourceTable = document.getElementById("sourcesTable");
 				
 				//Canvas initialization
 				ctx = c.getContext("2d");
@@ -455,6 +473,7 @@
 				<!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
 				<button onclick="getTrans()" style="margin:0px 10px;">GetTransperency</button><button onclick="setTrans()">SetTransperency</button>
 				<br><br><h3 onclick="showHide(this)" style="display:inline">Console</h3><br>
+				<table><thead><tr><td>header1</td><td>header1</td><td>header1</td></tr></thead><tbody id="mSourceTable"></tbody></table>
 				<div id="console" class="hidingClass" style="border: 1px solid black;width: 95%;height: 400px;overflow: scroll;">
 				</div>
 				<br><button onclick="clearConsole()">ClearConsole</button>
