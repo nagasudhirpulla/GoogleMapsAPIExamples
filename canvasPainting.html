@@ -27,6 +27,16 @@
             height: 100%;
             pointer-events: none;
         }
+
+        .showHideButton {
+            /*-moz-appearance:button; /!* Firefox *!/
+            -webkit-appearance:button; /!* Safari and Chrome *!/
+            appearance:button;*/
+            border: 1px solid black;
+            padding-left: 1px;
+            padding-right: 1px;
+            display: inline;
+        }
     </style>
     <style>
         table {
@@ -46,6 +56,8 @@
         //TODO TIMER FOR MAP REFRESH - DONE BY USING idle listener event of maps API
         //TODO DISPLAY SOURCES LATITUDES, LONGITUDES SERVICE NAMES POINT IDS VALUES IN A TABLE - DONE
         //TODO CREATE AN EVAL BOX FOR DEBUGGING
+        //TODO add delete voltage point button - DONE
+        //TODO perform validations on voltage point like check if lat long already exists
 
         <!--Map Setting Script-->
         //var myCenter = new google.maps.LatLng(22.532853026644325,78.16772421874998);
@@ -139,7 +151,7 @@
         function addVoltPointsToTable() {
             clearTable();
             for (var i = 0; i < sources.length; i++) {
-                addRow(i + 1, "Name", sources[i][0], sources[i][0], sources[i][0]);
+                addRow(i + 1, "Name", sources[i][0], sources[i][1], sources[i][2]);
             }
         }
 
@@ -156,6 +168,20 @@
                 s.appendChild(t);
                 newCell.appendChild(s);
             }
+            newCell = row.insertCell(arguments.length);
+            t = document.createTextNode("Delete");
+            s = document.createElement("button");
+            s.appendChild(t);
+            newCell.appendChild(s);
+            s.onclick = function () {
+                var confirmDelete = confirm("Delete the Voltage point number " + this.parentNode.parentNode.rowIndex + " ?");
+                if (confirmDelete) {
+                    //mSourceTable.deleteRow(this.parentNode.parentNode.rowIndex - 1);
+                    sources.splice(this.parentNode.parentNode.rowIndex - 1, 1);
+                    addVoltPointsToTable();
+                    onMapStateChanged();
+                }
+            };
             //row inserted in to the table
         }
         //Utility Functions
@@ -395,6 +421,7 @@
             }
         }
 
+        //On DOM ready for manipulation, sources and assets may not have been loaded
         function domReady() {
             //initialize canvas variables
             c = document.getElementById("myCanvas");
@@ -419,11 +446,17 @@
 
             //set marker
             var marker = new google.maps.Marker({
-                position: myCenter,
-                animation: google.maps.Animation.BOUNCE
+                position: myCenter
             });
-
             marker.setMap(map);
+            marker.addListener('click', toggleBounce);
+            function toggleBounce() {
+                if (marker.getAnimation() !== null) {
+                    marker.setAnimation(null);
+                } else {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                }
+            }
 
             //add listener for map bounds being changed
             //google.maps.event.addListener(map,'bounds_changed', onMapStateChanged); // end of listener callbck
@@ -545,6 +578,22 @@
             }
             return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         }
+
+        //Utility functions
+        function addVoltPoint() {
+            var newName = document.getElementById("newVoltPointName").value;
+            var newLat = document.getElementById("newVoltPointLat").value;
+            var newLong = document.getElementById("newVoltPointLong").value;
+            var newVal = document.getElementById("newVoltPointVal").value;
+            sources.push([newLat, newLong, newVal]);
+            //TODO perform validations
+            addVoltPointsToTable();
+            onMapStateChanged();
+            document.getElementById("newVoltPointName").value = "";
+            document.getElementById("newVoltPointLat").value = "";
+            document.getElementById("newVoltPointLong").value = "";
+            document.getElementById("newVoltPointVal").value = "";
+        }
     </script>
 </head>
 <body>
@@ -554,27 +603,8 @@
 </div>
 <div id="controlInputs" style="margin:10px 5px 5px 10px;"><!--top right bottom left-->
 
-    <h3 onclick="showHide(this,'> Alpha','^ Alpha')" style="display:inline"> > Alpha</h3>
-    <div class="hidingClass" style="display:none; margin:5px 0px;">
-        <input id="alphaTextControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
-        <button onclick="getAlpha()" style="margin:0px 10px;">GetAlpha</button>
-        <button onclick="setAlpha()">SetAlpha</button>
-    </div>
-
-    <br>
-
-    <h3 onclick="showHide(this,'> Transperency','^ Transperency')" style="display:inline"> > Transperency</h3>
-    <div class="hidingClass" style="display:none; margin:5px 0px;">
-        <input id="transControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
-        <!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
-        <button onclick="getTrans()" style="margin:0px 10px;">GetTransperency</button>
-        <button onclick="setTrans()">SetTransperency</button>
-    </div>
-
-    <br>
-
-    <h3 onclick="showHide(this,'> Voltage Points','^ Voltage Points')" style="display:inline"> > Voltage Points</h3>
-    <div class="hidingClass" style="display:none; margin:5px 0px;">
+    <h3 class="showHideButton" onclick="showHide(this,'> Voltage Points','^ Voltage Points')" > ^ Voltage Points</h3><br>
+    <div class="hidingClass" style="display:block;margin-top:5px">
         <table>
             <thead>
             <tr>
@@ -587,20 +617,37 @@
             </thead>
             <tbody id="mSourceTable"></tbody>
         </table>
-        <button onclick="addVoltPointsToTable()">Populate Table</button>
-        <button onclick="clearTable()">Clear Table</button><br>
-        <input  placeholder="Name" type="text"/><input  placeholder="Latitude degrees" type="number"/><input  placeholder="Longitude degrees" type="number"/><input  placeholder="Per Unit Value" type="number"/><button>AddSource</button>
-    </div>
+        <button onclick="addVoltPointsToTable()">Refresh Table</button>
+        <button onclick="clearTable()">Clear Table</button>
+        <br><br>
+        <input placeholder="Name" id="newVoltPointName" type="text"/>
+        <input placeholder="Latitude degrees" id="newVoltPointLat" type="number"/>
+        <input placeholder="Longitude degrees" id="newVoltPointLong" type="number"/>
+        <input placeholder="Per Unit Value" id="newVoltPointVal" type="number"/>
+        <button onclick="addVoltPoint()">AddVoltagePoint</button>
+    </div><br>
 
-    <br>
+    <h3 class="showHideButton" onclick="showHide(this,'> Alpha','^ Alpha')" > > Alpha</h3><br>
+    <div class="hidingClass" style="display:none;margin-top:5px">
+        <input id="alphaTextControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
+        <button onclick="getAlpha()" style="margin:0px 10px;">GetAlpha</button>
+        <button onclick="setAlpha()">SetAlpha</button>
+    </div><br>
 
-    <h3 onclick="showHide(this,'> Console','^ Console')" style="display:inline"> > Console</h3><br>
+    <h3 class="showHideButton" onclick="showHide(this,'> Transperency','^ Transperency')" > > Transperency</h3><br>
+    <div class="hidingClass" style="display:none;margin-top:5px">
+        <input id="transControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
+        <!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
+        <button onclick="getTrans()" style="margin:0px 10px;">GetTransperency</button>
+        <button onclick="setTrans()">SetTransperency</button>
+    </div><br>
 
-    <div class="hidingClass" style="display:none; margin:5px 0px;">
+    <h3 class="showHideButton" onclick="showHide(this,'> Console','^ Console')" > > Console</h3><br>
+    <div class="hidingClass" style="display:none;margin-top:5px">
         <div id="console" style="border: 1px solid black;width: 95%;height: 400px;overflow: scroll;">
         </div>
         <button onclick="clearConsole()">ClearConsole</button>
-    </div>
+    </div><br>
 </div>
 <!-- Do stuff after a timeout clearing previous timeouts - http://stackoverflow.com/questions/9252493/google-maps-event-addlistenermap-idle-function-is-it-possible-to-specif -->
 <!-- A complete interactive experience of google maps API- http://gmaps-samples-v3.googlecode.com/svn/trunk/map_events/map_events.html -->
