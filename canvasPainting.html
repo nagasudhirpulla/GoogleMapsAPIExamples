@@ -136,7 +136,8 @@
         }
 
         //Utility Functions
-        function addSourcesToTable() {
+        function addVoltPointsToTable() {
+            clearTable();
             for (var i = 0; i < sources.length; i++) {
                 addRow(i + 1, "Name", sources[i][0], sources[i][0], sources[i][0]);
             }
@@ -402,7 +403,7 @@
             //canvas resize listener
             new ResizeSensor(c, computeCanvasParams);
 
-            addSourcesToTable();
+            addVoltPointsToTable();
         }
 
         function mapSourceLoaded() {
@@ -586,8 +587,8 @@
             </thead>
             <tbody id="mSourceTable"></tbody>
         </table>
+        <button onclick="addVoltPointsToTable()">Populate Table</button>
         <button onclick="clearTable()">Clear Table</button>
-        <button onclick="addSourcesToTable()">Populate Table</button>
     </div>
 
     <br>
