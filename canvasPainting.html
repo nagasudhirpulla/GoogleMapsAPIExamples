@@ -90,6 +90,7 @@
         var valDiff;
         var maxHue = 120;
         var minHue = 0;
+        var maxHueToDisplay = 70;
         var hueDiff = maxHue - minHue; //Lets go for red color for now
         var xpsource;
         var ypsource;
@@ -399,7 +400,7 @@
                     //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
                     hue = maxHue - normalisedCanvasData[(xpdest + ypdest * xp)];
                     [imageData.data[(ypdest * xp + xpdest) * 4], imageData.data[(ypdest * xp + xpdest) * 4 + 1], imageData.data[(ypdest * xp + xpdest) * 4 + 2]] = hsvToRgb(hue, 1, 1);
-                    imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue>=maxHue-10) ? 0 : transparency;
+                    imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue>=maxHueToDisplay) ? 0 : transparency;
                 } //y iterator
             } //x iterator
 
@@ -496,18 +497,38 @@
         /*Transperency setter*/
         function setTrans() {
             var num = Number(document.getElementById("transControl").value);
-            if (!isNaN(num)) {
+            if (!isNaN(num) && num>=0 && num<=255) {
                 document.getElementById("transControl").style.color = 'black';
                 WriteLineConsole("Set the canvas Transperency to " + num, "success");
                 transparency = num;
                 onMapStateChanged();
             } else {
-                WriteLineConsole("Please enter numeric Input ", "error");
+                WriteLineConsole("Please enter numeric Input between 0 and 255", "error");
                 document.getElementById("transControl").style.color = 'red';
             }
 
         }
 
+	/*MaxDisplayHue getter*/
+        function getmaxDisplayHue() {
+            document.getElementById("maxDisplayHueControl").value = "" + maxHueToDisplay;
+            document.getElementById("maxDisplayHueControl").style.color = 'blue';
+        }
+
+        /*MaxDisplayHue setter*/
+        function setmaxDisplayHue() {
+            var num = Number(document.getElementById("maxDisplayHueControl").value);
+            if (!isNaN(num) && num>=0 && num<=255) {
+                document.getElementById("maxDisplayHueControl").style.color = 'black';
+                WriteLineConsole("Set the canvas Max HueToDisplay to " + num, "success");
+                maxHueToDisplay = num;
+                onMapStateChanged();
+            } else {
+                WriteLineConsole("Please enter numeric Input between 0 and 255", "error");
+                document.getElementById("maxDisplayHueControl").style.color = 'red';
+            }
+
+        }
         /*
          * HSV to RGB color conversion
          *
@@ -642,6 +663,14 @@
         <button onclick="setTrans()">SetTransperency</button>
     </div><br>
 
+    <h3 class="showHideButton" onclick="showHide(this,'> MaxDisplayHue','^ MaxDisplayHue')" > > MaxDisplayHue</h3><br>
+    <div class="hidingClass" style="display:none;margin-top:5px">
+        <input id="maxDisplayHueControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
+        <!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
+        <button onclick="getmaxDisplayHue()" style="margin:0px 10px;">GetMaxDisplayHue</button>
+        <button onclick="setmaxDisplayHue()">SetMaxDisplayHue</button>
+    </div><br>
+    
     <h3 class="showHideButton" onclick="showHide(this,'> Console','^ Console')" > > Console</h3><br>
     <div class="hidingClass" style="display:none;margin-top:5px">
         <div id="console" style="border: 1px solid black;width: 95%;height: 400px;overflow: scroll;">
