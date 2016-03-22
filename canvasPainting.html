@@ -399,7 +399,7 @@
                     //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
                     hue = maxHue - normalisedCanvasData[(xpdest + ypdest * xp)];
                     [imageData.data[(ypdest * xp + xpdest) * 4], imageData.data[(ypdest * xp + xpdest) * 4 + 1], imageData.data[(ypdest * xp + xpdest) * 4 + 2]] = hsvToRgb(hue, 1, 1);
-                    imageData.data[(ypdest * xp + xpdest) * 4 + 3] = transparency;
+                    imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue==maxHue) ? 0 : transparency;
                 } //y iterator
             } //x iterator
 
