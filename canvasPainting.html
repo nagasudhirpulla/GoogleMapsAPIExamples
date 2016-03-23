@@ -90,7 +90,7 @@
         var valDiff;
         var maxHue = 120;
         var minHue = 0;
-        var maxHueToDisplay = 70;
+        var maxHueToDisplay = maxHue;
         var hueDiff = maxHue - minHue; //Lets go for red color for now
         var xpsource;
         var ypsource;
@@ -465,6 +465,7 @@
 
             getAlpha();
             getTrans();
+            getmaxDisplayHue();
         }
 
         /*Alpha getter*/
