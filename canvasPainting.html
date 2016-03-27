@@ -7,7 +7,6 @@
             height: 500px;
             border:2px solid #999999;
         }
-
         #over_map {
             position: absolute;
             top: 80px;
@@ -18,7 +17,6 @@
             z-index: 99;
             color: red;
         }
-
         #myCanvas {
             position: absolute;
             top: 0px;
@@ -28,7 +26,6 @@
             height: 100%;
             pointer-events: none;
         }
-
         .showHideButton {
             /*-moz-appearance:button; /!* Firefox *!/
             -webkit-appearance:button; /!* Safari and Chrome *!/
@@ -43,7 +40,6 @@
         table {
             border-collapse: collapse;
         }
-
         table, td, th {
             border: 1px solid black;
         }
@@ -59,7 +55,6 @@
         //TODO CREATE AN EVAL BOX FOR DEBUGGING
         //TODO add delete voltage point button - DONE
         //TODO perform validations on voltage point like check if lat long already exists
-
         <!--Map Setting Script-->
         //var myCenter = new google.maps.LatLng(22.532853026644325,78.16772421874998);
         var myCenter;
@@ -80,7 +75,9 @@
         var npx;
         var npy;
         var npxRatioSquare;
-        var sources = [[22.532853026644325, 78.16772421874998, 1.5], [21.2016592, 81.1051448, 1.1]];
+		var isBusy = false;
+        //var sources = [[22.532853026644325, 78.16772421874998, 1.5], [21.2016592, 81.1051448, 1.1]];
+        var sources = [[22.46, 73.39, 1.26, "WRLDC.PHASOR.WRDC1001"], [21.91, 77.34, 1.08, "WRLDC_B.PHASOR1.WRDC1160"], [20.09, 79.11, 1.22, "WRLDC.PHASOR.WRDC0159"], [21.04, 75.77, 1.35, "WRLDC_B.PHASOR1.WRDC0935"], [24.17, 78.19, 1.15, "WRLDC.PHASOR.WRDC0336"], [19.79, 72.72, 1.08, "WRLDC.PHASOR.WRDC0305"], [22.82, 69.53, 0.98, "WRLDC.PHASOR.WRDC0024"], [19.95, 79.28, 1.4, "WRLDC_B.PHASOR1.WRDC1013"], [23.17, 72.81, 1.36, "WRLDC.PHASOR.WRDC0232"], [21.28, 79.98, 1.12, "WRLDC.PHASOR.WRDC1062"], [20.90, 74.76, 1.56, "WRLDC_B.PHASOR1.WRDC0857"], [22.60, 77.75, 1.51, "WRLDC.PHASOR.WRDC0086"], [23.17, 79.98, 1.34, "WRLDC.PHASOR.WRDC0464"], [21.73, 70.63, 1.41, "WRLDC_B.PHASOR1.WRDC0471"], [19.20, 73.00, 1.02, "WRLDC.PHASOR.WRDC0749"], [16.69, 74.22, 1.48, "WRLDC_B.PHASOR1.WRDC0584"], [21.24, 79.09, 1.23, "WRLDC_B.PHASOR1.WRDC1121"], [22.38, 82.68, 0.96, "WRLDC.PHASOR.WRDC0194"], [18.63, 74.02, 0.92, "WRLDC_B.PHASOR1.WRDC0701"], [22.83, 69.73, 1.51, "WRLDC_B.PHASOR1.WRDC0004"], [19.99, 73.64, 1.33, "WRLDC_B.PHASOR1.WRDC0857"], [17.43, 73.66, 1.08, "WRLDC_B.PHASOR1.WRDC0623"], [19.35, 73.17, 1.41, "WRLDC_B.PHASOR1.WRDC0662"], [18.84, 76.51, 1.55, "WRLDC_B.PHASOR1.WRDC0740"], [21.25, 81.62, 1.37, "WRLDC.PHASOR.WRDC1222"], [23.82, 72.46, 1.54, "WRLDC_B.PHASOR1.WRDC0515"], [24.58, 80.87, 1.22, "WRLDC_B.PHASOR1.WRDC0249"], [17.68, 75.91, 1.27, "WRLDC.PHASOR.WRDC0804"], [17.65, 75.90, 0.96, "WRLDC.PHASOR.WRDC0870"], [17.66, 75.94, 1.52, "WRLDC_B.PHASOR1.WRDC0896"], [24.03, 82.57, 1.51, "WRLDC.PHASOR.WRDC0412"], [24.47, 72.03, 1.55, "WRLDC_B.PHASOR1.WRDC0204"]];
         var alpha = 1.5;
         var transparency = 80;//between 0 - 255
         var canvasData = [];
@@ -98,7 +95,6 @@
         var vsource;
         var mConsole;
         var mSourceTable;
-
         //http://gomakethings.com/a-native-javascript-equivalent-of-jquerys-ready-method/
         //https://developer.mozilla.org/en/docs/web/api/document/readystate
         // alternative to DOMContentLoaded event
@@ -110,7 +106,6 @@
                 google.maps.event.addDomListener(window, 'load', mapSourceLoaded);
             }
         };
-
         //Utility Functions
         function doStyling(style, tag) {
             style.display = 'block';
@@ -126,7 +121,6 @@
                 style.color = 'blue';
             }
         }
-
         //Utility Functions
         function WriteLineConsole(str, tag) {
             var currentDate = new Date();
@@ -143,12 +137,10 @@
             mConsole.insertBefore(para, mConsole.firstChild);
             doStyling(para.style, tag);
         }
-
         //Utility Functions
         function clearConsole(str, tag) {
             mConsole.innerHTML = "";
         }
-
         //Utility Functions
         function addVoltPointsToTable() {
             clearTable();
@@ -156,7 +148,6 @@
                 addRow(i + 1, "Name", sources[i][0], sources[i][1], sources[i][2]);
             }
         }
-
         //Utility Functions
         function addRow() {
             var rowCount = mSourceTable.rows.length;
@@ -190,7 +181,6 @@
         function clearTable() {
             mSourceTable.innerHTML = "";
         }
-
         //Utility Functions
         //Numeric text input listener
         //http://stackoverflow.com/questions/33251052/allow-only-numbers-and-ctrla-ctrlv-ctrlc-to-a-textbox
@@ -213,7 +203,6 @@
                 e.preventDefault();
             }
         }
-
         //Utility Functions
         function showHide(el, txt1, txt2) {
             //Toggle Display button for the table
@@ -226,7 +215,6 @@
                 el.textContent = txt2;
             }
         }
-
         //Utility Functions
         function findSibling(el, cls) {
             while (!el.classList.contains(cls)) {
@@ -234,7 +222,6 @@
             }
             return el;
         }
-
         //Utility Functions
         function isNumberKey(evt) {
             //charcodes info http://www.cambiaresearch.com/articles/15/javascript-key-codes
@@ -245,25 +232,21 @@
             }
             return false;
         }
-
         /*LatLong to pixel conversion function*/
         function LatLongToPixelCoordinates(latx, longy) {
             return [parseInt((xp / lat_width) * (longy - latx1)), parseInt((yp / long_hgt ) * (longy2 - latx))];
             //return [parseInt((xp/lat_width)*(latx - latx1),10), parseInt((yp/long_hgt )*(longy-longy1),10)];
         }
-
         /*Get all Voltage sources locations and p.u values as a [nx3] array */
         function getVoltagePoints() {
             // [[1,2],[3,4]];//items[0][0] = 1
             return sources;
         }
-
         //Compute Canvas Parameters - Do this if canvas measurements change
         function computeCanvasParams() {
             //get Console and SourceTable objects
             mConsole = document.getElementById("console");
             mSourceTable = document.getElementById("mSourceTable");
-
             //Canvas initialization
             ctx = c.getContext("2d");
             ctx.strokeStyle = 'blue';
@@ -283,7 +266,6 @@
             WriteLineConsole("Height of div is " + yp, "info");
             //WriteLineConsole("*********************************", "info");
         }
-
         //After the canvas bounds can be measured and when canvas bounds are changed
         function onMapStateChanged() {
             //get map bounds
@@ -303,6 +285,7 @@
             //npxRatio = npy/npx;
             npxRatioSquare = (npy * npy) / (npx * npx);
             sources = getVoltagePoints();
+			
             WriteLineConsole("*********************************", "warning");
             WriteLineConsole("Writing DIV dimensions in degrees");
             WriteLineConsole("Width of div is " + lat_width, "info");
@@ -310,42 +293,37 @@
             WriteLineConsole("Longitude bounds are " + latx1 + " and " + latx2, "info");
             WriteLineConsole("Latitude bounds are " + longy1 + " and " + longy2, "info");
             WriteLineConsole("degrees / pixel on X axis is " + npx, "info");
-            WriteLineConsole("degrees / pixel on Y axis is " + npy, "info");
+            WriteLineConsole("degrees / pixel on Y axis is " + npy, "info");			
             //WriteLineConsole("*********************************", "info");
-            /*
+			runAlgorithm();
+        }
+        //Run Algorithm
+		function runAlgorithm(){
+			/*
              ******************Algorithm******************
              calculate npx, npxRatioSquare which change when map bounds change
-
              clear the result image data array
-
              foreach source
              calculate the per unit value of source voltage
              get the source location in pixels
              foreach canvaspixel
              calcualate pixel intensity according to the formula and add it to result image data array
-
              end
              end
-
              foreach result image data array pixel
              update maximum intensity value
              update minimum intensity value
              end
-
              calculate normalisation factor for result image data array
-
              multiply each pixel of result image data array with normalisation factor to get the hue of the pixel
-
              assign each pixel the hue obtained from normalised image data array
              */
-
             //clear and initialize
             canvasData = [];
             for (var iter = 0; iter < xp * yp; iter++) {
                 canvasData[iter] = 0;
             }
             normalisedCanvasData = [];
-
             //For each source
             //var xpsource; var ypsource;
             for (var i = 0; i < sources.length; i++) {
@@ -361,7 +339,6 @@
                     } //y iterator
                 } //x iterator
             } //source iterator
-
             //Find max and min voltage value in canvasData
             minVal = 1000;
             maxVal = 0;
@@ -376,7 +353,6 @@
                     }
                 } //y iterator
             } //x iterator
-
             //Do Normalisation
             //normalisedValue = hueDiff * (1 - value/(maxval-minval));
             //normalisedValue = hueDiff * (1 - value/(valDiff)); where valDiff = maxval-minval;
@@ -390,12 +366,9 @@
             } //x iterator
             //canvas putImageData reference - http://www.w3schools.com/tags/canvas_putimagedata.asp
             //canvas createImageData reference - http://www.w3schools.com/tags/canvas_createimagedata.asp
-
             //Clear Canvas Data
             canvasData = [];
-
             imageData = ctx.getImageData(0, 0, xp, yp);//imageData context.getImageData(x,y,width,height);
-
             for (var xpdest = 0; xpdest < xp; xpdest++) {
                 for (var ypdest = 0; ypdest < yp; ypdest++) {
                     //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
@@ -404,12 +377,9 @@
                     imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue>=maxHueToDisplay) ? 0 : transparency;
                 } //y iterator
             } //x iterator
-
             //Clear normalisedCanvasData
             normalisedCanvasData = [];
-
             ctx.putImageData(imageData, 0, 0);
-
             ctx.strokeStyle = 'black';
             ctx.lineWidth = 1;//LINE WIDTH IN PIXELS
             //ctx.fillStyle = 'rgba(0, 0, 0, 0)';
@@ -420,21 +390,17 @@
                 ctx.closePath(); // Close the path
                 ctx.stroke();
                 ctx.fill(); // Fill the path
-            }
-        }
-
-        //On DOM ready for manipulation, sources and assets may not have been loaded
+            }		
+		}
+		//On DOM ready for manipulation, sources and assets may not have been loaded
         function domReady() {
             //initialize canvas variables
             c = document.getElementById("myCanvas");
             computeCanvasParams();
-
             //canvas resize listener
             new ResizeSensor(c, computeCanvasParams);
-
             addVoltPointsToTable();
         }
-
         function mapSourceLoaded() {
             //initialize map
             myCenter = new google.maps.LatLng(22.532853026644325, 78.16772421874998);
@@ -443,9 +409,7 @@
                 zoom: 6,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-
             map = new google.maps.Map(document.getElementById("google_map"), mapProp);
-
             //set marker
             var marker = new google.maps.Marker({
                 position: myCenter
@@ -459,22 +423,18 @@
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                 }
             }
-
             //add listener for map bounds being changed
             //google.maps.event.addListener(map,'bounds_changed', onMapStateChanged); // end of listener callbck
             google.maps.event.addListener(map, 'idle', onMapStateChanged);
-
             getAlpha();
             getTrans();
             getmaxDisplayHue();
         }
-
         /*Alpha getter*/
         function getAlpha() {
             document.getElementById("alphaTextControl").value = "" + alpha;
             document.getElementById("alphaTextControl").style.color = 'blue';
         }
-
         /*Alpha setter*/
         function setAlpha() {
             var num = Number(document.getElementById("alphaTextControl").value);
@@ -487,15 +447,12 @@
                 WriteLineConsole("Please enter numeric Input ", "error");
                 document.getElementById("alphaTextControl").style.color = 'red';
             }
-
         }
-
         /*Transperency getter*/
         function getTrans() {
             document.getElementById("transControl").value = "" + transparency;
             document.getElementById("transControl").style.color = 'blue';
         }
-
         /*Transperency setter*/
         function setTrans() {
             var num = Number(document.getElementById("transControl").value);
@@ -508,15 +465,12 @@
                 WriteLineConsole("Please enter numeric Input between 0 and 255", "error");
                 document.getElementById("transControl").style.color = 'red';
             }
-
         }
-
 	/*MaxDisplayHue getter*/
         function getmaxDisplayHue() {
             document.getElementById("maxDisplayHueControl").value = "" + maxHueToDisplay;
             document.getElementById("maxDisplayHueControl").style.color = 'blue';
         }
-
         /*MaxDisplayHue setter*/
         function setmaxDisplayHue() {
             var num = Number(document.getElementById("maxDisplayHueControl").value);
@@ -529,7 +483,6 @@
                 WriteLineConsole("Please enter numeric Input between 0 and 255", "error");
                 document.getElementById("maxDisplayHueControl").style.color = 'red';
             }
-
         }
         /*
          * HSV to RGB color conversion
@@ -544,56 +497,47 @@
             var r, g, b;
             var i;
             var f, p, q, t;
-
             // Make sure our arguments stay in-range
             h = Math.max(0, Math.min(360, h));
             ////s = Math.max(0, Math.min(1, s));
             ////v = Math.max(0, Math.min(1, v));
-
             /****if(s == 0) {
 					// Achromatic (grey)
 					r = g = b = v;
 					return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 					}****/
-
             h /= 60; // sector 0 to 5
             i = Math.floor(h);
             f = h - i; // factorial part of h
             p = v * (1 - s);
             q = v * (1 - s * f);
             t = v * (1 - s * (1 - f));
-
             switch (i) {
                 case 0:
                     r = v;
                     g = t;
                     b = p;
                     break;
-
                 case 1:
                     r = q;
                     g = v;
                     b = p;
                     break;
-
                 case 2:
                     r = p;
                     g = v;
                     b = t;
                     break;
-
                 case 3:
                     r = p;
                     g = q;
                     b = v;
                     break;
-
                 case 4:
                     r = t;
                     g = p;
                     b = v;
                     break;
-
                 default: // case 5:
                     r = v;
                     g = p;
@@ -601,7 +545,6 @@
             }
             return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         }
-
         //Utility functions
         function addVoltPoint() {
             var newName = document.getElementById("newVoltPointName").value;
@@ -617,6 +560,38 @@
             document.getElementById("newVoltPointLong").value = "";
             document.getElementById("newVoltPointVal").value = "";
         }
+		
+		var timingVar;
+		//Timing function	
+		function startFetching(){
+			pauseFetching();
+			timingVar = setInterval(getFromServerTest, 1000);
+		}
+		//Timing function
+		function pauseFetching(){
+			clearInterval(timingVar);
+		}
+		//Timing function
+		function getFromServer(){
+			var point = "WRLDC.PHASOR.WRDC0783";
+			$.get("http://localhost:4542/values?dnapoint="+point,function(data, status){
+				if(status="success"){
+					//console.log(JSON.parse(data));
+					console.log(data);						
+				}				
+			});
+		}
+		//Timing function
+		function getFromServerTest(){
+			if(isBusy){return;}
+			isBusy = true;
+			//Math.random() returns random number between 0 and 1
+			for(var i=0;i<sources.length;i++){
+				sources[i][2] = 0.9 + Math.random();
+			}
+			runAlgorithm();
+			isBusy = false;
+		}
     </script>
 </head>
 <body>
@@ -625,7 +600,8 @@
     <canvas id="myCanvas">Your browser does not support the HTML5 canvas tag.</canvas>
 </div>
 <div id="controlInputs" style="margin:10px 5px 5px 10px;"><!--top right bottom left-->
-
+	<button onclick="startFetching()">StartFetching</button>
+	<button onclick="pauseFetching()">StopFetching</button><br><br>
     <h3 class="showHideButton" onclick="showHide(this,'> Voltage Points','^ Voltage Points')" > ^ Voltage Points</h3><br>
     <div class="hidingClass" style="display:block;margin-top:5px">
         <table>
