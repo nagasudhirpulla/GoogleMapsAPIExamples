@@ -78,6 +78,10 @@
 		var isBusy = false;
         //var sources = [[22.532853026644325, 78.16772421874998, 1.5], [21.2016592, 81.1051448, 1.1]];
         var sources = [[22.46, 73.39, 1.26, "WRLDC.PHASOR.WRDC1001"], [21.91, 77.34, 1.08, "WRLDC_B.PHASOR1.WRDC1160"], [20.09, 79.11, 1.22, "WRLDC.PHASOR.WRDC0159"], [21.04, 75.77, 1.35, "WRLDC_B.PHASOR1.WRDC0935"], [24.17, 78.19, 1.15, "WRLDC.PHASOR.WRDC0336"], [19.79, 72.72, 1.08, "WRLDC.PHASOR.WRDC0305"], [22.82, 69.53, 0.98, "WRLDC.PHASOR.WRDC0024"], [19.95, 79.28, 1.4, "WRLDC_B.PHASOR1.WRDC1013"], [23.17, 72.81, 1.36, "WRLDC.PHASOR.WRDC0232"], [21.28, 79.98, 1.12, "WRLDC.PHASOR.WRDC1062"], [20.90, 74.76, 1.56, "WRLDC_B.PHASOR1.WRDC0857"], [22.60, 77.75, 1.51, "WRLDC.PHASOR.WRDC0086"], [23.17, 79.98, 1.34, "WRLDC.PHASOR.WRDC0464"], [21.73, 70.63, 1.41, "WRLDC_B.PHASOR1.WRDC0471"], [19.20, 73.00, 1.02, "WRLDC.PHASOR.WRDC0749"], [16.69, 74.22, 1.48, "WRLDC_B.PHASOR1.WRDC0584"], [21.24, 79.09, 1.23, "WRLDC_B.PHASOR1.WRDC1121"], [22.38, 82.68, 0.96, "WRLDC.PHASOR.WRDC0194"], [18.63, 74.02, 0.92, "WRLDC_B.PHASOR1.WRDC0701"], [22.83, 69.73, 1.51, "WRLDC_B.PHASOR1.WRDC0004"], [19.99, 73.64, 1.33, "WRLDC_B.PHASOR1.WRDC0857"], [17.43, 73.66, 1.08, "WRLDC_B.PHASOR1.WRDC0623"], [19.35, 73.17, 1.41, "WRLDC_B.PHASOR1.WRDC0662"], [18.84, 76.51, 1.55, "WRLDC_B.PHASOR1.WRDC0740"], [21.25, 81.62, 1.37, "WRLDC.PHASOR.WRDC1222"], [23.82, 72.46, 1.54, "WRLDC_B.PHASOR1.WRDC0515"], [24.58, 80.87, 1.22, "WRLDC_B.PHASOR1.WRDC0249"], [17.68, 75.91, 1.27, "WRLDC.PHASOR.WRDC0804"], [17.65, 75.90, 0.96, "WRLDC.PHASOR.WRDC0870"], [17.66, 75.94, 1.52, "WRLDC_B.PHASOR1.WRDC0896"], [24.03, 82.57, 1.51, "WRLDC.PHASOR.WRDC0412"], [24.47, 72.03, 1.55, "WRLDC_B.PHASOR1.WRDC0204"]];
+        //String for get request
+        var queryStringParamsForData = sources.map(function(obj){ 
+	   return obj[3];
+	}).join(',');
         var alpha = 1.5;
         var transparency = 80;//between 0 - 255
         var canvasData = [];
@@ -591,6 +595,21 @@
 			}
 			runAlgorithm();
 			isBusy = false;
+		}
+		//Timing function
+		function getFromPointsDataServer(){
+			if(isBusy){return;}
+			isBusy = true;
+			$.get("http://localhost:4542/values?dnapoints="+queryStringParamsForData,function(data, status){
+				if(status="success"){
+					//console.log(JSON.parse(data));
+					console.log(data);
+					//TODO MODIFY THE sources ARRAY
+					//RUN the plotting algorithm
+					runAlgorithm();
+					isBusy = false;
+				}				
+			});
 		}
     </script>
 </head>
