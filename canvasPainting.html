@@ -570,10 +570,12 @@
 		//Timing function	
 		function startFetching(){
 			pauseFetching();
+			WriteLineConsole("Starting Server Data Fetch","info")
 			timingVar = setInterval(getFromServerTest, 1000);
 		}
 		//Timing function
 		function pauseFetching(){
+			WriteLineConsole("Pausing Server Data Fetch","warning")
 			clearInterval(timingVar);
 		}
 		//Timing function
