@@ -607,13 +607,15 @@
 					console.log(data);
 					//We get pointsArray in the order of sources Array
 					var pointsArray = JSON.parse(data);
-					//TODO MODIFY THE pointsArray from to get the per unit values. For this modify the sources array with extra field called "baseVoltage" in each source point
-					
-					//TODO MODIFY THE sources ARRAY from pointsArray
+					//MODIFY THE sources ARRAY from pointsArray
+					for(var i = 0; i < pointsArray.length; i++){
+						sources[i][2] = pointsArray[i].value/sources[i][4];
+					}
 					
 					//For now we are just logging the data fetched from server
 					//console.log(pointsArray);
 					console.log(JSON.stringify(pointsArray, null, '\t'));
+					
 					//RUN the plotting algorithm
 					runAlgorithm();
 					isBusy = false;
