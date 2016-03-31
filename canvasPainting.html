@@ -618,7 +618,7 @@
 					var pointsArray = JSON.parse(data);
 					//MODIFY THE sources ARRAY from pointsArray
 					for(var i = 0; i < pointsArray.result.length; i++){
-						sources[i][2] = pointsArray.result[i].value/sources[i][4];
+						sources[i][2] = (pointsArray.result[i].value*1.73205080757)/sources[i][4];
 						sources[i][6] = pointsArray.result[i]["status"];
 					}
 					//For now we are just logging the data fetched from server
