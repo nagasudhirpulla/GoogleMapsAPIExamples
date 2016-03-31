@@ -617,11 +617,10 @@
 					//We get pointsArray in the order of sources Array
 					var pointsArray = JSON.parse(data);
 					//MODIFY THE sources ARRAY from pointsArray
-					for(var i = 0; i < pointsArray.length; i++){
-						sources[i][2] = pointsArray[i].value/sources[i][4];
-						sources[i][6] = pointsArray[i].status;
+					for(var i = 0; i < pointsArray.result.length; i++){
+						sources[i][2] = pointsArray.result[i].value/sources[i][4];
+						sources[i][6] = pointsArray.result[i]["status"];
 					}
-					
 					//For now we are just logging the data fetched from server
 					//console.log(pointsArray);
 					console.log(JSON.stringify(pointsArray, null, '\t'));
