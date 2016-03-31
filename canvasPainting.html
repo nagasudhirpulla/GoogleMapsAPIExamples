@@ -571,7 +571,7 @@
 		function startFetching(){
 			pauseFetching();
 			WriteLineConsole("Starting Server Data Fetch","info")
-			timingVar = setInterval(getFromServerTest, 1000);
+			timingVar = setInterval(getFromPointsDataServer, 1000);
 		}
 		//Timing function
 		function pauseFetching(){
@@ -619,7 +619,7 @@
 					console.log(JSON.stringify(pointsArray, null, '\t'));
 					
 					//RUN the plotting algorithm
-					runAlgorithm();
+					//runAlgorithm();
 					isBusy = false;
 				}				
 			});
