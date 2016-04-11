@@ -47,7 +47,10 @@
     <!--Element Resize Listener Libraries - http://marcj.github.io/css-element-queries/-->
     <script src="ResizeSensor.js"></script>
     <script src="ElementQueries.js"></script>
-    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <!--script src="http://maps.googleapis.com/maps/api/js"></script-->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="http://geoxml3.googlecode.com/svn/branches/polys/geoxml3.js"></script>
+    <script src="http://geoxml3.googlecode.com/svn/trunk/ProjectedOverlay.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script>
         //TODO APPEND BEFORE FOR CONSOLE OUTPUT - DONE
@@ -422,6 +425,8 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("google_map"), mapProp);
+            var parser = new geoXML3.parser({map: map, processStyles: true});
+            parser.parse("test.kml");
             //set marker
             var marker = new google.maps.Marker({
                 position: myCenter
