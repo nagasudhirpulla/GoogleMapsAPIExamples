@@ -421,12 +421,12 @@
             myCenter = new google.maps.LatLng(22.532853026644325, 78.16772421874998);
             var mapProp = {
                 center: myCenter,
-                zoom: 6,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("google_map"), mapProp);
             var parser = new geoXML3.parser({map: map, processStyles: true});
             parser.parse("test.kml");
+            map.setZoom = 6;
             //set marker
             var marker = new google.maps.Marker({
                 position: myCenter
