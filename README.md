@@ -52,4 +52,4 @@ The myData array can be used for filter data
   
   Now the filter image is placed on the canvas for filtering criteria
 
-  
+4.Canvas transformations like zoom, pan etc
