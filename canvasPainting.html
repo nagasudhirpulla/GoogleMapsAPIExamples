@@ -115,14 +115,14 @@
             } else if (document.readyState == "complete") {
                 //DOM load initialization function
                 if(document.getElementById("filter")){
-                    //filterCanvas = document.createElement('canvas');
-                    filterCanvas = document.getElementById("myCanvas");
-                    //filterCanvas.style.width = xp;
-                    //filterCanvas.style.height = yp;
+                    filterCanvas = document.createElement('canvas');
+                    //filterCanvas = document.getElementById("myCanvas");
+                    filterCanvas.style.width = xp;
+                    filterCanvas.style.height = yp;
                     filterCanvas.setAttribute('width',xp);
                     filterCanvas.setAttribute('height',yp);
                     filterCtx = filterCanvas.getContext('2d');
-                    filterCtx.globalAlpha = 0.5;
+                    //filterCtx.globalAlpha = 0.5;
                 }
                 google.maps.event.addDomListener(window, 'load', mapSourceLoaded);
             }
