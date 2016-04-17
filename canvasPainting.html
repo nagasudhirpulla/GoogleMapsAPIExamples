@@ -336,7 +336,8 @@
             }
             //ctx.setTransform(a, b, c, d, e, f);
             //a (m11) Horizontal scaling. b (m12) Horizontal skewing. c (m21) Vertical skewing. d (m22) Vertical scaling. e (dx) Horizontal moving. f (dy) Vertical moving. 
-            
+            //Reset the canvas tranasform
+            filterCtx.setTransform(1, 0, 0, 1, 0, 0);
             //Get the filter data
             filterDataArray = filterCtx.getImageData(0,0,xp,yp);
             //Run the plotting algorithm
