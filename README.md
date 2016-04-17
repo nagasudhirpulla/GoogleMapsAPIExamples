@@ -48,6 +48,8 @@ The myData array can be used for filter data
 
 3.The next challenge is to transform the filter image of canvas according to the maps zooming, dragging etc
 
+  The assumptions about the filter image are that the filter image center has the lat, long coordinates and the width of image corresponds to a particular zoom level or lat, long widths
+
   For this we find the zooming of the map (map.getZoom()), map center (map.getCenter()) and transform the filter image on the canvas
   
   The original filter image will be matching with the maps when zooming level of maps is say 8 and the filter image center will be say x,y degrees latitude and longitude
