@@ -63,6 +63,7 @@
         //var myCenter = new google.maps.LatLng(22.532853026644325,78.16772421874998);
         var filterCanvas;
         var filterCtx;
+        var zoomRatio;
         var filterDataArray;
         var myCenter;
         var marker;
@@ -329,7 +330,7 @@
             //First Draw the filter image at the appropriate place
             filterCtx.drawImage(document.getElementById("filter"), LatLongToPixelCoordinates(22.532853026644325, 78.16772421874998)[0] - document.getElementById("filter").naturalWidth/2, LatLongToPixelCoordinates(22.532853026644325, 78.16772421874998)[1] - document.getElementById("filter").naturalHeight/2);
             //Then scale the canvas to appropriate zoomRatio
-            var zoomRatio = map.getZoom()/6;
+            zoomRatio = map.getZoom()/6;
             if(zoomRatio != 1){
             	filterCtx.setTransform(zoomRatio, 0, 0, zoomRatio, LatLongToPixelCoordinates(22.532853026644325, 78.16772421874998)[0], LatLongToPixelCoordinates(22.532853026644325, 78.16772421874998)[1]);
             }
@@ -339,7 +340,7 @@
             //Get the filter data
             filterDataArray = filterCtx.getImageData(0,0,xp,yp);
             //Run the plotting algorithm
-			runAlgorithm();
+	    runAlgorithm();
         }
         //Run Algorithm
 	function runAlgorithm(){
