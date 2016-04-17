@@ -61,6 +61,9 @@
         //TODO perform validations on voltage point like check if lat long already exists
         <!--Map Setting Script-->
         //var myCenter = new google.maps.LatLng(22.532853026644325,78.16772421874998);
+        var filterCanvas;
+        var filterCtx;
+        var filterDataArray;
         var myCenter;
         var marker;
         var map;
@@ -111,6 +114,14 @@
                 domReady();
             } else if (document.readyState == "complete") {
                 //DOM load initialization function
+                if(document.getElementById("filter")){
+                    filterCanvas = document.createElement('canvas');
+                    //filterCanvas = document.getElementById("myCanvas");
+                    filterCanvas.setAttribute('width',xp);
+                    filterCanvas.setAttribute('height',yp);
+                    filterCtx = filterCanvas.getContext('2d');
+                    filterCtx.globalAlpha = 0.5;
+                }
                 google.maps.event.addDomListener(window, 'load', mapSourceLoaded);
             }
         };
@@ -303,6 +314,14 @@
             WriteLineConsole("degrees / pixel on X axis is " + npx, "info");
             WriteLineConsole("degrees / pixel on Y axis is " + npy, "info");			
             //WriteLineConsole("*********************************", "info");
+            //Draw the filter image to the canvas
+            //Clear filter canvas
+            filterCtx.clearRect(0, 0, filterCanvas.width, filterCanvas.height);
+            // Draw image to canvas
+            filterCtx.drawImage(document.getElementById("filter"), LatLongToPixelCoordinates(myCenter.lat(), myCenter.lng())[0] - document.getElementById("filter").naturalWidth/2, LatLongToPixelCoordinates(myCenter.lat(), myCenter.lng())[1] - document.getElementById("filter").naturalHeight/2);
+            //Get the filter data
+            filterDataArray = filterCtx.getImageData(LatLongToPixelCoordinates(myCenter.lat(), myCenter.lng())[0],LatLongToPixelCoordinates(myCenter.lat(), myCenter.lng())[1],document.getElementById("filter").naturalWidth,document.getElementById("filter").naturalHeight);
+            //Run the plotting algorithm
 			runAlgorithm();
         }
         //Run Algorithm
@@ -640,6 +659,7 @@
     </script>
 </head>
 <body>
+<img id="filter" src="filter.png" alt="No Image Available" style="display: none">
 <div id="wrapper">
     <div id="google_map" style="width:100%;height:100%;"></div>
     <canvas id="myCanvas">Your browser does not support the HTML5 canvas tag.</canvas>
