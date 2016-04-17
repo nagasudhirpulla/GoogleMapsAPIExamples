@@ -3,6 +3,10 @@ Sample Codes for Google Maps
 
 Target - Use a base image to filter the canvas painting process
 
+For canvas starter code see
+
+https://www.youtube.com/watch?v=hUCT4b4wa-8
+
 Steps
 1.Load the image that contains the fill criteria data i.e., a black and white image with map area filled black
 
