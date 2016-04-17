@@ -403,7 +403,12 @@
                     //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
                     hue = maxHue - normalisedCanvasData[(xpdest + ypdest * xp)];
                     [imageData.data[(ypdest * xp + xpdest) * 4], imageData.data[(ypdest * xp + xpdest) * 4 + 1], imageData.data[(ypdest * xp + xpdest) * 4 + 2]] = hsvToRgb(hue, 1, 1);
-                    imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue>=maxHueToDisplay) ? 0 : transparency;
+                    //If pixel is in the filter area then display
+                    if(filterDataArray.data[(ypdest * xp + xpdest) * 4] == 0){
+                        imageData.data[(ypdest * xp + xpdest) * 4 + 3] = 0;
+                    }else{
+                        imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue>=maxHueToDisplay) ? 0 : transparency;
+                    }
                 } //y iterator
             } //x iterator
             //Clear normalisedCanvasData
