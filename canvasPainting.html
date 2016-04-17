@@ -320,8 +320,7 @@
             
             //Draw the filter image to the canvas
             //Reset the canvas tranasform
-            //filterCtx.setTransform(1, 0, 0, 1, 0, 0);
-            filterCtx = filterCanvas.getContext("2d");
+            filterCtx.setTransform(1, 0, 0, 1, 0, 0);
             
             //Clear filter canvas
             filterCtx.clearRect(0, 0, filterCanvas.width, filterCanvas.height);
@@ -339,12 +338,12 @@
             }
             //ctx.setTransform(a, b, c, d, e, f);
             //a (m11) Horizontal scaling. b (m12) Horizontal skewing. c (m21) Vertical skewing. d (m22) Vertical scaling. e (dx) Horizontal moving. f (dy) Vertical moving. 
-            filterCtx = filterCanvas.getContext("2d");
+            filterCtx.translate(0,0);
             //Get the filter data
             filterDataArray = filterCtx.getImageData(0,0,xp,yp);
             
             //Reset the canvas tranasform
-            //filterCtx.setTransform(1, 0, 0, 1, 0, 0);
+            filterCtx.setTransform(1, 0, 0, 1, 0, 0);
             //Run the plotting algorithm
 	    runAlgorithm();
         }
