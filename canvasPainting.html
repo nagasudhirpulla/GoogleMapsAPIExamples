@@ -115,13 +115,14 @@
             } else if (document.readyState == "complete") {
                 //DOM load initialization function
                 if(document.getElementById("filter")){
-                    filterCanvas = document.createElement('canvas');
-                    //filterCanvas = document.getElementById("myCanvas");
-                    filterCanvas.style.width = xp;
-                    filterCanvas.style.height = yp;
+                    //filterCanvas = document.createElement('canvas');
+                    filterCanvas = document.getElementById("myCanvas");
+                    //filterCanvas.style.width = xp;
+                    //filterCanvas.style.height = yp;
                     filterCanvas.setAttribute('width',xp);
                     filterCanvas.setAttribute('height',yp);
                     filterCtx = filterCanvas.getContext('2d');
+                    filterCtx.globalAlpha = 0.5;
                 }
                 google.maps.event.addDomListener(window, 'load', mapSourceLoaded);
             }
@@ -321,7 +322,7 @@
             // Draw image to canvas
             filterCtx.drawImage(document.getElementById("filter"), LatLongToPixelCoordinates(myCenter.lat(), myCenter.lng())[0] - document.getElementById("filter").naturalWidth/2, LatLongToPixelCoordinates(myCenter.lat(), myCenter.lng())[1] - document.getElementById("filter").naturalHeight/2);
             //Get the filter data
-            filterDataArray = filterCtx.getImageData(LatLongToPixelCoordinates(myCenter.lat(), myCenter.lng())[0],LatLongToPixelCoordinates(myCenter.lat(), myCenter.lng())[1],document.getElementById("filter").naturalWidth,document.getElementById("filter").naturalHeight);
+            filterDataArray = filterCtx.getImageData(0,0,xp,yp);
             //Run the plotting algorithm
 			runAlgorithm();
         }
@@ -405,7 +406,7 @@
                     hue = maxHue - normalisedCanvasData[(xpdest + ypdest * xp)];
                     [imageData.data[(ypdest * xp + xpdest) * 4], imageData.data[(ypdest * xp + xpdest) * 4 + 1], imageData.data[(ypdest * xp + xpdest) * 4 + 2]] = hsvToRgb(hue, 1, 1);
                     //If pixel is in the filter area then display
-                    if(filterDataArray.data[(ypdest * xp + xpdest) * 4] == 0){
+                    if(filterDataArray.data[(ypdest * xp + xpdest) * 4] != 255){
                         imageData.data[(ypdest * xp + xpdest) * 4 + 3] = 0;
                     }else{
                         imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue>=maxHueToDisplay) ? 0 : transparency;
