@@ -43,7 +43,7 @@
   </Placemark>
   <Placemark>
 	<name>Gujrat</name>
-	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>ff0000ff</fill></PolyStyle></Style>
 	<ExtendedData><SchemaData schemaUrl="#wr_power_region">
 		<SimpleData name="ENGTYPE_1">State</SimpleData>
 		<SimpleData name="Shape_Leng">38.92481838000</SimpleData>
