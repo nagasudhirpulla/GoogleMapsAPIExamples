@@ -10,6 +10,14 @@ https://www.youtube.com/watch?v=hUCT4b4wa-8
 Steps
 1.Load the image that contains the fill criteria data i.e., a black and white image with map area filled black
 
+  Image left position = 23.621527, 68.191580 [lat, long]
+  
+  Image right position =  22.947168, 84.394126 [lat, long]
+  
+  Image bottom position =  14.898497, 74.095052 [lat, long]
+  
+  Image bottom position =  26.867768, 78.351759 [lat, long]
+  
   This can be done by the following code
   
     http://stackoverflow.com/questions/11644192/how-to-fetch-image-from-system-to-load-in-canvas-in-html5
