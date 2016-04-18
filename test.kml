@@ -21,7 +21,7 @@
   </Placemark>
   <Placemark>
 	<name>Chhattisgarh</name>
-	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><color>ff0000ff</color></PolyStyle></Style>
 	<ExtendedData><SchemaData schemaUrl="#wr_power_region">
 		<SimpleData name="ENGTYPE_1">State</SimpleData>
 		<SimpleData name="Shape_Leng">24.40042867490</SimpleData>
@@ -32,7 +32,7 @@
   </Placemark>
   <Placemark>
 	<name>Madhya Pradesh</name>
-	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><color>ff0000ff</color></PolyStyle></Style>
 	<ExtendedData><SchemaData schemaUrl="#wr_power_region">
 		<SimpleData name="ENGTYPE_1">State</SimpleData>
 		<SimpleData name="Shape_Leng">47.27906179470</SimpleData>
@@ -43,7 +43,7 @@
   </Placemark>
   <Placemark>
 	<name>Gujrat</name>
-	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>ff0000ff</fill></PolyStyle></Style>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><color>ff0000ff</color></PolyStyle></Style>
 	<ExtendedData><SchemaData schemaUrl="#wr_power_region">
 		<SimpleData name="ENGTYPE_1">State</SimpleData>
 		<SimpleData name="Shape_Leng">38.92481838000</SimpleData>
@@ -54,7 +54,7 @@
   </Placemark>
   <Placemark>
 	<name>Goa</name>
-	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill><color>ff0000ff</color></fill></PolyStyle></Style>
 	<ExtendedData><SchemaData schemaUrl="#wr_power_region">
 		<SimpleData name="ENGTYPE_1">Union Territory</SimpleData>
 		<SimpleData name="Shape_Leng">3.54364052878</SimpleData>
