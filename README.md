@@ -16,7 +16,13 @@ Steps
   
   Image bottom position =  14.898497, 74.095052 [lat, long]
   
-  Image bottom position =  26.867768, 78.351759 [lat, long]
+  Image top position =  26.867768, 78.351759 [lat, long]
+  
+  Therefore filter top-left latlong = 26.867768, 68.191580
+  
+  Therefore filter long width = 84.394126 - 68.191580 = 16.202546
+  
+  Therefore filter lat height = 26.867768 - 14.898497 = 11.969271
   
   This can be done by the following code
   
