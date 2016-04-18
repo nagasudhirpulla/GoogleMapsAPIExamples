@@ -329,10 +329,8 @@
             //We know that the canvas zoom is fit for zoom level 6 and canvas center latLong are 22.532853026644325, 78.16772421874998
             //scale the canvas to appropriate zoomRatio
             zoomRatio = map.getZoom()/6;
-            if(zoomRatio != 1){
-            	filterCtx.translate(LatLongToPixelCoordinates(22.532853026644325, 78.16772421874998)[0], LatLongToPixelCoordinates(22.532853026644325, 78.16772421874998)[1]);
-            	filterCtx.scale(zoomRatio, zoomRatio);
-            }
+            filterCtx.translate(LatLongToPixelCoordinates(22.532853026644325, 78.16772421874998)[0], LatLongToPixelCoordinates(22.532853026644325, 78.16772421874998)[1]);
+            filterCtx.scale(zoomRatio, zoomRatio);
             //ctx.setTransform(a, b, c, d, e, f);
             //a (m11) Horizontal scaling. b (m12) Horizontal skewing. c (m21) Vertical skewing. d (m22) Vertical scaling. e (dx) Horizontal moving. f (dy) Vertical moving. 
             //Draw the filter image at the origin
