@@ -10,7 +10,7 @@
 <Folder><name>wr_power_region</name>
   <Placemark>
 	<name>Maharashtra</name>
-	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>ffffffff</fill></PolyStyle></Style>
 	<ExtendedData><SchemaData schemaUrl="#wr_power_region">
 		<SimpleData name="ENGTYPE_1">State</SimpleData>
 		<SimpleData name="Shape_Leng">41.69184420420</SimpleData>
