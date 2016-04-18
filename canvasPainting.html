@@ -339,7 +339,7 @@
             //parseInt((yp / long_hgt) * 11.969271)
             ////filterCtx.drawImage(document.getElementById("filter"), -1*document.getElementById("filter").naturalWidth/2, -1*document.getElementById("filter").naturalHeight/2);
             var filterTopLeft = LatLongToPixelCoordinates(26.867768, 68.191580);
-            filterCtx.drawImage(filterTopLeft[0], filterTopLeft[1], parseInt((xp / lat_width) * 16.202546), parseInt((yp / long_hgt) * 11.969271));
+            filterCtx.drawImage(document.getElementById("filter"), filterTopLeft[0], filterTopLeft[1], parseInt((xp / lat_width) * 16.202546), parseInt((yp / long_hgt) * 11.969271));
             
             // reset current transformation matrix to the identity matrix
             ////ctx.setTransform(1, 0, 0, 1, 0, 0);
