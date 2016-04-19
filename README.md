@@ -24,6 +24,12 @@ Steps
   
   Therefore filter lat height = 26.867768 - 14.898497 = 11.969271
   
+  The corresponding pixel position on the map div can be found by the latlongtopixel function in the google maps api
+  
+  http://gmaps-samples-v3.googlecode.com/svn/trunk/latlng-to-coord-control/latlng-to-coord-control.html
+  
+  http://krasimirtsonev.com/blog/article/google-maps-api-v3-convert-latlng-object-to-actual-pixels-point-object
+  
   This can be done by the following code
   
     http://stackoverflow.com/questions/11644192/how-to-fetch-image-from-system-to-load-in-canvas-in-html5
