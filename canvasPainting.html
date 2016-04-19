@@ -480,7 +480,7 @@
             
             overLayView = new google.maps.OverlayView();
             overLayView.draw = function() {};
-            
+            overLayView.setMap(map);
             var parser = new geoXML3.parser({map: map, processStyles: true});
             parser.parse("test.kml");
             
