@@ -95,7 +95,7 @@
 	   return obj[3];
 	}).join(',');
         var alpha = 1.5;
-        var transparency = 80;//between 0 - 255
+        var transparency = 120;//between 0 - 255
         var canvasData = [];
         var normalisedCanvasData = [];
         var imageData = [];
@@ -803,7 +803,7 @@
         <button onclick="setAlpha()">SetAlpha</button>
     </div><br>
 
-    <h3 class="showHideButton" onclick="showHide(this,'> Opacity','^ Transperency')" > > Opacity</h3><br>
+    <h3 class="showHideButton" onclick="showHide(this,'> Opacity','^ Opacity')" > > Opacity</h3><br>
     <div class="hidingClass" style="display:none;margin-top:5px">
         <input id="transControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
         <!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
