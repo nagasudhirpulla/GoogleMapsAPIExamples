@@ -65,6 +65,7 @@
         var filterCtx;
         var zoomRatio;
         var filterDataArray;
+        var projection;
         var myCenter;
         var marker;
         var map;
@@ -340,7 +341,7 @@
             ////filterCtx.drawImage(document.getElementById("filter"), -1*document.getElementById("filter").naturalWidth/2, -1*document.getElementById("filter").naturalHeight/2);
             //stub
             ////////var filterTopLeft = LatLongToPixelCoordinates(26.867768, 68.191580);
-            var projection = overLayView.getProjection();
+            projection = overLayView.getProjection();
             var point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(26.867768, 68.191580));
             ////////filterCtx.drawImage(document.getElementById("filter"), filterTopLeft[0], filterTopLeft[1], parseInt((xp / lat_width) * 16.202546), parseInt((yp / long_hgt) * 11.969271));
             filterCtx.drawImage(document.getElementById("filter"), point.x, point.y, parseInt((xp / lat_width) * 16.202546), parseInt((yp / long_hgt) * 11.969271));
@@ -382,7 +383,7 @@
             normalisedCanvasData = [];
             //For each source
             //var xpsource; var ypsource;
-            var projection = overLayView.getProjection();
+            ////////var projection = overLayView.getProjection();
             var point;
             for (var i = 0; i < sources.length; i++) {
             	//skip from the for loop if sources status is not "OK"
@@ -452,7 +453,7 @@
             ctx.lineWidth = 1;//LINE WIDTH IN PIXELS
             //ctx.fillStyle = 'rgba(0, 0, 0, 0)';
             for (var i = 0; i < sources.length; i++) {
-            	var projection = overLayView.getProjection();
+            	////////var projection = overLayView.getProjection();
                 var point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
                 ////[xpsource, ypsource] = LatLongToPixelCoordinates(sources[i][0], sources[i][1]);
                 xpsource = point.x;
