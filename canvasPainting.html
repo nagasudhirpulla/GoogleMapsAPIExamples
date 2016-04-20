@@ -68,6 +68,7 @@
         var projection;
         var infowindow;
         var iconImage;
+        var iconImageRed;
         var myCenter;
         var marker;
         var map;
@@ -454,6 +455,8 @@
             ctx.strokeStyle = 'black';
             ctx.lineWidth = 1;//LINE WIDTH IN PIXELS
             //ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+            ////Commenting the source plotting by canvas since we are using markers
+            /*
             for (var i = 0; i < sources.length; i++) {
             	////////var projection = overLayView.getProjection();
                 var point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
@@ -470,7 +473,18 @@
                 ctx.closePath(); // Close the path
                 ctx.stroke();
                 ctx.fill(); // Fill the path
-            }		
+            }
+            */
+            ////Use source status to create alternate source markers
+            for (var i = 0; i < sources.length; i++) {
+            	if(sources[i][6] != "OK"){
+                	//Use black marker
+                	sources[i][7].icon = iconImage;
+                } else{
+                	//Use red marker
+                	sources[i][7].icon = iconImageRed;
+                }
+            }
 		}
 		//On DOM ready for manipulation, sources and assets may not have been loaded
         function domReady() {
@@ -495,10 +509,19 @@
             overLayView.setMap(map);
             var parser = new geoXML3.parser({map: map, processStyles: true});
             parser.parse("test.kml");
-            //stub
+            
             infowindow = new google.maps.InfoWindow();
             iconImage = {
 		url: 'locationCircleIcon.png',
+		// This marker is 20 pixels wide by 32 pixels high.
+		size: new google.maps.Size(10, 10),
+		// The origin for this image is (0, 0).
+		origin: new google.maps.Point(0, 0),
+		// The anchor for this image is the base of the flagpole at (0, 32).
+		anchor: new google.maps.Point(5, 5)
+		};
+	     iconImageRed = {
+		url: 'locationCircleIconRed.png',
 		// This marker is 20 pixels wide by 32 pixels high.
 		size: new google.maps.Size(10, 10),
 		// The origin for this image is (0, 0).
@@ -521,7 +544,7 @@
             }
             
             for (var i = 0; i < sources.length; i++) {
-            	createMarker(sources[i][5],sources[i][0],sources[i][1]);
+            	createMarker(sources[i][5], sources[i][0], sources[i][1], i);
             } //source iterator
             //add listener for map bounds being changed
             //google.maps.event.addListener(map,'bounds_changed', onMapStateChanged); // end of listener callbck
@@ -648,7 +671,7 @@
         }
         
         // Utility Function to create a marker
-	function createMarker(add,lat,lng) {
+	function createMarker(add,lat,lng,sourceIterator) {
 		var contentString = add;
 		var marker = new google.maps.Marker({
 		 position: new google.maps.LatLng(lat,lng),
@@ -656,12 +679,12 @@
 		 icon: iconImage,
 		 zIndex: 1000
 		});
-		
 		google.maps.event.addListener(marker, 'click', function() {
 		 infowindow.setContent(contentString); 
 		 infowindow.open(map,marker);
 		});
-	
+		//Assign the marker to the sources array
+		sources[sourceIterator][7] = marker;
 	}
       
         //Utility functions
