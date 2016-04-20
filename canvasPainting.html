@@ -507,9 +507,17 @@
             overLayView = new google.maps.OverlayView();
             overLayView.draw = function() {};
             overLayView.setMap(map);
-            var parser = new geoXML3.parser({map: map, processStyles: true});
-            parser.parse("test.kml");
             
+            //var parser = new geoXML3.parser({map: map, processStyles: true});
+            //parser.parse("test.kml");
+            var nyLayer = new google.maps.KmlLayer(
+                  'test.kml',
+                  {
+                      suppressInfoWindows: true,
+                      map: map,
+                      preserveViewport: true
+                  });
+                  
             infowindow = new google.maps.InfoWindow();
             iconImage = {
 		url: 'locationCircleIcon.png',
