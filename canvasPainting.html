@@ -478,11 +478,11 @@
             ////Use source status to create alternate source markers
             for (var i = 0; i < sources.length; i++) {
             	if(sources[i][6] != "OK"){
-                	//Use black marker
-                	sources[i][7].icon = iconImage;
-                } else{
                 	//Use red marker
                 	sources[i][7].icon = iconImageRed;
+                } else{
+                	//Use black marker
+                	sources[i][7].icon = iconImage;
                 }
             }
 		}
