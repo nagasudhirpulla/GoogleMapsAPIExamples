@@ -66,6 +66,7 @@
         var zoomRatio;
         var filterDataArray;
         var projection;
+        var infowindow;
         var myCenter;
         var marker;
         var map;
@@ -339,7 +340,7 @@
             //parseInt((xp / lat_width) * 16.202546)
             //parseInt((yp / long_hgt) * 11.969271)
             ////filterCtx.drawImage(document.getElementById("filter"), -1*document.getElementById("filter").naturalWidth/2, -1*document.getElementById("filter").naturalHeight/2);
-            //stub
+            
             ////////var filterTopLeft = LatLongToPixelCoordinates(26.867768, 68.191580);
             projection = overLayView.getProjection();
             var point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(26.867768, 68.191580));
@@ -494,6 +495,8 @@
             var parser = new geoXML3.parser({map: map, processStyles: true});
             parser.parse("test.kml");
             
+            infowindow = new google.maps.InfoWindow();
+      
             //set marker
             var marker = new google.maps.Marker({
                 position: myCenter
@@ -507,6 +510,10 @@
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                 }
             }
+            //stub
+            for (var i = 0; i < sources.length; i++) {
+            	createMarker(sources[i][5],sources[i][0],sources[i][1]);
+            } //source iterator
             //add listener for map bounds being changed
             //google.maps.event.addListener(map,'bounds_changed', onMapStateChanged); // end of listener callbck
             google.maps.event.addListener(map, 'idle', onMapStateChanged);
@@ -630,6 +637,23 @@
             }
             return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         }
+        
+        // Utility Function to create a marker
+	function createMarker(add,lat,lng) {
+		var contentString = add;
+		var marker = new google.maps.Marker({
+		 position: new google.maps.LatLng(lat,lng),
+		 map: map,
+		 zIndex: 1000
+		});
+		
+		google.maps.event.addListener(marker, 'click', function() {
+		 infowindow.setContent(contentString); 
+		 infowindow.open(map,marker);
+		});
+	
+	}
+      
         //Utility functions
         function addVoltPoint() {
             var newName = document.getElementById("newVoltPointName").value;
