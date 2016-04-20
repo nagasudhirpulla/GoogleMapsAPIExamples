@@ -479,10 +479,10 @@
             for (var i = 0; i < sources.length; i++) {
             	if(sources[i][6] != "OK"){
                 	//Use red marker
-                	sources[i][7].icon = iconImageRed;
+                	sources[i][7].setIcon(iconImageRed);
                 } else{
                 	//Use black marker
-                	sources[i][7].icon = iconImage;
+                	sources[i][7].setIcon(iconImage);
                 }
             }
 		}
