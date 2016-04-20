@@ -382,12 +382,17 @@
             normalisedCanvasData = [];
             //For each source
             //var xpsource; var ypsource;
+            var projection = overLayView.getProjection();
+            var point;
             for (var i = 0; i < sources.length; i++) {
             	//skip from the for loop if sources status is not "OK"
                 //var vsource = sources[i][2];
                 if(sources[i][6] != "OK"){continue;}
                 vsource = sources[i][2];
-                [xpsource, ypsource] = LatLongToPixelCoordinates(sources[i][0], sources[i][1]);
+                point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
+                xpsource = point.x;
+                ypsource = point.y;
+                ////[xpsource, ypsource] = LatLongToPixelCoordinates(sources[i][0], sources[i][1]);
                 for (var xpdest = 0; xpdest < xp; xpdest++) {
                     for (var ypdest = 0; ypdest < yp; ypdest++) {
                         //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
@@ -447,7 +452,11 @@
             ctx.lineWidth = 1;//LINE WIDTH IN PIXELS
             //ctx.fillStyle = 'rgba(0, 0, 0, 0)';
             for (var i = 0; i < sources.length; i++) {
-                [xpsource, ypsource] = LatLongToPixelCoordinates(sources[i][0], sources[i][1]);
+            	var projection = overLayView.getProjection();
+                var point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
+                ////[xpsource, ypsource] = LatLongToPixelCoordinates(sources[i][0], sources[i][1]);
+                xpsource = point.x;
+            	ypsource = point.y;
                 if(sources[i][6] != "OK"){
                 	ctx.fillStyle = "#FF0000";
                 } else{
