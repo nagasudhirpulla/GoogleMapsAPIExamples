@@ -67,6 +67,7 @@
         var filterDataArray;
         var projection;
         var infowindow;
+        var iconImage;
         var myCenter;
         var marker;
         var map;
@@ -494,9 +495,17 @@
             overLayView.setMap(map);
             var parser = new geoXML3.parser({map: map, processStyles: true});
             parser.parse("test.kml");
-            
+            //stub
             infowindow = new google.maps.InfoWindow();
-      
+            iconImage = {
+		url: 'locationCircleIcon.png',
+		// This marker is 20 pixels wide by 32 pixels high.
+		size: new google.maps.Size(10, 10),
+		// The origin for this image is (0, 0).
+		origin: new google.maps.Point(0, 0),
+		// The anchor for this image is the base of the flagpole at (0, 32).
+		anchor: new google.maps.Point(5, 5)
+		};
             //set marker
             var marker = new google.maps.Marker({
                 position: myCenter
@@ -510,7 +519,7 @@
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                 }
             }
-            //stub
+            
             for (var i = 0; i < sources.length; i++) {
             	createMarker(sources[i][5],sources[i][0],sources[i][1]);
             } //source iterator
@@ -644,6 +653,7 @@
 		var marker = new google.maps.Marker({
 		 position: new google.maps.LatLng(lat,lng),
 		 map: map,
+		 icon: iconImage,
 		 zIndex: 1000
 		});
 		
