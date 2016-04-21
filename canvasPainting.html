@@ -580,7 +580,7 @@
 	                for (var ypdest = 0; ypdest < yp; ypdest++) {
 	                    //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
 	                    ////hue = maxHue - normalisedCanvasData[(xpdest + ypdest * xp)];
-	                    hue = maxHue - rgbToHsv(imageData.data[(ypdest * xp + xpdest) * 4], imageData.data[(ypdest * xp + xpdest + 1) * 4], imageData.data[(ypdest * xp + xpdest) * 4 + 2])[0];
+	                    hue = maxHue - rgbToHsv(imageData.data[(ypdest * xp + xpdest) * 4], imageData.data[(ypdest * xp + xpdest) * 4 + 1], imageData.data[(ypdest * xp + xpdest) * 4 + 2])[0];
 	                    //If pixel is in the filter area then display
 	                    if(filterDataArray.data[(ypdest * xp + xpdest) * 4] != 255){
 	                        imageData.data[(ypdest * xp + xpdest) * 4 + 3] = 0;
