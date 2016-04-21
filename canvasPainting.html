@@ -401,7 +401,7 @@
                     for (var ypdest = 0; ypdest < yp; ypdest++) {
                         //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
                         ////if xpdest and ypdest belong to filter, then calculate the intensity
-                        if(filterDataArray.data[(ypdest * xp + xpdest) * 4] != 255){
+                        if(filterDataArray.data[(ypdest * xp + xpdest) * 4] == 255){
                         	xpx = xpdest - xpsource;
                         	ypx = ypdest - ypsource;
                         	canvasData[(xpdest + ypdest * xp)] += vsource * Math.exp(-alpha * npx * Math.sqrt(xpx * xpx + npxRatioSquare * ypx * ypx));	
@@ -415,7 +415,7 @@
             for (var xpdest = 0; xpdest < xp; xpdest++) {
                 for (var ypdest = 0; ypdest < yp; ypdest++) {
                     //xpdest = x axis iterator; ypdest = y axis iterator
-                    if(filterDataArray.data[(ypdest * xp + xpdest) * 4] != 255){
+                    if(filterDataArray.data[(ypdest * xp + xpdest) * 4] == 255){
                 	var val = canvasData[(xpdest + ypdest * xp)];
 	                if (val < minVal) {
 	                	minVal = val;
@@ -433,7 +433,7 @@
                 for (var ypdest = 0; ypdest < yp; ypdest++) {
                     //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
                     //normalisedCanvasData[xpdest,ypdest] = hueDiff * (1 - canvasData[xpdest,ypdest]/(valDiff));//Use this for hue version
-                    if(filterDataArray.data[(ypdest * xp + xpdest) * 4] != 255){
+                    if(filterDataArray.data[(ypdest * xp + xpdest) * 4] == 255){
 			normalisedCanvasData[(xpdest + ypdest * xp)] = hueDiff * ((canvasData[(xpdest + ypdest * xp)] - minVal) / (valDiff));//Use this for RGB version
                     }
                     
