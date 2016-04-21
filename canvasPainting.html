@@ -341,14 +341,13 @@
             ////ctx.translate(centerPixels.x, centerPixels.y);
             ////var imageData = ctx.getImageData(0, 0, xp, yp);
             ////ctx.clearRect(0, 0, xp, yp);
-            ctx.scale(zoomRatio, zoomRatio);
             //ctx.setTransform(a, b, c, d, e, f);
             //a (m11) Horizontal scaling. b (m12) Horizontal skewing. c (m21) Vertical skewing. d (m22) Vertical scaling. e (dx) Horizontal moving. f (dy) Vertical moving. 
             //Draw the filter image at the origin context.drawImage(img,x,y,width,height);
             var offset = projection.fromLatLngToContainerPixel(map.getCenter());
-            ctx.translate(xp/2 + offset.x, yp/2 + offset.y);
+            ctx.translate(xp/2 - offset.x, yp/2 - offset.y);
+            ctx.scale(zoomRatio, zoomRatio);
             ////c.getContext('2d').putImageData(imageData, 0, 0);
-            c.getContext('2d').clearRect(0, 0, xp, yp);
             ctx.drawImage(c, 0, 0);
             //parseInt((xp / lat_width) * 16.202546)
             //parseInt((yp / long_hgt) * 11.969271)
