@@ -336,7 +336,7 @@
             //scale the canvas to appropriate zoomRatio
             ////stub
             zoomRatio = Math.pow(map.getZoom()-plottedZoom);
-            ctx.translate(LatLongToPixelCoordinates(PlottedCenter.lat(),PlottedCenter.lng()));
+            ctx.translate(LatLongToPixelCoordinates(plottedCenter.lat(),plottedCenter.lng()));
             ctx.scale(zoomRatio, zoomRatio);
             //ctx.setTransform(a, b, c, d, e, f);
             //a (m11) Horizontal scaling. b (m12) Horizontal skewing. c (m21) Vertical skewing. d (m22) Vertical scaling. e (dx) Horizontal moving. f (dy) Vertical moving. 
