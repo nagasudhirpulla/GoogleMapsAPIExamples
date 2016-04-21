@@ -335,7 +335,7 @@
             //We know that the canvas zoom is fit for zoom level 6 and canvas center latLong are 22.532853026644325, 78.16772421874998
             //scale the canvas to appropriate zoomRatio
             ////stub
-            zoomRatio = Math.pow(map.getZoom()-plottedZoom);
+            zoomRatio = Math.pow(2, map.getZoom()-plottedZoom);
             var centerPixels = LatLongToPixelCoordinates(plottedCenter.lat(),plottedCenter.lng());
             ctx.translate(centerPixels[0], centerPixels[1]);
             ctx.scale(zoomRatio, zoomRatio);
