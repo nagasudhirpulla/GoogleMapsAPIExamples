@@ -279,7 +279,7 @@
             ctx.fillStyle = 'rgba(0, 0, 0, 1)';
             //ctx.fillStyle = "blue";
             //ctx.fillStyle = "rgb(255, 0, 0)";
-            //Get the Width and LengtSTUh of canvas
+            //Get the Width and Length of canvas
             xp = getComputedStyle(c, null).getPropertyValue('width');
             xp = xp.substring(0, xp.length - 2);
             ctx.canvas.width = xp;
@@ -453,7 +453,7 @@
                     if(filterDataArray.data[(ypdest * xp + xpdest) * 4] != 255){
                         imageData.data[(ypdest * xp + xpdest) * 4 + 3] = 0;
                     }else{
-                        imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue>=maxHueToDisplay) ? 0 : transparency;
+                    	imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue>=maxHueToDisplay) ? 0 : transparency;
                     }
                 } //y iterator
             } //x iterator
@@ -572,6 +572,23 @@
             getTrans();
             getmaxDisplayHue();
         }
+        /*Change the filtered points transperency*/
+        function onMapTransparencyChanged(){
+        var imageData = ctx.getImageData(0, 0, xp, yp);//imageData context.getImageData(x,y,width,height);
+        for (var xpdest = 0; xpdest < xp; xpdest++) {
+                for (var ypdest = 0; ypdest < yp; ypdest++) {
+                    //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
+                    hue = maxHue - normalisedCanvasData[(xpdest + ypdest * xp)];
+                    ////stub
+                    //If pixel is in the filter area then display
+                    if(filterDataArray.data[(ypdest * xp + xpdest) * 4] != 255){
+                        imageData.data[(ypdest * xp + xpdest) * 4 + 3] = 0;
+                    }else{
+                    	imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue>=maxHueToDisplay) ? 0 : transparency;
+                    }
+                } //y iterator
+            } //x iterator
+        }
         /*Alpha getter*/
         function getAlpha() {
             document.getElementById("alphaTextControl").value = "" + alpha;
@@ -602,7 +619,8 @@
                 document.getElementById("transControl").style.color = 'black';
                 WriteLineConsole("Set the canvas Transperency to " + num, "success");
                 transparency = num;
-                onMapStateChanged();
+                ////onMapStateChanged();
+                onMapTransparencyChanged();
             } else {
                 WriteLineConsole("Please enter numeric Input between 0 and 255", "error");
                 document.getElementById("transControl").style.color = 'red';
@@ -620,7 +638,8 @@
                 document.getElementById("maxDisplayHueControl").style.color = 'black';
                 WriteLineConsole("Set the canvas Max HueToDisplay to " + num, "success");
                 maxHueToDisplay = num;
-                onMapStateChanged();
+                ////onMapStateChanged();
+                onMapTransparencyChanged();
             } else {
                 WriteLineConsole("Please enter numeric Input between 0 and 255", "error");
                 document.getElementById("maxDisplayHueControl").style.color = 'red';
