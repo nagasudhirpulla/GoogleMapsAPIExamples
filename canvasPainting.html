@@ -400,9 +400,12 @@
                 for (var xpdest = 0; xpdest < xp; xpdest++) {
                     for (var ypdest = 0; ypdest < yp; ypdest++) {
                         //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
-                        xpx = xpdest - xpsource;
-                        ypx = ypdest - ypsource;
-                        canvasData[(xpdest + ypdest * xp)] += vsource * Math.exp(-alpha * npx * Math.sqrt(xpx * xpx + npxRatioSquare * ypx * ypx));
+                        ////if xpdest and ypdest belong to filter, then calculate the intensity
+                        if(filterDataArray.data[(ypdest * xp + xpdest) * 4] != 255){
+                        	xpx = xpdest - xpsource;
+                        	ypx = ypdest - ypsource;
+                        	canvasData[(xpdest + ypdest * xp)] += vsource * Math.exp(-alpha * npx * Math.sqrt(xpx * xpx + npxRatioSquare * ypx * ypx));	
+                        }
                     } //y iterator
                 } //x iterator
             } //source iterator
@@ -412,12 +415,14 @@
             for (var xpdest = 0; xpdest < xp; xpdest++) {
                 for (var ypdest = 0; ypdest < yp; ypdest++) {
                     //xpdest = x axis iterator; ypdest = y axis iterator
-                    var val = canvasData[(xpdest + ypdest * xp)];
-                    if (val < minVal) {
-                        minVal = val;
-                    } else if (val > maxVal) {
-                        maxVal = val;
-                    }
+                    if(filterDataArray.data[(ypdest * xp + xpdest) * 4] != 255){
+                	var val = canvasData[(xpdest + ypdest * xp)];
+	                if (val < minVal) {
+	                	minVal = val;
+	                } else if (val > maxVal) {
+	                	maxVal = val;
+	                }	
+	            }
                 } //y iterator
             } //x iterator
             //Do Normalisation
@@ -428,7 +433,10 @@
                 for (var ypdest = 0; ypdest < yp; ypdest++) {
                     //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
                     //normalisedCanvasData[xpdest,ypdest] = hueDiff * (1 - canvasData[xpdest,ypdest]/(valDiff));//Use this for hue version
-                    normalisedCanvasData[(xpdest + ypdest * xp)] = hueDiff * ((canvasData[(xpdest + ypdest * xp)] - minVal) / (valDiff));//Use this for RGB version
+                    if(filterDataArray.data[(ypdest * xp + xpdest) * 4] != 255){
+			normalisedCanvasData[(xpdest + ypdest * xp)] = hueDiff * ((canvasData[(xpdest + ypdest * xp)] - minVal) / (valDiff));//Use this for RGB version
+                    }
+                    
                 } //y iterator
             } //x iterator
             //canvas putImageData reference - http://www.w3schools.com/tags/canvas_putimagedata.asp
