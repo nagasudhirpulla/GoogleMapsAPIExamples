@@ -79,3 +79,5 @@ The myData array can be used for filter data
   Now the filter image is placed on the canvas for filtering criteria
 
 4.Canvas transformations like zoom, pan etc
+
+5.TODO http://stackoverflow.com/questions/3448347/how-to-scale-an-imagedata-in-html-canvas
