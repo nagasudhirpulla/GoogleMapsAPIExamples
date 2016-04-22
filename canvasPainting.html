@@ -338,7 +338,7 @@
             zoomRatio = Math.pow(2, map.getZoom()-plottedZoom);
             projection = overLayView.getProjection();
             var imageData = c.getContext("2d").getImageData(0, 0, xp, yp);
-            ctx.clearRect(0, 0, xp, yp);
+            c.getContext("2d").clearRect(0, 0, xp, yp);
             //ctx.setTransform(a, b, c, d, e, f);
             //a (m11) Horizontal scaling. b (m12) Horizontal skewing. c (m21) Vertical skewing. d (m22) Vertical scaling. e (dx) Horizontal moving. f (dy) Vertical moving. 
             ctx.setTransform(1, 0, 0, 1, 0, 0);
