@@ -353,10 +353,8 @@
             ////ctx.putImageData(imageData, 0, 0);
             canvas.getContext("2d").drawImage(c, 0, 0);
             ctx.clearRect(0, 0, xp, yp);
-            setTimeout(function() {
-	      ctx.drawImage(canvas, 0, 0, xp, yp, offset.x, offset.y, zoomRatio*xp, zoomRatio*yp);
-              canvas = null;
-	    }, 20); // 20 ms - should be enough to draw something simple
+            ctx.drawImage(canvas, 0, 0, xp, yp, offset.x, offset.y, zoomRatio*xp, zoomRatio*yp);
+            canvas = null;
             //parseInt((xp / lat_width) * 16.202546)
             //parseInt((yp / long_hgt) * 11.969271)
             ////filterCtx.drawImage(document.getElementById("filter"), -1*document.getElementById("filter").naturalWidth/2, -1*document.getElementById("filter").naturalHeight/2);
@@ -373,7 +371,9 @@
             filterDataArray = filterCtx.getImageData(0,0,xp,yp);
             
             //Run the plotting algorithm
-	    runAlgorithm();
+	    setTimeout(function() {
+		runAlgorithm();  
+	    }, 20); // 20 ms - should be enough to draw something simple
         }
         //Run Algorithm
 	function runAlgorithm(){
