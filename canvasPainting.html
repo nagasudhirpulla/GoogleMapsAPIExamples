@@ -538,9 +538,6 @@
             overLayView = new google.maps.OverlayView();
             overLayView.draw = function() {};
             overLayView.setMap(map);
-            
-            plottedTopLeft = getMapTopLeft();
-            
             //var parser = new geoXML3.parser({map: map, processStyles: true});
             //parser.parse("test.kml");
             ////Using the new technique that doesnot require the geoxml 
@@ -592,6 +589,9 @@
             //add listener for map bounds being changed
             //google.maps.event.addListener(map,'bounds_changed', onMapStateChanged); // end of listener callbck
             google.maps.event.addListener(map, 'idle', onMapStateChanged);
+            google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+		    plottedTopLeft = getMapTopLeft();
+		  });
             map.setZoom(6);
             getAlpha();
             getTrans();
