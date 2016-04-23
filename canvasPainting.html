@@ -118,7 +118,7 @@
         // alternative to DOMContentLoaded event
         document.onreadystatechange = function () {
             if (document.readyState == "interactive") {
-                domReady();
+                onDomReady();
             } else if (document.readyState == "complete") {
                 //DOM load initialization function
                 if(document.getElementById("filter")){
@@ -131,7 +131,7 @@
                     filterCtx = filterCanvas.getContext('2d');
                     //filterCtx.globalAlpha = 0.5;
                 }
-                google.maps.event.addDomListener(window, 'load', mapSourceLoaded);
+                google.maps.event.addDomListener(window, 'load', onMapSourceLoaded);
             }
         };
         //Utility Functions
@@ -527,7 +527,7 @@
 	}
 	
 	//On DOM ready for manipulation, sources and assets may not have been loaded
-        function domReady() {
+        function onDomReady() {
             //initialize canvas variables
             c = document.getElementById("myCanvas");
             computeCanvasParams();
@@ -535,7 +535,7 @@
             new ResizeSensor(c, computeCanvasParams);
             addVoltPointsToTable();
         }
-        function mapSourceLoaded() {
+        function onMapSourceLoaded() {
             //initialize map
             myCenter = new google.maps.LatLng(20.99340214457691, 77.10533410017817);
             var mapProp = {
