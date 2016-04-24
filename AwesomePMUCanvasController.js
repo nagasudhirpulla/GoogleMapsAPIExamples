@@ -70,9 +70,35 @@ AwesomePMUCanvasController.prototype.getMapTopLeft = function() {
 }
 
 AwesomePMUCanvasController.prototype.onDomReady = function() {
-
+	//initialize canvas variables
+	c = document.getElementById("myCanvas");
+	computeCanvasParams();
+	//canvas resize listener
+	new ResizeSensor(c, computeCanvasParams);
 }
 
+//Compute Canvas Parameters - Do this if canvas measurements change
+AwesomePMUCanvasController.computeCanvasParams = function() {
+	//Canvas initialization
+	this.ctx_ = this.c_.getContext("2d");
+	this.ctx_.strokeStyle = 'blue';
+	this.ctx_.fillStyle = 'rgba(0, 0, 0, 1)';
+	//ctx.fillStyle = "blue";
+	//ctx.fillStyle = "rgb(255, 0, 0)";
+	//Get the Width and Length of canvas
+	this.xp_ = getComputedStyle(this.c_, null).getPropertyValue('width');
+	this.xp_ = xp.substring(0, this.xp_.length - 2);
+	this.ctx_.canvas.width = this.xp_;
+	this.yp_ = getComputedStyle(this.c_, null).getPropertyValue('height');
+	this.yp_ = this.yp_.substring(0, this.yp_.length - 2);
+	this.ctx_.canvas.height = this.yp_;
+	this.WriteLineConsole_("*********************************", "warning");
+	this.WriteLineConsole_("Writing DIV dimensions in pixels");
+	this.WriteLineConsole_("Width of div is " + this.xp_, "info");
+	this.WriteLineConsole_("Height of div is " + this.yp_, "info");
+	//this.WriteLineConsole_("*********************************", "info");
+}
+        
 AwesomePMUCanvasController.prototype.onMapSourceLoaded = function() {
 
 }
