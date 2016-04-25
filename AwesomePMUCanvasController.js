@@ -70,8 +70,6 @@ AwesomePMUCanvasController.prototype.getMapTopLeft = function() {
 }
 
 AwesomePMUCanvasController.prototype.onDomReady = function() {
-	//initialize canvas variables
-	c = document.getElementById("myCanvas");
 	computeCanvasParams();
 	//canvas resize listener
 	new ResizeSensor(c, computeCanvasParams);
@@ -87,7 +85,7 @@ AwesomePMUCanvasController.computeCanvasParams = function() {
 	//ctx.fillStyle = "rgb(255, 0, 0)";
 	//Get the Width and Length of canvas
 	this.xp_ = getComputedStyle(this.c_, null).getPropertyValue('width');
-	this.xp_ = xp.substring(0, this.xp_.length - 2);
+	this.xp_ = this.xp_.substring(0, this.xp_.length - 2);
 	this.ctx_.canvas.width = this.xp_;
 	this.yp_ = getComputedStyle(this.c_, null).getPropertyValue('height');
 	this.yp_ = this.yp_.substring(0, this.yp_.length - 2);
@@ -105,6 +103,22 @@ AwesomePMUCanvasController.prototype.onMapSourceLoaded = function() {
 
 AwesomePMUCanvasController.prototype.onMapTransparencyChanged = function() {
 
+}
+
+AwesomePMUCanvasController.prototype.getPaintCanvas = function() {
+	return this.c_;
+}
+
+AwesomePMUCanvasController.prototype.setPaintCanvas = function(c) {
+	this.c_ = c;
+}
+
+AwesomePMUCanvasController.prototype.getPaintContext = function() {
+	return this.ctx_;
+}
+
+AwesomePMUCanvasController.prototype.setPaintContext = function(ctx) {
+	this.ctx_ = ctx;
 }
 
 AwesomePMUCanvasController.prototype.getAlpha = function() {
