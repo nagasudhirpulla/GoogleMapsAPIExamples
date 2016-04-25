@@ -10,6 +10,7 @@ function AwesomePMUCanvasController(opt_options) {
     this.projection_ = null;
     this.plottedZoom_ = null;
     this.plottedTopLeft_ = null;
+    this.overLayView_ = null;
     this.infowindow_ = null;
     this.iconImage_ = null;
     this.iconImageRed_ = null;
@@ -51,10 +52,17 @@ AwesomePMUCanvasController.prototype.setOptions = function(options) {
     if (options.consoleWriteFunction !== undefined) {
         this.setConsoleWriteFunction(options.animate);
     }
+    if (options.mapCenter !== undefined) {
+        this.setmapCenter(options.mapCenter);
+    }
 };
 
 AwesomePMUCanvasController.prototype.setConsoleWriteFunction = function(opt_consoleWriteFunction) {
     this.WriteLineConsole_ = opt_consoleWriteFunction;
+};
+
+AwesomePMUCanvasController.prototype.setMapCenter = function(mapCenter) {
+    this.myCenter_ = mapCenter;
 };
 
 AwesomePMUCanvasController.prototype.onMapStateChanged = function() {
@@ -98,7 +106,76 @@ AwesomePMUCanvasController.computeCanvasParams = function() {
 }
         
 AwesomePMUCanvasController.prototype.onMapSourceLoaded = function() {
-
+	//initialize map
+	//myCenter = new google.maps.LatLng(20.99340214457691, 77.10533410017817);
+	//myCenter will come from options
+	var mapProp = {
+		center: this.myCenter_,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	this.map_ = new google.maps.Map(document.getElementById("google_map"), mapProp);
+	
+	this.overLayView_ = new google.maps.OverlayView();
+	this.overLayView_.draw = function() {};
+	this.overLayView_.setMap(this.map_);
+	//var parser = new geoXML3.parser({map: map, processStyles: true});
+	//parser.parse("test.kml");
+	////Using the new technique that doesnot require the geoxml 
+	////http://stackoverflow.com/questions/8187837/google-maps-zoom-gets-overriden-when-using-a-kml-file
+	var nyLayer = new google.maps.KmlLayer(
+	  'https://raw.githubusercontent.com/nagasudhirpulla/GoogleMapsAPIExamples/gh-pages/test.kml',
+	  {
+	      suppressInfoWindows: true,
+	      map: this.map_,
+	      preserveViewport: true
+	  });
+	  
+	infowindow = new google.maps.InfoWindow();
+	iconImage = {
+	url: 'locationCircleIcon.png',
+	// This marker is 20 pixels wide by 32 pixels high.
+	size: new google.maps.Size(10, 10),
+	// The origin for this image is (0, 0).
+	origin: new google.maps.Point(0, 0),
+	// The anchor for this image is the base of the flagpole at (0, 32).
+	anchor: new google.maps.Point(5, 5)
+	};
+	iconImageRed = {
+	url: 'locationCircleIconRed.png',
+	// This marker is 20 pixels wide by 32 pixels high.
+	size: new google.maps.Size(10, 10),
+	// The origin for this image is (0, 0).
+	origin: new google.maps.Point(0, 0),
+	// The anchor for this image is the base of the flagpole at (0, 32).
+	anchor: new google.maps.Point(5, 5)
+	};
+	//set marker
+	var marker = new google.maps.Marker({
+	position: myCenter
+	});
+	marker.setMap(map);
+	marker.addListener('click', toggleBounce);
+	function toggleBounce() {
+	if (marker.getAnimation() !== null) {
+	    marker.setAnimation(null);
+	} else {
+	    marker.setAnimation(google.maps.Animation.BOUNCE);
+	}
+	}
+	
+	for (var i = 0; i < sources.length; i++) {
+	    createMarker(sources[i][5], sources[i][0], sources[i][1], i);
+	} //source iterator
+	//add listener for map bounds being changed
+	//google.maps.event.addListener(map,'bounds_changed', onMapStateChanged); // end of listener callbck
+	google.maps.event.addListener(map, 'idle', onMapStateChanged);
+	google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
+	    plottedTopLeft = getMapTopLeft();
+	  });
+	map.setZoom(6);
+	getAlpha();
+	getTrans();
+	getmaxDisplayHue();
 }
 
 AwesomePMUCanvasController.prototype.onMapTransparencyChanged = function() {
