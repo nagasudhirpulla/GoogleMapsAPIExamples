@@ -1,0 +1,95 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="pmucontour.css">
+    <!--Element Resize Listener Libraries - http://marcj.github.io/css-element-queries/-->
+    <script src="ResizeSensor.js"></script>
+    <script src="ElementQueries.js"></script>
+    <!--script src="http://maps.googleapis.com/maps/api/js"></script-->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <!--<script src="http://geoxml3.googlecode.com/svn/branches/polys/geoxml3.js"></script>-->
+    <script src="http://geoxml3.googlecode.com/svn/trunk/ProjectedOverlay.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="AwesomePMUCanvasController.js"></script>
+    <script src="pmucontour.js"></script>
+</head>
+<body>
+<img id="filter" src="filter.png" alt="No Image Available" style="display: none">
+
+<div id="wrapper">
+    <div id="google_map" style="width:100%;height:100%;"></div>
+    <canvas id="myCanvas">Your browser does not support the HTML5 canvas tag.</canvas>
+</div>
+<div id="controlInputs" style="margin:10px 5px 5px 10px;"><!--top right bottom left-->
+    <button onclick="startFetching()">StartFetching</button>
+    <button onclick="pauseFetching()">StopFetching</button>
+    <br><br>
+
+    <h3 class="showHideButton" onclick="showHide(this,'> Voltage Points','^ Voltage Points')"> ^ Voltage Points</h3><br>
+
+    <div class="hidingClass" style="display:block;margin-top:5px">
+        <table>
+            <thead>
+            <tr>
+                <td>SNo</td>
+                <td>Name</td>
+                <td>Latitude</td>
+                <td>Longitude</td>
+                <td>Value</td>
+            </tr>
+            </thead>
+            <tbody id="mSourceTable"></tbody>
+        </table>
+        <button onclick="addVoltPointsToTable()">Refresh Table</button>
+        <button onclick="clearTable()">Clear Table</button>
+        <br><br>
+        <input placeholder="Name" id="newVoltPointName" type="text"/>
+        <input placeholder="Latitude degrees" id="newVoltPointLat" type="number"/>
+        <input placeholder="Longitude degrees" id="newVoltPointLong" type="number"/>
+        <input placeholder="Base Voltage" id="newVoltPointBaseVoltage" type="number"/>
+        <input placeholder="EDNA Address" id="newVoltPointEDNAAddress" type="text"/>
+        <button onclick="addVoltPoint()">AddVoltagePoint</button>
+    </div>
+    <br>
+
+    <h3 class="showHideButton" onclick="showHide(this,'> Alpha','^ Alpha')"> > Alpha</h3><br>
+
+    <div class="hidingClass" style="display:none;margin-top:5px">
+        <input id="alphaTextControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
+        <button onclick="getAlpha()" style="margin:0px 10px;">GetAlpha</button>
+        <button onclick="setAlpha()">SetAlpha</button>
+    </div>
+    <br>
+
+    <h3 class="showHideButton" onclick="showHide(this,'> Opacity','^ Opacity')"> > Opacity</h3><br>
+
+    <div class="hidingClass" style="display:none;margin-top:5px">
+        <input id="transControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
+        <!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
+        <button onclick="getTrans()" style="margin:0px 10px;">GetOpacity</button>
+        <button onclick="setTrans()">SetOpacity</button>
+    </div>
+    <br>
+
+    <h3 class="showHideButton" onclick="showHide(this,'> MaxDisplayHue','^ MaxDisplayHue')"> > MaxDisplayHue</h3><br>
+
+    <div class="hidingClass" style="display:none;margin-top:5px">
+        <input id="maxDisplayHueControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
+        <!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
+        <button onclick="getMaxDisplayHue()" style="margin:0px 10px;">GetMaxDisplayHue</button>
+        <button onclick="setMaxDisplayHue()">SetMaxDisplayHue</button>
+    </div>
+    <br>
+
+    <h3 class="showHideButton" onclick="showHide(this,'> Console','^ Console')"> > Console</h3><br>
+
+    <div class="hidingClass" style="display:none;margin-top:5px">
+        <div id="console" style="border: 1px solid black;width: 95%;height: 400px;overflow: scroll;">
+        </div>
+        <button onclick="clearConsole()">ClearConsole</button>
+    </div>
+    <br>
+</div>
+<!-- Do stuff after a timeout clearing previous timeouts - http://stackoverflow.com/questions/9252493/google-maps-event-addlistenermap-idle-function-is-it-possible-to-specif -->
+<!-- A complete interactive experience of google maps API- http://gmaps-samples-v3.googlecode.com/svn/trunk/map_events/map_events.html -->
+</body>
+</html>
