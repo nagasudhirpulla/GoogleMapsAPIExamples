@@ -815,7 +815,7 @@
 		function getFromServer(){
 			var point = "WRLDC.PHASOR.WRDC0783";
 			$.get("http://localhost:4542/values?dnapoint="+point,function(data, status){
-				if(status=="success"){
+				if(status == "success"){
 					//console.log(JSON.parse(data));
 					console.log(data);						
 				}				
@@ -837,7 +837,7 @@
 			if(isBusy){return;}
 			isBusy = true;
 			$.get("http://localhost:4542/values?dnapoints="+queryStringParamsForData,function(data, status){
-				if(status="success"){
+				if(status == "success"){
 					//console.log(JSON.parse(data));
 					//console.log(data);
 					//We get pointsArray in the order of sources Array
