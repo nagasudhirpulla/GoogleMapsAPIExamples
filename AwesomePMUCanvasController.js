@@ -209,7 +209,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             continue;
         }
         vsource = sources[i][2];
-        point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
+        point = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
         xpsource = point.x;
         ypsource = point.y;
         for (var xpdest = 0; xpdest < this.xp_; xpdest++) {
