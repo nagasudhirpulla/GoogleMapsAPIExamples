@@ -219,7 +219,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
                 if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255) {
                     xpx = xpdest - xpsource;
                     ypx = ypdest - ypsource;
-                    this.canvasData_[(xpdest + ypdest * this.xp_)] += vsource * Math.exp(-this.alpha_ * npx * Math.sqrt(xpx * xpx + this.npxRatioSquare_ * ypx * ypx));
+                    this.canvasData_[(xpdest + ypdest * this.xp_)] += vsource * Math.exp(-this.alpha_ * this.npx_ * Math.sqrt(xpx * xpx + this.npxRatioSquare_ * ypx * ypx));
                 }
             } //y iterator
         } //x iterator
