@@ -136,9 +136,9 @@ AwesomePMUCanvasController.prototype.onMapStateChanged = function () {
     this.ctx_.clearRect(0, 0, this.xp_, this.yp_);
     this.ctx_.drawImage(canvas, 0, 0, this.xp_, this.yp_, offset.x, offset.y, zoomRatio * this.xp_, zoomRatio * this.yp_);
     canvas = null;
-    var point = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(26.867768, 68.191580));
+    var point = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(26.8598, 68.1435));
     ////////filterCtx.drawImage(document.getElementById("filter"), filterTopLeft[0], filterTopLeft[1], parseInt((xp / lat_width) * 16.202546), parseInt((yp / long_hgt) * 11.969271));
-    this.filterCtx_.drawImage(document.getElementById("filter"), point.x, point.y, parseInt((this.xp_ / this.lat_width_) * 16.202546), parseInt((this.yp_ / this.long_hgt_) * 11.969271));
+    this.filterCtx_.drawImage(document.getElementById("filter"), point.x, point.y, parseInt((this.xp_ / this.lat_width_) * 16.2098), parseInt((this.yp_ / this.long_hgt_) * 11.9725));
 
     //Get the filter data
     this.filterDataArray_ = this.filterCtx_.getImageData(0, 0, this.xp_, this.yp_);
