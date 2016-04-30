@@ -81,3 +81,6 @@ The myData array can be used for filter data
 4.Canvas transformations like zoom, pan etc
 
 5.TODO http://stackoverflow.com/questions/3448347/how-to-scale-an-imagedata-in-html-canvas
+
+---request animation frame and plot while panning and running algorithm
+---implement fast rendering
