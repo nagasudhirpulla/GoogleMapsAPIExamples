@@ -86,6 +86,20 @@ AwesomePMUCanvasController.prototype.getMapCenter = function () {
     return this.mapCenter_;
 };
 
+AwesomePMUCanvasController.prototype.onMapMoveZoom = function () {
+    //We know that the canvas zoom is fit for zoom level 6 and canvas center latLong are 22.532853026644325, 78.16772421874998
+    var zoomRatio = Math.pow(2, this.map_.getZoom() - this.plottedZoom_);
+    this.projection_ = this.overLayView_.getProjection();
+    var canvas = document.createElement('canvas');
+    canvas.width = this.xp_;
+    canvas.height = this.yp_;
+    var offset = this.projection_.fromLatLngToContainerPixel(this.plottedTopLeft_);
+    canvas.getContext("2d").drawImage(this.c_, 0, 0);
+    this.ctx_.clearRect(0, 0, this.xp_, this.yp_);
+    this.ctx_.drawImage(canvas, 0, 0, this.xp_, this.yp_, offset.x, offset.y, zoomRatio * this.xp_, zoomRatio * this.yp_);
+    canvas = null;
+}
+
 AwesomePMUCanvasController.prototype.onMapStateChanged = function () {
     //get map bounds
     var ne = this.map_.getBounds().getNorthEast();//topRight
@@ -118,9 +132,11 @@ AwesomePMUCanvasController.prototype.onMapStateChanged = function () {
     //Clear filter canvas
     this.filterCtx_.clearRect(0, 0, this.filterCanvas_.width, this.filterCanvas_.height);
 
+    this.projection_ = this.overLayView_.getProjection();
+    /*
+    *Commented because temporary resizing handled seperately
     //We know that the canvas zoom is fit for zoom level 6 and canvas center latLong are 22.532853026644325, 78.16772421874998
     var zoomRatio = Math.pow(2, this.map_.getZoom() - this.plottedZoom_);
-    this.projection_ = this.overLayView_.getProjection();
     var canvas = document.createElement('canvas');
     canvas.width = this.xp_;
     canvas.height = this.yp_;
@@ -134,6 +150,7 @@ AwesomePMUCanvasController.prototype.onMapStateChanged = function () {
     this.ctx_.clearRect(0, 0, this.xp_, this.yp_);
     this.ctx_.drawImage(canvas, 0, 0, this.xp_, this.yp_, offset.x, offset.y, zoomRatio * this.xp_, zoomRatio * this.yp_);
     canvas = null;
+    */
     var point = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(26.8598, 68.1435));
     ////////filterCtx.drawImage(document.getElementById("filter"), filterTopLeft[0], filterTopLeft[1], parseInt((xp / lat_width) * 16.202546), parseInt((yp / long_hgt) * 11.969271));
     this.filterCtx_.drawImage(document.getElementById("filter"), point.x, point.y, parseInt((this.xp_ / this.lat_width_) * 16.2098), parseInt((this.yp_ / this.long_hgt_) * 11.9725));
@@ -433,6 +450,8 @@ AwesomePMUCanvasController.prototype.onMapSourceLoaded = function () {
     google.maps.event.addListenerOnce(this.map_, 'bounds_changed', function () {
         this.plottedTopLeft_ = this.getMapTopLeft();
         google.maps.event.addListener(this.map_, 'idle', this.onMapStateChanged.bind(this));
+        google.maps.event.addListener(this.map_, 'resize', this.onMapMoveZoom.bind(this));
+        google.maps.event.addListener(this.map_, 'center_changed', this.onMapMoveZoom.bind(this));
     }.bind(this));
     this.map_.setZoom(6);
 };
