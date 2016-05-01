@@ -41,7 +41,7 @@ function AwesomePMUCanvasController(opt_options) {
     this.normalisedCanvasData_ = [];
     this.minVal_ = null;
     this.maxVal_ = null;
-    this.maxHue_ = 120;
+    this.maxHue_ = 180;
     this.minHue_ = 0;
     this.maxHueToDisplay_ = this.maxHue_;
     this.hueDiff_ = this.maxHue_ - this.minHue_; //Lets go for red color for now
