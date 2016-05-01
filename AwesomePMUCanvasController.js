@@ -144,7 +144,7 @@ AwesomePMUCanvasController.prototype.onMapStateChanged = function () {
     //Run the plotting algorithm
     var self = this;
     setTimeout(function () {
-    	requestAnimationFrame(self.runAlgorithm);
+    	requestAnimationFrame(self.runAlgorithm.apply(self));
     }, 20); // 20 ms - should be enough to draw something simple
 };
 
