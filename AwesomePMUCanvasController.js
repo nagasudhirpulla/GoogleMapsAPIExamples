@@ -272,11 +272,10 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             	//if data is under the filter...
             	tempColor = this.hueDiff_; //this is for hottest color pu value
 		tempVal = this.canvasData_[(xpdest + ypdest * this.xp_)];
-		//color stub
 		if(tempVal<=coolColorPU){
 			tempColor = 0;	//this is for coolest color pu value
 		} else if(tempVal<hotColorPU){
-			tempColor = (this.hueDiff_ * (tempVal - coolColorPU))/hotCoolPUDiff;
+			tempColor = this.hueDiff_ * ((tempVal - coolColorPU)/hotCoolPUDiff);
 		}
                 this.normalisedCanvasData_[(xpdest + ypdest * this.xp_)] = tempColor;//Use this for RGB version
             }
