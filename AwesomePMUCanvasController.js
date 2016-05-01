@@ -270,7 +270,8 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             var hotCoolPUDiff = hotColorPU - coolColorPU;
             if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255) {
             	//if data is under the filter...
-            	tempColor = this.hueDiff_; //this is for hottest color pu value
+            	//color stub
+            	tempColor = this.maxHue_; //this is for hottest color pu value
 		tempVal = this.canvasData_[(xpdest + ypdest * this.xp_)];
 		if(tempVal<=coolColorPU){
 			tempColor = 0;	//this is for coolest color pu value
@@ -302,7 +303,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] != 255) {
                 imageData.data[(ypdest * this.xp_ + xpdest) * 4 + 3] = 0;
             } else {
-                imageData.data[(ypdest * this.xp_ + xpdest) * 4 + 3] = (hue >= this.maxHueToDisplay_) ? 0 : this.transparency_;
+                imageData.data[(ypdest * this.xp_ + xpdest) * 4 + 3] = (hue > this.maxHueToDisplay_) ? 0 : this.transparency_;
             }
         } //y iterator
     } //x iterator
