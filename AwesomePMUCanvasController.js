@@ -10,6 +10,8 @@
 function AwesomePMUCanvasController(opt_options) {
     this.filterCanvas_ = null;
     this.filterCtx_ = null;
+    this.crapCanvas_ = null;
+    this.crapCtx_ = null;
     this.filterDataArray_ = null;
     this.projection_ = null;
     this.plottedZoom_ = null;
@@ -88,16 +90,15 @@ AwesomePMUCanvasController.prototype.getMapCenter = function () {
 
 AwesomePMUCanvasController.prototype.onMapMoveZoom = function () {
     //We know that the canvas zoom is fit for zoom level 6 and canvas center latLong are 22.532853026644325, 78.16772421874998
-    var zoomRatio = Math.pow(2, this.map_.getZoom() - this.plottedZoom_);
+    var currZoom = this.map_.getZoom();
+    var zoomRatio = Math.pow(2, currZoom - this.plottedZoom_);
     this.projection_ = this.overLayView_.getProjection();
-    var canvas = document.createElement('canvas');
-    canvas.width = this.xp_;
-    canvas.height = this.yp_;
     var offset = this.projection_.fromLatLngToContainerPixel(this.plottedTopLeft_);
-    canvas.getContext("2d").drawImage(this.c_, 0, 0);
+    this.crapCanvas_.getContext("2d").drawImage(this.c_, 0, 0);
     this.ctx_.clearRect(0, 0, this.xp_, this.yp_);
-    this.ctx_.drawImage(canvas, 0, 0, this.xp_, this.yp_, offset.x, offset.y, zoomRatio * this.xp_, zoomRatio * this.yp_);
-    canvas = null;
+    this.ctx_.drawImage(this.crapCanvas_, 0, 0, this.xp_, this.yp_, offset.x, offset.y, zoomRatio * this.xp_, zoomRatio * this.yp_);
+    this.plottedZoom_ = currZoom;
+    this.plottedTopLeft_ = this.getMapTopLeft();
 }
 
 AwesomePMUCanvasController.prototype.onMapStateChanged = function () {
@@ -356,6 +357,13 @@ AwesomePMUCanvasController.prototype.onDomComplete = function () {
         this.filterCanvas_.setAttribute('width', this.xp_);
         this.filterCanvas_.setAttribute('height', this.yp_);
         this.filterCtx_ = this.filterCanvas_.getContext('2d');
+        
+        this.crapCanvas_ = document.createElement('canvas');
+        this.crapCanvas_.style.width = this.xp_;
+        this.crapCanvas_.style.height = this.yp_;
+        this.crapCanvas_.setAttribute('width', this.xp_);
+        this.crapCanvas_.setAttribute('height', this.yp_);
+        this.crapCtx_ = this.crapCanvas_.getContext('2d');
     }
     google.maps.event.addDomListener(window, 'load', this.onMapSourceLoaded.bind(this));
 };
