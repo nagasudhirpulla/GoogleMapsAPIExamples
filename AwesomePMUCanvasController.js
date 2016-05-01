@@ -459,7 +459,7 @@ AwesomePMUCanvasController.prototype.onMapSourceLoaded = function () {
     google.maps.event.addListenerOnce(this.map_, 'bounds_changed', function () {
         this.plottedTopLeft_ = this.getMapTopLeft();
         google.maps.event.addListener(this.map_, 'idle', this.onMapStateChanged.bind(this));
-        google.maps.event.addListener(this.map_, 'resize', this.onMapMoveZoom.bind(this));
+        google.maps.event.addListener(this.map_, 'zoom_changed', this.onMapMoveZoom.bind(this));
         google.maps.event.addListener(this.map_, 'center_changed', this.onMapMoveZoom.bind(this));
     }.bind(this));
     this.map_.setZoom(6);
