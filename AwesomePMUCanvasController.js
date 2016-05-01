@@ -45,7 +45,8 @@ function AwesomePMUCanvasController(opt_options) {
     this.minHue_ = 0;
     this.maxHueToDisplay_ = this.maxHue_;
     this.hueDiff_ = this.maxHue_ - this.minHue_; //Lets go for red color for now
-
+    this.hotColorPU_ = 1.05;
+    this.coolColorPU_ = 0.95;
     /**
      * Simple bind for functions with no args for bind-less browsers (Safari).
      * @param {Object} thisArg The this value used for the target function.
@@ -54,9 +55,6 @@ function AwesomePMUCanvasController(opt_options) {
     function simpleBindShim(thisArg, func) {
         return function() { func.apply(thisArg); };
     }
-
-
-
 
     // set provided options, if any
     if (opt_options) {
@@ -225,6 +223,8 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
         } //x iterator
     } //source iterator
     //Find max and min voltage value in canvasData
+    /*
+    *max and min vals required for normalising the canvas values but here we are not normalisind the canvas values for coloring
     this.minVal_ = 1000;
     this.maxVal_ = 0;
     for (xpdest = 0; xpdest < this.xp_; xpdest++) {
@@ -240,6 +240,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             }
         } //y iterator
     } //x iterator
+    
     //Do Normalisation
     //normalisedValue = hueDiff * (1 - value/(maxval-minval));
     //normalisedValue = hueDiff * (1 - value/(valDiff)); where valDiff = maxval-minval;
@@ -250,6 +251,34 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             //normalisedCanvasData[xpdest,ypdest] = hueDiff * (1 - canvasData[xpdest,ypdest]/(valDiff));//Use this for hue version
             if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255) {
                 this.normalisedCanvasData_[(xpdest + ypdest * this.xp_)] = this.hueDiff_ * ((this.canvasData_[(xpdest + ypdest * this.xp_)] - this.minVal_) / (valDiff));//Use this for RGB version
+            }
+
+        } //y iterator
+    } //x iterator
+    */
+    
+    //Convert pu data values to color values so that <=0.95 is blue and >=1.05 is red
+    //normalisedValue = hueDiff * (1 - value/(maxval-minval));
+    //normalisedValue = hueDiff * (1 - value/(valDiff)); where valDiff = maxval-minval;
+    for (xpdest = 0; xpdest < this.xp_; xpdest++) {
+        for (ypdest = 0; ypdest < this.yp_; ypdest++) {
+            //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
+            var tempColor;
+            var tempVal;
+            var hotColorPU = this.hotColorPU_;
+            var coolColorPU = this.coolColorPU_;
+            var hotCoolPUDiff = hotColorPU - coolColorPU;
+            if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255) {
+            	//if data is under the filter...
+            	tempColor = this.hueDiff_; //this is for hottest color pu value
+		tempVal = this.canvasData_[(xpdest + ypdest * this.xp_)];
+		//color stub
+		if(tempVal<=coolColorPU){
+			tempColor = 0;	//this is for coolest color pu value
+		} else if(tempVal<hotColorPU){
+			tempColor = (this.hueDiff_ * (tempVal - coolColorPU))/hotCoolPUDiff;
+		}
+                this.normalisedCanvasData_[(xpdest + ypdest * this.xp_)] = tempColor;//Use this for RGB version
             }
 
         } //y iterator
