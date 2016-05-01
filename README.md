@@ -82,5 +82,9 @@ The myData array can be used for filter data
 
 5.TODO http://stackoverflow.com/questions/3448347/how-to-scale-an-imagedata-in-html-canvas
 
----request animation frame and plot while panning and running algorithm
+---use color tempurature according to the per unit value. So no need to normalise pu values for hue calculation.
+So, color temp = blue for <=0.95 and red for >=1.05
+
+---request animation frame and plot while panning the map and running algorithm
+
 ---implement fast rendering
