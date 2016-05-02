@@ -56,7 +56,7 @@
     <h3 class="showHideButton" onclick="showHide(this,'> Alpha','^ Alpha')"> > Alpha</h3><br>
 
     <div class="hidingClass" style="display:none;margin-top:5px">
-        <input id="alphaTextControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
+        <input id="alphaTextControl" style="width:50px;" type="text" onkeypress="return isNumberKey(event, this.id)"/>
         <button onclick="getAlpha()" style="margin:0px 10px;">GetAlpha</button>
         <button onclick="setAlpha()">SetAlpha</button>
     </div>
@@ -65,7 +65,7 @@
     <h3 class="showHideButton" onclick="showHide(this,'> Opacity','^ Opacity')"> > Opacity</h3><br>
 
     <div class="hidingClass" style="display:none;margin-top:5px">
-        <input id="transControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
+        <input id="transControl" style="width:50px;" type="text" onkeypress="return isNumberKey(event, this.id)"/>
         <!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
         <button onclick="getTrans()" style="margin:0px 10px;">GetOpacity</button>
         <button onclick="setTrans()">SetOpacity</button>
@@ -75,7 +75,7 @@
     <h3 class="showHideButton" onclick="showHide(this,'> MaxDisplayHue','^ MaxDisplayHue')"> > MaxDisplayHue</h3><br>
 
     <div class="hidingClass" style="display:none;margin-top:5px">
-        <input id="maxDisplayHueControl" style="width:50px;" type="text" onkeypress="return isNumberKey()"/>
+        <input id="maxDisplayHueControl" style="width:50px;" type="text" onkeypress="return isNumberKey(event, this.id)"/>
         <!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
         <button onclick="getMaxDisplayHue()" style="margin:0px 10px;">GetMaxDisplayHue</button>
         <button onclick="setMaxDisplayHue()">SetMaxDisplayHue</button>
