@@ -149,10 +149,23 @@ function findSibling(el, cls) {
     return el;
 }
 //Utility Functions
-function isNumberKey(evt) {
+function isNumberKey(evt, id) {
     //charcodes info http://www.cambiaresearch.com/articles/15/javascript-key-codes
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if(charCode == 13){
+        if(id == "alphaTextControl"){
+            setAlpha();
+            return true;
+        } else if (id == "transControl"){
+            setTrans();
+            return true;
+        } else if (id == "maxDisplayHueControl"){
+            setMaxDisplayHue();
+            return true;
+        }
+        return true;
+    }
     return !!(charCode < 32 || (charCode > 47 && charCode < 58) || (charCode == 46));
 }
 
