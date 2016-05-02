@@ -531,7 +531,7 @@ AwesomePMUCanvasController.prototype.getAlpha = function () {
 
 AwesomePMUCanvasController.prototype.setAlpha = function (num) {
     this.alpha_ = num;
-    this.onMapStateChanged().bind(this);
+    this.onMapStateChanged.apply(this)();
 };
 
 /*Transperency getter*/
@@ -542,7 +542,7 @@ AwesomePMUCanvasController.prototype.getTrans = function () {
 /*Transperency setter*/
 AwesomePMUCanvasController.prototype.setTrans = function (num) {
     this.transparency_ = num;
-    this.onMapTransparencyChanged();
+    this.onMapTransparencyChanged.apply(this)();
 };
 
 /*MaxDisplayHue getter*/
@@ -553,7 +553,7 @@ AwesomePMUCanvasController.prototype.getMaxDisplayHue = function () {
 /*MaxDisplayHue setter*/
 AwesomePMUCanvasController.prototype.setMaxDisplayHue = function (num) {
     this.maxHueToDisplay_ = num;
-    this.onMapTransparencyChanged();
+    this.onMapTransparencyChanged.apply(this)();
 };
 
 /*
