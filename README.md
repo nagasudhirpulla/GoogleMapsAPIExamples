@@ -83,8 +83,14 @@ The myData array can be used for filter data
 5.TODO http://stackoverflow.com/questions/3448347/how-to-scale-an-imagedata-in-html-canvas
 
 ---use color tempurature according to the per unit value. So no need to normalise pu values for hue calculation.
-So, color temp = blue for <=0.95 and red for >=1.05
+So, color temp = blue for <=0.95 and red for >=1.05 --- done
 
----request animation frame and plot while panning the map and running algorithm
+---request animation frame and plot while panning the map and running algorithm --- this can be done by waiting in the middle of time taking computations for 5 msecs uisng the setTimeout function allowing the allowing the browser to perform the screen updates thus provinding a smooth UX avoiding undesirable browser freezing
 
 ---implement fast rendering
+
+---implement the enter button action action for the text fields
+
+---extract the rendered image from the canvas using the latlong values canverted to pixels (fromLatLngToContainerPixel) and paste the captured image in the panned or zoomed canvas for temporary user convenience
+
+---calculate the number of pixels per  latitude or longitude by using the fromLatLngToContainerPixel function on any two latlong coordinates like LanLng(0,0) and LanLng(1,1)
