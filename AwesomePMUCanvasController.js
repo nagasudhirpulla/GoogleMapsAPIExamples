@@ -219,6 +219,8 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     this.normalisedCanvasData_ = [];
     //For each source
     var point;
+    var pointTopLeft;
+    var pointBottomRight;
     var vsource;
     var xpsource;
     var ypsource;
@@ -232,8 +234,11 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
         }
         vsource = sources[i][2];
         point = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
+        pointTopLeft = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] - 0.1, sources[i][1] - 0.1));
+        pointBottomRight = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] + 0.1, sources[i][1] + 0.1));
         xpsource = point.x;
         ypsource = point.y;
+        //calculate the xpdest ypdest bounding boxes for 11 km or 0.1 degrees of radius lat long from source
         for (var xpdest = 0; xpdest < this.xp_; xpdest++) {
             for (var ypdest = 0; ypdest < this.yp_; ypdest++) {
                 //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
