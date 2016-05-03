@@ -494,12 +494,13 @@ AwesomePMUCanvasController.prototype.createMarker = function (add, lat, lng, sou
 AwesomePMUCanvasController.prototype.onMapTransparencyChanged = function () {
 	var xp = this.xp_;
 	var yp = this.yp_;
+	var imageData = this.c_.getContext("2d").getImageData(0, 0, xp, yp);//imageData context.getImageData(x,y,width,height);
+    var hue;
     for (var xpdest = 0; xpdest < xp; xpdest++) {
         for (var ypdest = 0; ypdest < yp; ypdest++) {
             //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
             ////hue = maxHue - normalisedCanvasData[(xpdest + ypdest * xp)];
-            var imageData = this.c_.getContext("2d").getImageData(0, 0, xp, yp);//imageData context.getImageData(x,y,width,height);
-            var hue = this.rgbToHsv(imageData.data[(ypdest * xp + xpdest) * 4], imageData.data[(ypdest * xp + xpdest) * 4 + 1], imageData.data[(ypdest * xp + xpdest) * 4 + 2])[0];
+            hue = this.rgbToHsv(imageData.data[(ypdest * xp + xpdest) * 4], imageData.data[(ypdest * xp + xpdest) * 4 + 1], imageData.data[(ypdest * xp + xpdest) * 4 + 2])[0];
             //If pixel is in the filter area then display
             if (this.filterDataArray_.data[(ypdest * xp + xpdest) * 4] != 255) {
                 imageData.data[(ypdest * xp + xpdest) * 4 + 3] = 0;
