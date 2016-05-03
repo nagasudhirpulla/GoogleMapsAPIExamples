@@ -98,7 +98,7 @@ AwesomePMUCanvasController.prototype.onMapMoveZoom = function () {
     var currZoom = this.map_.getZoom();
     var zoomRatio = Math.pow(2, currZoom - this.plottedZoom_);
     this.projection_ = this.overLayView_.getProjection();
-    var offset = this.projection_.fromLatLngToDivPixel(this.plottedTopLeft_);
+    var offset = this.projection_.fromLatLngToContainerPixel(this.plottedTopLeft_);
     this.crapCtx_.clearRect(0, 0, this.crapCanvas_.width, this.crapCanvas_.height);
     this.crapCtx_.drawImage(this.c_, 0, 0);
     this.ctx_.clearRect(0, 0, this.xp_, this.yp_);
