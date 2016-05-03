@@ -38,6 +38,7 @@ function AwesomePMUCanvasController(opt_options) {
     this.queryStringParamsForData_ = this.sources_.map(function (obj) {
         return obj[3];
     }).join(',');
+    this.sourceRadius_ = 0.3;
     this.alpha_ = 1.5;
     this.transparency_ = 120; //between 0 - 255
     this.canvasData_ = [];
@@ -231,6 +232,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     var ypdestEnd = this.yp_;
     var ypdest;
     var sources = this.getVoltagePoints();
+    var sourceRad = this.sourceRadius_;
     for (var i = 0; i < sources.length; i++) {
         //skip from the for loop if sources status is not "OK"
         if (sources[i][6] != "OK") {
@@ -238,8 +240,8 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
         }
         vsource = sources[i][2];
         point = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
-        pointTopLeft = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] + 0.1, sources[i][1] - 0.1));
-        pointBottomRight = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] - 0.1, sources[i][1] + 0.1));
+        pointTopLeft = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] + sourceRad, sources[i][1] - sourceRad));
+        pointBottomRight = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] - sourceRad, sources[i][1] + sourceRad));
         xpdestStart = pointTopLeft.x < 0 ? 0 : Math.round(pointTopLeft.x);
         ypdestStart = pointTopLeft.y < 0 ? 0 : Math.round(pointTopLeft.y);
         xpdestEnd = pointBottomRight.x < 0 ? 0 : Math.round(pointBottomRight.x);
