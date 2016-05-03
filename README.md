@@ -87,7 +87,7 @@ So, color temp = blue for <=0.95 and red for >=1.05 --- done
 
 ---request animation frame and plot while panning the map and running algorithm --- this can be done by waiting in the middle of time taking computations for 5 msecs uisng the setTimeout function allowing the allowing the browser to perform the screen updates thus provinding a smooth UX avoiding undesirable browser freezing
 
----implement fast rendering
+---implement fast rendering with radius of rendering around the sources to be 11 kilometres or 0.1 degrees of latitude longitude
 
 ---implement the enter button action action for the text fields ---done
 
