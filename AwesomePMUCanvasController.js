@@ -476,9 +476,10 @@ AwesomePMUCanvasController.prototype.onMapSourceLoaded = function () {
 
 AwesomePMUCanvasController.prototype.getMapTopLeft = function () {
     var top = this.map_.getBounds().getNorthEast().lat();
-    var center = this.map_.getCenter();
+    /*var center = this.map_.getCenter();
     var scale = Math.pow(2, this.map_.getZoom());
-    var left = center.lng() - (this.xp_ * 180) / (256 * scale);
+    var left = center.lng() - (this.xp_ * 180) / (256 * scale);*/
+    var left = this.map_.getBounds().getSouthWest().lng();
     return new google.maps.LatLng(top, left);
 };
 
