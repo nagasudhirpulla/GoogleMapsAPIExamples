@@ -553,9 +553,9 @@ AwesomePMUCanvasController.prototype.setTrans = function (num) {
     var isRequired = (this.transparency_ == 0 && num > 0);
     this.transparency_ = num;
     if(isRequired){
-        this.onMapTransparencyChanged.apply(this);    
-    } else{
         this.onMapStateChanged.apply(this);
+    } else{
+        this.onMapTransparencyChanged.apply(this);
     }
 };
 
