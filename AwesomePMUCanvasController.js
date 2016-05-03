@@ -99,16 +99,8 @@ AwesomePMUCanvasController.prototype.onMapMoveZoom = function () {
     var zoomRatio = Math.pow(2, currZoom - this.plottedZoom_);
     this.projection_ = this.overLayView_.getProjection();
     var offset = this.projection_.fromLatLngToContainerPixel(this.plottedTopLeft_);
-    /*
-    this.crapCtx_.clearRect(0, 0, this.crapCanvas_.width, this.crapCanvas_.height);
-    this.crapCtx_.drawImage(this.c_, 0, 0);
-    */
     this.ctx_.clearRect(0, 0, this.xp_, this.yp_);
     this.ctx_.drawImage(this.crapCanvas_, 0, 0, this.xp_, this.yp_, offset.x, offset.y, zoomRatio * this.xp_, zoomRatio * this.yp_);
-    /*
-    this.plottedZoom_ = currZoom;
-    this.plottedTopLeft_ = this.getMapTopLeft();
-    */
     this.isPaintBusy_ = false;
 }
 
@@ -353,8 +345,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             sources[i][7].setIcon(this.iconImage_);
         }
     }
-    //stub crapcanvas
-    this.crapCtx_.clearRect(0, 0, this.crapCanvas_.width, this.crapCanvas_.height);
+    //this.crapCtx_.clearRect(0, 0, this.crapCanvas_.width, this.crapCanvas_.height);
     this.crapCtx_.drawImage(this.c_, 0, 0);
 };
 
