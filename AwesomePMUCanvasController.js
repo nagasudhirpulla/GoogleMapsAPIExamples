@@ -144,7 +144,6 @@ AwesomePMUCanvasController.prototype.onMapStateChanged = function () {
     var canvas = document.createElement('canvas');
     canvas.width = this.xp_;
     canvas.height = this.yp_;
-
     //ctx.setTransform(a, b, c, d, e, f);
     //a (m11) Horizontal scaling. b (m12) Horizontal skewing. c (m21) Vertical skewing. d (m22) Vertical scaling. e (dx) Horizontal moving. f (dy) Vertical moving.
     ////ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -226,6 +225,11 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     var ypsource;
     var xpx;
     var ypx;
+    var xpdestStart = 0;
+    var ypdestStart = 0;
+    var xpdestEnd = this.xp_;
+    var ypdestEnd = this.yp_;
+    var ypdest;
     var sources = this.getVoltagePoints();
     for (var i = 0; i < sources.length; i++) {
         //skip from the for loop if sources status is not "OK"
@@ -236,11 +240,15 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
         point = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
         pointTopLeft = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] - 0.1, sources[i][1] - 0.1));
         pointBottomRight = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] + 0.1, sources[i][1] + 0.1));
+        xpdestStart = pointTopLeft.x;
+        ypdestStart = pointTopLeft.y;
+        xpdestEnd = pointBottomRight.x;
+        ypdestEnd = pointBottomRight.y;
         xpsource = point.x;
         ypsource = point.y;
         //calculate the xpdest ypdest bounding boxes for 11 km or 0.1 degrees of radius lat long from source
-        for (var xpdest = 0; xpdest < this.xp_; xpdest++) {
-            for (var ypdest = 0; ypdest < this.yp_; ypdest++) {
+        for (var xpdest = xpdestStart; xpdest < xpdestEnd; xpdest++) {
+            for (var ypdest = ypdestStart; ypdest < ypdestEnd; ypdest++) {
                 //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
                 ////if xpdest and ypdest belong to filter, then calculate the intensity
                 if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255) {
@@ -281,7 +289,6 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255) {
                 this.normalisedCanvasData_[(xpdest + ypdest * this.xp_)] = this.hueDiff_ * ((this.canvasData_[(xpdest + ypdest * this.xp_)] - this.minVal_) / (valDiff));//Use this for RGB version
             }
-
         } //y iterator
     } //x iterator
     */
