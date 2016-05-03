@@ -511,7 +511,7 @@ AwesomePMUCanvasController.prototype.onMapTransparencyChanged = function () {
             if (this.filterDataArray_.data[(ypdest * xp + xpdest) * 4] != 255) {
                 imageData.data[(ypdest * xp + xpdest) * 4 + 3] = 0;
             } else {
-                imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue > this.maxHueToDisplay_) ? 0 : this.transparency_;
+                imageData.data[(ypdest * xp + xpdest) * 4 + 3] = (hue > this.maxHueToDisplay_ && imageData.data[(ypdest * xp + xpdest) * 4 + 3] == 0) ? 0 : this.transparency_;
             }
         } //y iterator
     } //x iterator
