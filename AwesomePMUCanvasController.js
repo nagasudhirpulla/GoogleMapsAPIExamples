@@ -155,7 +155,7 @@ AwesomePMUCanvasController.prototype.onMapStateChanged = function () {
     */
     var point = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(26.8598, 68.1435));
     ////////filterCtx.drawImage(document.getElementById("filter"), filterTopLeft[0], filterTopLeft[1], parseInt((xp / lat_width) * 16.202546), parseInt((yp / long_hgt) * 11.969271));
-    this.filterCtx_.drawImage(document.getElementById("filter"), point.x, point.y, parseInt((this.xp_ / this.lat_width_) * 11.9725), parseInt((this.yp_ / this.long_hgt_) * 16.2098));
+    this.filterCtx_.drawImage(document.getElementById("filter"), point.x, point.y, parseInt((this.xp_  * 16.2098) / this.lat_width_), parseInt((this.yp_ * 11.9725) / this.long_hgt_));
 
     //Get the filter data
     this.filterDataArray_ = this.filterCtx_.getImageData(0, 0, this.xp_, this.yp_);
