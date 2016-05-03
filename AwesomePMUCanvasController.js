@@ -99,12 +99,16 @@ AwesomePMUCanvasController.prototype.onMapMoveZoom = function () {
     var zoomRatio = Math.pow(2, currZoom - this.plottedZoom_);
     this.projection_ = this.overLayView_.getProjection();
     var offset = this.projection_.fromLatLngToContainerPixel(this.plottedTopLeft_);
+    /*
     this.crapCtx_.clearRect(0, 0, this.crapCanvas_.width, this.crapCanvas_.height);
     this.crapCtx_.drawImage(this.c_, 0, 0);
+    */
     this.ctx_.clearRect(0, 0, this.xp_, this.yp_);
     this.ctx_.drawImage(this.crapCanvas_, 0, 0, this.xp_, this.yp_, offset.x, offset.y, zoomRatio * this.xp_, zoomRatio * this.yp_);
+    /*
     this.plottedZoom_ = currZoom;
     this.plottedTopLeft_ = this.getMapTopLeft();
+    */
     this.isPaintBusy_ = false;
 }
 
@@ -298,7 +302,6 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             var hotCoolPUDiff = hotColorPU - coolColorPU;
             if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255) {
             	//if data is under the filter...
-            	//color stub
             	tempColor = this.maxHue_; //this is for hottest color pu value
 		tempVal = this.canvasData_[(xpdest + ypdest * this.xp_)];
 		if(tempVal<=coolColorPU){
@@ -350,6 +353,9 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             sources[i][7].setIcon(this.iconImage_);
         }
     }
+    //stub crapcanvas
+    this.crapCtx_.clearRect(0, 0, this.crapCanvas_.width, this.crapCanvas_.height);
+    this.crapCtx_.drawImage(this.c_, 0, 0);
 };
 
 AwesomePMUCanvasController.prototype.onDomReady = function () {
