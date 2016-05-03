@@ -361,7 +361,7 @@
             ////////var filterTopLeft = LatLongToPixelCoordinates(26.867768, 68.191580);
             ////projection = overLayView.getProjection();
             var point = projection.fromLatLngToContainerPixel(new google.maps.LatLng(26.867768, 68.191580));
-            var point2 = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(14.898497, 84.394126));
+            var point2 = projection_.fromLatLngToContainerPixel(new google.maps.LatLng(14.898497, 84.394126));
             ////////filterCtx.drawImage(document.getElementById("filter"), filterTopLeft[0], filterTopLeft[1], parseInt((xp / lat_width) * 16.202546), parseInt((yp / long_hgt) * 11.969271));
             ////////filterCtx.drawImage(document.getElementById("filter"), point.x, point.y, parseInt((xp / lat_width) * 16.202546), parseInt((yp / long_hgt) * 11.969271));
             filterCtx.drawImage(document.getElementById("filter"), point.x, point.y, point2.x - point.x , point2.y - point.y);
