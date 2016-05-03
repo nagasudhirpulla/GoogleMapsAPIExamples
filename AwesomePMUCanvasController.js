@@ -345,7 +345,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             sources[i][7].setIcon(this.iconImage_);
         }
     }
-    //this.crapCtx_.clearRect(0, 0, this.crapCanvas_.width, this.crapCanvas_.height);
+    this.crapCtx_.clearRect(0, 0, this.crapCanvas_.width, this.crapCanvas_.height);
     this.crapCtx_.drawImage(this.c_, 0, 0);
 };
 
