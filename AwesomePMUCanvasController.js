@@ -240,10 +240,10 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
         point = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
         pointTopLeft = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] + 0.1, sources[i][1] - 0.1));
         pointBottomRight = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] - 0.1, sources[i][1] + 0.1));
-        xpdestStart = pointTopLeft.x < 0 ? 0 : pointTopLeft.x;
-        ypdestStart = pointTopLeft.y < 0 ? 0 : pointTopLeft.y;
-        xpdestEnd = pointBottomRight.x < 0 ? 0 : pointBottomRight.x;
-        ypdestEnd = pointBottomRight.y < 0 ? 0 : pointBottomRight.y;
+        xpdestStart = pointTopLeft.x < 0 ? 0 : Math.round(pointTopLeft.x);
+        ypdestStart = pointTopLeft.y < 0 ? 0 : Math.round(pointTopLeft.y);
+        xpdestEnd = pointBottomRight.x < 0 ? 0 : Math.round(pointBottomRight.x);
+        ypdestEnd = pointBottomRight.y < 0 ? 0 : Math.round(pointBottomRight.y);
         xpsource = point.x;
         ypsource = point.y;
         //calculate the xpdest ypdest bounding boxes for 11 km or 0.1 degrees of radius lat long from source
