@@ -473,10 +473,9 @@ AwesomePMUCanvasController.prototype.onMapSourceLoaded = function () {
 
 AwesomePMUCanvasController.prototype.getMapTopLeft = function () {
     var top = this.map_.getBounds().getNorthEast().lat();
-    /*var center = this.map_.getCenter();
+    var center = this.map_.getCenter();
     var scale = Math.pow(2, this.map_.getZoom());
-    var left = center.lng() - (this.xp_ * 180) / (256 * scale);*/
-    var left = this.map_.getBounds().getSouthWest().lng();
+    var left = center.lng() - (this.xp_ * 180) / (256 * scale);
     return new google.maps.LatLng(top, left);
 };
 
@@ -562,8 +561,14 @@ AwesomePMUCanvasController.prototype.getMaxDisplayHue = function () {
 
 /*MaxDisplayHue setter*/
 AwesomePMUCanvasController.prototype.setMaxDisplayHue = function (num) {
+    var isRequired = num > this.maxHueToDisplay_;
     this.maxHueToDisplay_ = num;
-    this.onMapTransparencyChanged.apply(this);
+    if(isRequired){
+        this.onMapStateChanged.apply(this);
+    } else {
+        this.onMapTransparencyChanged.apply(this);
+    }
+    
 };
 
 /*
