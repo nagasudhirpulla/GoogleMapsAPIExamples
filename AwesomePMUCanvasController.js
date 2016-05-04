@@ -255,8 +255,8 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
         if((xpdestStart < 0 && xpdestEnd < 0 && ypdestStart < 0 && ypdestEnd < 0) || (xpdestStart > this.xp_ && xpdestEnd > this.xp_ && ypdestStart > this.yp_ && ypdestEnd > this.yp_)){
             continue;
         }
-        xpsource = point.x;
-        ypsource = point.y;
+        xpsource = Math.round(point.x);
+        ypsource = Math.round(point.y);
         var stopYIteration = false;
         //calculate the xpdest ypdest bounding boxes for 11 km or 0.1 degrees of radius lat long from source
         for (var xpdest = xpsource; xpdest <= xpdestEnd; xpdest++) {
