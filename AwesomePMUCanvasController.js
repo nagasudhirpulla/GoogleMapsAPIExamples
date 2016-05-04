@@ -252,16 +252,21 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
         ypdestStart = Math.round(pointTopLeft.y);
         xpdestEnd = Math.round(pointBottomRight.x);
         ypdestEnd = Math.round(pointBottomRight.y);
-        if(xpdestStart < 0 && xpdestEnd < 0 && ypdestStart < 0 && ypdestEnd < 0){
+        if((xpdestStart < 0 && xpdestEnd < 0 && ypdestStart < 0 && ypdestEnd < 0) || (xpdestStart > this.xp_ && xpdestEnd > this.xp_ && ypdestStart > this.yp_ && ypdestEnd > this.yp_)){
             continue;
         }
         xpsource = point.x;
         ypsource = point.y;
-        var circleXPntsCnt =  xpdestEnd - xpsource;
-        var circleYPntsCnt =  ypsource - ypdestEnd;
+        var stopYIteration = false;
         //calculate the xpdest ypdest bounding boxes for 11 km or 0.1 degrees of radius lat long from source
-        for (var xpdest = xpsource; xpdest < xpsource + circleXPntsCnt; xpdest++) {
-            for (var ypdest = ypsource; ypdest < xpdest; ypdest++) {
+        for (var xpdest = xpsource; xpdest <= xpdestEnd; xpdest++) {
+            stopYIteration = false;
+            for (var ypdest = ypsource; stopYIteration == true ; ypdest++) {
+                xpx = xpdest - xpsource;
+                ypx = ypdest - ypsource;
+                if((ypx >= xpx) || (ypdest > ypdestEnd)){
+                	stopYIteration = true;
+                }
                 //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
                 xCoordinates = [xpdest, -xpdest, xpdest, -xpdest, ypdest, -ypdest, ypdest, -ypdest];
                 yCoordinates = [ypdest, ypdest, -ypdest, -ypdest, xpdest, xpdest, -xpdest, -xpdest];
@@ -272,8 +277,6 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
                     yCoord = yCoordinates[coordIter];
                     if (this.filterDataArray_.data[(yCoord * this.xp_ + xCoord) * 4] == 255 && yCoord >= 0 && yCoord <= this.yp_ && xCoord >= 0 && xCoord <= this.xp_) {
                         if(!isValToAddCalculated){
-                            xpx = xpdest - xpsource;
-                            ypx = ypdest - ypsource;
                             valToAdd = vsource * Math.exp(-this.alpha_ * this.npx_ * Math.sqrt(xpx * xpx + this.npxRatioSquare_ * ypx * ypx));
                             isValToAddCalculated = true;
                         }
