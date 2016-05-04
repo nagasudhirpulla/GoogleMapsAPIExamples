@@ -237,6 +237,8 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     var isValToAddCalculated = false;
     var xCoordinates;
     var yCoordinates;
+    var xCoord;
+    var yCoord;
     for (var i = 0; i < sources.length; i++) {
         //skip from the for loop if sources status is not "OK"
         if (sources[i][6] != "OK") {
@@ -266,14 +268,16 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
                 isValToAddCalculated = false;
                 //First find if value needs to be calculated by checking if filter exists in any of the 8 quadrants
                 for(var coordIter = 0; coordIter < 8; coordIter++){
-                    if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255 && ypdest >= 0 && ypdest <= this.yp_ && xpdest >= 0 && xpdest <= this.xp_) {
-                        if(isValToAddCalculated){
+                    xCoord = xCoordinates[coordIter];
+                    yCoord = yCoordinates[coordIter];
+                    if (this.filterDataArray_.data[(yCoord * this.xp_ + xCoord) * 4] == 255 && yCoord >= 0 && yCoord <= this.yp_ && xCoord >= 0 && xCoord <= this.xp_) {
+                        if(!isValToAddCalculated){
                             xpx = xpdest - xpsource;
                             ypx = ypdest - ypsource;
                             valToAdd = vsource * Math.exp(-this.alpha_ * this.npx_ * Math.sqrt(xpx * xpx + this.npxRatioSquare_ * ypx * ypx));
                             isValToAddCalculated = true;
                         }
-                        this.canvasData_[(xCoordinates[coordIter] + yCoordinates[coordIter] * this.xp_)] += valToAdd;
+                        this.canvasData_[(xCoord + yCoord * this.xp_)] += valToAdd;
                     }
                 }
                 /*
