@@ -233,6 +233,10 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     var ypdest;
     var sources = this.getVoltagePoints();
     var sourceRad = this.sourceRadius_;
+    var valToAdd = 0;
+    var isValToAddCalculated = false;
+    var xCoordinates;
+    var yCoordinates;
     for (var i = 0; i < sources.length; i++) {
         //skip from the for loop if sources status is not "OK"
         if (sources[i][6] != "OK") {
@@ -242,22 +246,46 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
         point = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
         pointTopLeft = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] + sourceRad, sources[i][1] - sourceRad));
         pointBottomRight = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] - sourceRad, sources[i][1] + sourceRad));
-        xpdestStart = pointTopLeft.x < 0 ? 0 : Math.round(pointTopLeft.x);
-        ypdestStart = pointTopLeft.y < 0 ? 0 : Math.round(pointTopLeft.y);
-        xpdestEnd = pointBottomRight.x < 0 ? 0 : Math.round(pointBottomRight.x);
-        ypdestEnd = pointBottomRight.y < 0 ? 0 : Math.round(pointBottomRight.y);
+        xpdestStart = Math.round(pointTopLeft.x);
+        ypdestStart = Math.round(pointTopLeft.y);
+        xpdestEnd = Math.round(pointBottomRight.x);
+        ypdestEnd = Math.round(pointBottomRight.y);
+        if(xpdestStart < 0 && xpdestEnd < 0 && ypdestStart < 0 && ypdestEnd < 0){
+            continue;
+        }
         xpsource = point.x;
         ypsource = point.y;
+        var circleXPntsCnt =  xpdestEnd - xpsource;
+        var circleYPntsCnt =  ypsource - ypdestEnd;
         //calculate the xpdest ypdest bounding boxes for 11 km or 0.1 degrees of radius lat long from source
-        for (var xpdest = xpdestStart; xpdest < xpdestEnd; xpdest++) {
-            for (var ypdest = ypdestStart; ypdest < ypdestEnd; ypdest++) {
+        for (var xpdest = xpsource; xpdest < xpsource + circleXPntsCnt; xpdest++) {
+            for (var ypdest = ypsource; ypdest < xpdest; ypdest++) {
                 //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
+                xCoordinates = [xpdest, -xpdest, xpdest, -xpdest, ypdest, -ypdest, ypdest, -ypdest];
+                yCoordinates = [ypdest, ypdest, -ypdest, -ypdest, xpdest, xpdest, -xpdest, -xpdest];
+                isValToAddCalculated = false;
+                //First find if value needs to be calculated by checking if filter exists in any of the 8 quadrants
+                for(var coordIter = 0; coordIter < 8; coordIter++){
+                    if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255 && ypdest >= 0 && ypdest <= this.yp_ && xpdest >= 0 && xpdest <= this.xp_) {
+                        if(isValToAddCalculated){
+                            xpx = xpdest - xpsource;
+                            ypx = ypdest - ypsource;
+                            valToAdd = vsource * Math.exp(-this.alpha_ * this.npx_ * Math.sqrt(xpx * xpx + this.npxRatioSquare_ * ypx * ypx));
+                            isValToAddCalculated = true;
+                        }
+                        this.canvasData_[(xCoordinates[coordIter] + yCoordinates[coordIter] * this.xp_)] += valToAdd;
+                    }
+                }
+                /*
+                *Old computation without quadrant duplication logic
                 ////if xpdest and ypdest belong to filter, then calculate the intensity
-                if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255) {
+                if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255 && ypdest > 0 && ypdest < this.yp_ && xpdest > 0 && xpdest < this.xp_) {
                     xpx = xpdest - xpsource;
                     ypx = ypdest - ypsource;
-                    this.canvasData_[(xpdest + ypdest * this.xp_)] += vsource * Math.exp(-this.alpha_ * this.npx_ * Math.sqrt(xpx * xpx + this.npxRatioSquare_ * ypx * ypx));
+                    valToAdd = vsource * Math.exp(-this.alpha_ * this.npx_ * Math.sqrt(xpx * xpx + this.npxRatioSquare_ * ypx * ypx));
+                    this.canvasData_[(xpdest + ypdest * this.xp_)] += valToAdd;
                 }
+                */
             } //y iterator
         } //x iterator
     } //source iterator
