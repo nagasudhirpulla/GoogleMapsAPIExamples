@@ -269,8 +269,8 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
                 	continue;
                 }
                 //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
-                xCoordinates = [xpdest, xpdest - 2*xpx, xpdest        , xpdest - 2*xpx, xpsource + ypx, ypsource - 2*ypx, xpsource + ypx, ypsource - 2*ypx];
-                yCoordinates = [ypdest, ypdest        , ypdest - 2*ypx, ypdest - 2*ypx, ypsource + xpx, ypsource + xpx, xpsource - 2*xpx, xpsource - 2*xpx];
+                xCoordinates = [xpdest, xpsource - xpx, xpdest        , xpsource - xpx, xpsource + ypx, xpsource - ypx, xpsource + ypx, xpsource - ypx];
+                yCoordinates = [ypdest, ypdest        , ypsource - ypx, ypsource - ypx, ypsource + xpx, ypsource + xpx, ypsource - xpx, ypsource - xpx];
                 isValToAddCalculated = false;
                 //First find if value needs to be calculated by checking if filter exists in any of the 8 quadrants
                 for(var coordIter = 0; coordIter < 8; coordIter++){
