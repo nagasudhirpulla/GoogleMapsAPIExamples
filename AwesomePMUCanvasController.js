@@ -276,7 +276,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
                 for(var coordIter = 0; coordIter < 8; coordIter++){
                     xCoord = xCoordinates[coordIter];
                     yCoord = yCoordinates[coordIter];
-                    if(xpx == ypx){
+                    if(xpx == 0 || ypx == 0){
                     	continue;	
                     }
                     if (this.filterDataArray_.data[(yCoord * this.xp_ + xCoord) * 4] == 255 && yCoord >= 0 && yCoord <= this.yp_ && xCoord >= 0 && xCoord <= this.xp_) {
