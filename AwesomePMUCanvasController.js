@@ -264,7 +264,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             for (var ypdest = ypsource; stopYIteration == false ; ypdest++) {
                 xpx = xpdest - xpsource;
                 ypx = ypdest - ypsource;
-                if((ypx >= xpx) || (ypdest > ypdestEnd)){
+                if((ypx > xpx) || (ypdest > ypdestEnd)){
                 	stopYIteration = true;
                 	continue;
                 }
@@ -278,6 +278,8 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
                     yCoord = yCoordinates[coordIter];
                     if(ypx == 0  && (coordIter == 1 || coordIter == 2 || coordIter == 5 || coordIter == 7)){
                     	continue;	
+                    } else if (ypx == xpx && coordIter < 4){
+                    	continue;
                     }
                     if (this.filterDataArray_.data[(yCoord * this.xp_ + xCoord) * 4] == 255 && yCoord >= 0 && yCoord <= this.yp_ && xCoord >= 0 && xCoord <= this.xp_) {
                         if(!isValToAddCalculated){
