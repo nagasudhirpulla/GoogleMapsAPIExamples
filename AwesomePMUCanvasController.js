@@ -261,7 +261,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
         //calculate the xpdest ypdest bounding boxes for 11 km or 0.1 degrees of radius lat long from source
         for (var xpdest = xpsource; xpdest <= xpdestEnd; xpdest++) {
             stopYIteration = false;
-            for (var ypdest = ypsource; stopYIteration == true ; ypdest++) {
+            for (var ypdest = ypsource; stopYIteration == false ; ypdest++) {
                 xpx = xpdest - xpsource;
                 ypx = ypdest - ypsource;
                 if((ypx >= xpx) || (ypdest > ypdestEnd)){
