@@ -286,7 +286,13 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
                             valToAdd = vsource * Math.exp(-this.alpha_ * this.npx_ * Math.sqrt(xpx * xpx + this.npxRatioSquare_ * ypx * ypx));
                             isValToAddCalculated = true;
                         }
-                        this.canvasData_[(xCoord + yCoord * this.xp_)] += valToAdd;
+                        //Implementing the overriding contour values instead of added contour values
+                        if (valToAdd > this.canvasData_[(xCoord + yCoord * this.xp_)] && valToAdd > 1){
+                            this.canvasData_[(xCoord + yCoord * this.xp_)] = valToAdd;
+                        } else if (valToAdd < this.canvasData_[(xCoord + yCoord * this.xp_)] && valToAdd < 1 && this.canvasData_[(xCoord + yCoord * this.xp_)] > 0.5){
+                            this.canvasData_[(xCoord + yCoord * this.xp_)] = valToAdd;
+                        }
+                        //this.canvasData_[(xCoord + yCoord * this.xp_)] += valToAdd;
                     }
                 }
                 /*
