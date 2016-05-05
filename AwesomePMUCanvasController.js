@@ -287,9 +287,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
                             isValToAddCalculated = true;
                         }
                         //Implementing the overriding contour values instead of added contour values
-                        if (valToAdd > this.canvasData_[(xCoord + yCoord * this.xp_)] && valToAdd > 1){
-                            this.canvasData_[(xCoord + yCoord * this.xp_)] = valToAdd;
-                        } else if (valToAdd < this.canvasData_[(xCoord + yCoord * this.xp_)] && valToAdd < 1 && this.canvasData_[(xCoord + yCoord * this.xp_)] > 0.5){
+                        if (valToAdd > this.canvasData_[(xCoord + yCoord * this.xp_)]){
                             this.canvasData_[(xCoord + yCoord * this.xp_)] = valToAdd;
                         }
                         //this.canvasData_[(xCoord + yCoord * this.xp_)] += valToAdd;
