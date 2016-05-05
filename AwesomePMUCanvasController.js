@@ -286,11 +286,23 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
                             valToAdd = vsource * Math.exp(-this.alpha_ * this.npx_ * Math.sqrt(xpx * xpx + this.npxRatioSquare_ * ypx * ypx));
                             isValToAddCalculated = true;
                         }
+                        /**implementing overriding contour**/
+                        var canvasPixel = this.canvasData_[(xCoord + yCoord * this.xp_)];
                         //Implementing the overriding contour values instead of added contour values
-                        if (valToAdd > this.canvasData_[(xCoord + yCoord * this.xp_)]){
-                            this.canvasData_[(xCoord + yCoord * this.xp_)] = valToAdd;
+                        if (valToAdd >= 1 && canvasPixel >= 1 && valToAdd >= canvasPixel){
+                            canvasPixel = valToAdd;
+                        } else if (valToAdd < 1 && canvasPixel < 1 && canvasPixel > 0 && valToAdd < canvasPixel){
+                            canvasPixel = valToAdd;
+                        } else {
+                            //the unplanned case...
+                            //here we just go for summing contour
+                            canvasPixel += valToAdd;
                         }
+                        this.canvasData_[(xCoord + yCoord * this.xp_)] = canvasPixel;
+                        /**implementing overriding contour**/
+                        /**implementing summing contour**/
                         //this.canvasData_[(xCoord + yCoord * this.xp_)] += valToAdd;
+                        /**implementing summing contour**/
                     }
                 }
                 /*
