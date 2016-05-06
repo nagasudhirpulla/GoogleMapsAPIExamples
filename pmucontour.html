@@ -62,6 +62,16 @@
     </div>
     <br>
 
+    <h3 class="showHideButton" onclick="showHide(this,'> SourceRadius','^ SourceRadius')"> > SourceRadius</h3><br>
+
+    <div class="hidingClass" style="display:none;margin-top:5px">
+        <input id="sourceRadiusControl" style="width:50px;" type="text" onkeypress="return isNumberKey(event, this.id)"/>
+        <!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
+        <button onclick="getSourceRadius()" style="margin:0px 10px;">GetSourceRadius</button>
+        <button onclick="setSourceRadius()">SetSourceRadius</button>
+    </div>
+    <br>
+    
     <h3 class="showHideButton" onclick="showHide(this,'> Opacity','^ Opacity')"> > Opacity</h3><br>
 
     <div class="hidingClass" style="display:none;margin-top:5px">
