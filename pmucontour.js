@@ -22,7 +22,7 @@ document.onreadystatechange = function () {
             {
                 'consoleWriteFunction': WriteLineConsole,
                 'computingExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid rgb(255,0,0)"; },
-                'computingStopExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid rgb(0,255,0)" };
+                'computingStopExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid rgb(0,255,0)"; }
             }
         );
 
