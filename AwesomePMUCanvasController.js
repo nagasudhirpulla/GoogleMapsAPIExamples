@@ -76,6 +76,12 @@ AwesomePMUCanvasController.prototype.setOptions = function (options) {
     if (options.sources !== undefined) {
         this.setVoltagePoints(options.sources);
     }
+    if (options.computingExpressFunction !== undefined) {
+        this.setComputingExpressFunction(options.computingExpressFunction);
+    }
+    if (options.computingStopExpressFunction !== undefined) {
+        this.setComputingStopExpressFunction(options.computingStopExpressFunction);
+    }
 };
 
 AwesomePMUCanvasController.prototype.setConsoleWriteFunction = function (opt_consoleWriteFunction) {
@@ -88,6 +94,14 @@ AwesomePMUCanvasController.prototype.setMapCenter = function (opt_mapCenter) {
 
 AwesomePMUCanvasController.prototype.getMapCenter = function () {
     return this.mapCenter_;
+};
+
+AwesomePMUCanvasController.prototype.setComputingExpressFunction = function (opt_computingExpressFunction) {
+    this.ComputingExpressFunction_ = opt_computingExpressFunction;
+};
+
+AwesomePMUCanvasController.prototype.setComputingStopExpressFunction = function (opt_computingStopExpressFunction) {
+    this.ComputingStopExpressFunction_ = opt_computingStopExpressFunction;
 };
 
 AwesomePMUCanvasController.prototype.onMapMoveZoom = function () {
@@ -190,6 +204,7 @@ AwesomePMUCanvasController.prototype.addVoltPoint = function (source) {
 };
 
 AwesomePMUCanvasController.prototype.runAlgorithm = function () {
+	this.ComputingExpressFunction_();
     this.plottedZoom_ = this.map_.getZoom();
     this.plottedTopLeft_ = this.getMapTopLeft();
     /*
@@ -422,6 +437,8 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     }
     this.crapCtx_.clearRect(0, 0, this.crapCanvas_.width, this.crapCanvas_.height);
     this.crapCtx_.drawImage(this.c_, 0, 0);
+    //computing end express function = server fetch start express function
+    ComputingStopExpressFunction_();
 };
 
 AwesomePMUCanvasController.prototype.onDomReady = function () {
