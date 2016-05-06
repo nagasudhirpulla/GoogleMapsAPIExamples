@@ -701,6 +701,16 @@ AwesomePMUCanvasController.prototype.getPUFromHue = function(hue){
 AwesomePMUCanvasController.prototype.getMinDisplayPU = function(){
     return this.getPUFromHue(this.maxHueToDisplay_);
 }
+/*Get source Radius*/
+AwesomePMUCanvasController.prototype.getSourceRadius = function () {
+    return this.sourceRadius_;
+};
+/*Set source Radius*/
+AwesomePMUCanvasController.prototype.setSourceRadius = function (num) {
+    this.sourceRadius_ = num;
+    this.onMapStateChanged.apply(this);
+};
+
 /*
  * HSV to RGB color conversion
  *
