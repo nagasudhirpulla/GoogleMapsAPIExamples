@@ -214,12 +214,15 @@ function getTrans() {
 /*Transperency setter*/
 function setTrans() {
     var num = Number(document.getElementById("transControl").value);
-    if (!isNaN(num) && num >= 0 && num <= 255) {
+    if (!isNaN(num) && num >= 0) {
+        if(num > 255){
+            num = 255;
+        }
         document.getElementById("transControl").style.color = 'black';
-        WriteLineConsole("Set the canvas Transperency to " + num, "success");
+        WriteLineConsole("Set the canvas opacity to " + num, "success");
         pmuVisualizer.setTrans(num);
     } else {
-        WriteLineConsole("Please enter numeric Input between 0 and 255", "error");
+        WriteLineConsole("Please set canvas opacity between 0 and 255", "error");
         document.getElementById("transControl").style.color = 'red';
     }
 }
@@ -240,7 +243,24 @@ function setMaxDisplayHue() {
         document.getElementById("maxDisplayHueControl").style.color = 'red';
     }
 }
-
+/*MinPerUnit setter*/
+function setMinDisplayPU() {
+    var num = Number(document.getElementById("maxDisplayHueControl").value);
+    var hotpu = pmuVisualizer.hotColorPU_;
+    if (!isNaN(num) && num >= 0 && num <= hotpu) {
+        document.getElementById("maxDisplayHueControl").style.color = 'black';
+        WriteLineConsole("Set the canvas Min Per Unit Display to " + num, "success");
+        pmuVisualizer.setMaxDisplayHue(pmuVisualizer.getHueFromPU(num));
+    } else {
+        WriteLineConsole("Please set minimum display per unit between 0 and " + hotpu, "error");
+        document.getElementById("maxDisplayHueControl").style.color = 'red';
+    }
+}
+/*MinPerUnit getter*/
+function getMinDisplayPU() {
+    document.getElementById("maxDisplayHueControl").value = "" + pmuVisualizer.getMinDisplayPU();
+    document.getElementById("maxDisplayHueControl").style.color = 'blue';
+}
 //Utility functions
 function addVoltPoint() {
     var newName = document.getElementById("newVoltPointName").value;
