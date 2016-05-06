@@ -20,7 +20,10 @@ document.onreadystatechange = function () {
     if (document.readyState == "interactive") {
         pmuVisualizer = new AwesomePMUCanvasController(
             {
-                'consoleWriteFunction': WriteLineConsole
+                'consoleWriteFunction': WriteLineConsole,
+                'computingExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid rgb(255,0,0)"; };
+                'serverFetchStartExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid rgb(0,255,0)"; };
+                'serverFetchStopExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid #999999"; };
             }
         );
 
