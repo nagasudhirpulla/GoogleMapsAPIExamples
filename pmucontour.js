@@ -22,8 +22,7 @@ document.onreadystatechange = function () {
             {
                 'consoleWriteFunction': WriteLineConsole,
                 'computingExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid rgb(255,0,0)"; };
-                'serverFetchStartExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid rgb(0,255,0)"; };
-                'serverFetchStopExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid #999999"; };
+                'computingStopExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid rgb(0,255,0)"; };
             }
         );
 
@@ -306,8 +305,12 @@ function getFromPointsDataServer() {
         return;
     }
     setIsBusy(true);
+    //express server fetch start
+    document.getElementById("wrapper").style.border = "2px solid rgb(0,255,0)";
     $.get("http://localhost:4542/values?dnapoints=" + pmuVisualizer.queryStringParamsForData_, function (data, status) {
         if (status == "success") {
+            //express server fetch stop / finish
+            document.getElementById("wrapper").style.border = "2px solid #999999";
             //console.log(JSON.parse(data));
             //We get pointsArray in the order of sources Array
             var pointsArray = JSON.parse(data);
