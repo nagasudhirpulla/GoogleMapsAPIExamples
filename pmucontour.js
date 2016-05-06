@@ -187,6 +187,7 @@ function onMapSourceLoaded() {
     getAlpha();
     getTrans();
     getMaxDisplayHue();
+    getSourceRadius();
 }
 
 /*Alpha getter*/
@@ -241,6 +242,23 @@ function setMaxDisplayHue() {
     } else {
         WriteLineConsole("Please enter numeric Input between 0 and 255", "error");
         document.getElementById("maxDisplayHueControl").style.color = 'red';
+    }
+}
+/*SourceRadius getter*/
+function getSourceRadius() {
+    document.getElementById("sourceRadiusControl").value = "" + pmuVisualizer.getSourceRadius();
+    document.getElementById("sourceRadiusControl").style.color = 'blue';
+}
+/*SourceRadius setter*/
+function setSourceRadius() {
+    var num = Number(document.getElementById("sourceRadiusControl").value);
+    if (!isNaN(num) && num >= 0 && num <= 20) {
+        document.getElementById("sourceRadiusControl").style.color = 'black';
+        WriteLineConsole("Set the sourceRadius to " + num, "success");
+        pmuVisualizer.setSourceRadius(num);
+    } else {
+        WriteLineConsole("Please set sourceRadius between 0 and 20", "error");
+        document.getElementById("sourceRadiusControl").style.color = 'red';
     }
 }
 /*MinPerUnit setter*/
