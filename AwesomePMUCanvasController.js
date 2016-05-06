@@ -438,7 +438,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     this.crapCtx_.clearRect(0, 0, this.crapCanvas_.width, this.crapCanvas_.height);
     this.crapCtx_.drawImage(this.c_, 0, 0);
     //computing end express function = server fetch start express function
-    ComputingStopExpressFunction_();
+    this.ComputingStopExpressFunction_();
 };
 
 AwesomePMUCanvasController.prototype.onDomReady = function () {
