@@ -292,11 +292,11 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
                         /**implementing overriding contour**/
                         var canvasPixel = this.canvasData_[(xCoord + yCoord * this.xp_)];
                         //Implementing the overriding contour values instead of added contour values
-                        if(valToAdd <= 1 && canvasPixel <= 1 && valToAdd < canvasPixel){
-                            //underVolatageCondition
-                            canvasPixel = valToAdd;
-                        } else if (valToAdd >= 1 && canvasPixel >= 1 && valToAdd > canvasPixel){
+                        if(valToAdd >= 1 && canvasPixel >= 1 && valToAdd > canvasPixel){
                             //overVolatageCondition
+                            canvasPixel = valToAdd;
+                        } else if (valToAdd <= 1 && canvasPixel <= 1 && valToAdd < canvasPixel){
+                            //underVolatageCondition
                             canvasPixel = valToAdd;
                         } else if (Math.abs(valToAdd - 1) > Math.abs(canvasPixel - 1)){
                             //mixUpCondition
