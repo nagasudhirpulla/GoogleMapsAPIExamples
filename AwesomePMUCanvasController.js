@@ -38,7 +38,7 @@ function AwesomePMUCanvasController(opt_options) {
     this.queryStringParamsForData_ = this.sources_.map(function (obj) {
         return obj[3];
     }).join(',');
-    this.sourceRadius_ = 0.3;
+    this.sourceRadius_ = 1;//111 kilometres
     this.alpha_ = 1.5;
     this.transparency_ = 120; //between 0 - 255
     this.canvasData_ = [];
