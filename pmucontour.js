@@ -165,6 +165,9 @@ function isNumberKey(evt, id) {
         } else if (id == "maxDisplayHueControl"){
             setMaxDisplayHue();
             return true;
+        } else if (id == "sourceRadiusControl"){
+            setSourceRadius();
+            return true;
         }
         return true;
     }
