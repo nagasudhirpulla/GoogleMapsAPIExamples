@@ -214,7 +214,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     //clear and initialize
     this.canvasData_ = [];
     for (var iter = 0; iter < this.xp_ * this.yp_; iter++) {
-        this.canvasData_[iter] = 0;
+        this.canvasData_[iter] = 1;
     }
     this.normalisedCanvasData_ = [];
     //For each source
@@ -222,6 +222,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     var pointTopLeft;
     var pointBottomRight;
     var vsource;
+    var vsourceError;
     var xpsource;
     var ypsource;
     var xpx;
@@ -245,6 +246,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
             continue;
         }
         vsource = sources[i][2];
+        vsourceError = vsource - 1;
         point = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0], sources[i][1]));
         pointTopLeft = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] + sourceRad, sources[i][1] - sourceRad));
         pointBottomRight = this.projection_.fromLatLngToContainerPixel(new google.maps.LatLng(sources[i][0] - sourceRad, sources[i][1] + sourceRad));
@@ -283,20 +285,21 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
                     }
                     if (this.filterDataArray_.data[(yCoord * this.xp_ + xCoord) * 4] == 255 && yCoord >= 0 && yCoord <= this.yp_ && xCoord >= 0 && xCoord <= this.xp_) {
                         if(!isValToAddCalculated){
-                            valToAdd = vsource * Math.exp(-this.alpha_ * this.npx_ * Math.sqrt(xpx * xpx + this.npxRatioSquare_ * ypx * ypx));
+                            valToAdd = vsourceError * Math.exp(-this.alpha_ * this.npx_ * Math.sqrt(xpx * xpx + this.npxRatioSquare_ * ypx * ypx));
+                            valToAdd += 1;
                             isValToAddCalculated = true;
                         }
                         /**implementing overriding contour**/
                         var canvasPixel = this.canvasData_[(xCoord + yCoord * this.xp_)];
                         //Implementing the overriding contour values instead of added contour values
-                        var underVolatageCondition = valToAdd < 1 && canvasPixel < 1 && canvasPixel > 0 && valToAdd < canvasPixel;
-                        var overVolatageCondition = valToAdd >= 1 && canvasPixel >= 1 && valToAdd >= canvasPixel;
-                        var mixUpCondition = valToAdd > canvasPixel;
-                        if(underVolatageCondition){
+                        if(valToAdd <= 1 && canvasPixel <= 1 && valToAdd < canvasPixel){
+                            //underVolatageCondition
                             canvasPixel = valToAdd;
-                        } else if (overVolatageCondition){
+                        } else if (valToAdd >= 1 && canvasPixel >= 1 && valToAdd > canvasPixel){
+                            //overVolatageCondition
                             canvasPixel = valToAdd;
-                        } else if (mixUpCondition){
+                        } else if (Math.abs(valToAdd - 1) > Math.abs(canvasPixel - 1)){
+                            //mixUpCondition
                             canvasPixel = valToAdd;
                         }
                         this.canvasData_[(xCoord + yCoord * this.xp_)] = canvasPixel;
