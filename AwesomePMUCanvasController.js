@@ -699,7 +699,7 @@ AwesomePMUCanvasController.prototype.getPUFromHue = function(hue){
 }
 /*Get Minimum display per unit value*/
 AwesomePMUCanvasController.prototype.getMinDisplayPU = function(){
-    return this.maxHueToDisplay_;
+    return this.getPUFromHue(this.maxHueToDisplay_);
 }
 /*
  * HSV to RGB color conversion
