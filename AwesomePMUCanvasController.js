@@ -204,7 +204,7 @@ AwesomePMUCanvasController.prototype.addVoltPoint = function (source) {
 };
 
 AwesomePMUCanvasController.prototype.runAlgorithm = function () {
-	this.ComputingExpressFunction_();
+    this.ComputingExpressFunction_();
     this.plottedZoom_ = this.map_.getZoom();
     this.plottedTopLeft_ = this.getMapTopLeft();
     /*
@@ -374,24 +374,26 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     //Convert pu data values to color values so that <=0.95 is blue and >=1.05 is red
     //normalisedValue = hueDiff * (1 - value/(maxval-minval));
     //normalisedValue = hueDiff * (1 - value/(valDiff)); where valDiff = maxval-minval;
+    var hotColorPU = this.hotColorPU_;
+    var coolColorPU = this.coolColorPU_;
+    var hotCoolPUDiff = hotColorPU - coolColorPU;
     for (xpdest = 0; xpdest < this.xp_; xpdest++) {
         for (ypdest = 0; ypdest < this.yp_; ypdest++) {
             //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
+            //hue getter stub
             var tempColor;
             var tempVal;
-            var hotColorPU = this.hotColorPU_;
-            var coolColorPU = this.coolColorPU_;
-            var hotCoolPUDiff = hotColorPU - coolColorPU;
             if (this.filterDataArray_.data[(ypdest * this.xp_ + xpdest) * 4] == 255) {
             	//if data is under the filter...
-            	tempColor = this.maxHue_; //this is for hottest color pu value
-		tempVal = this.canvasData_[(xpdest + ypdest * this.xp_)];
-		if(tempVal<=coolColorPU){
-			tempColor = 0;	//this is for coolest color pu value
-		} else if(tempVal<hotColorPU){
-			tempColor = this.hueDiff_ * ((tempVal - coolColorPU)/hotCoolPUDiff);
-		}
-                this.normalisedCanvasData_[(xpdest + ypdest * this.xp_)] = tempColor;//Use this for RGB version
+                tempColor = this.maxHue_; //this is for hottest color pu value
+                tempVal = this.canvasData_[(xpdest + ypdest * this.xp_)];
+                if(tempVal<=coolColorPU){
+                	tempColor = 0;	//this is for coolest color pu value
+                } else if(tempVal<hotColorPU){
+                	tempColor = this.hueDiff_ * ((tempVal - coolColorPU)/hotCoolPUDiff);
+                }
+                this.normalisedCanvasData_[(xpdest + ypdest * this.xp_)] = this.maxHue_ - tempColor;//Use this for RGB version
+                //getHueFromPU
             }
 
         } //y iterator
@@ -406,7 +408,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     for (xpdest = 0; xpdest < this.xp_; xpdest++) {
         for (ypdest = 0; ypdest < this.yp_; ypdest++) {
             //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
-            hue = this.maxHue_ - this.normalisedCanvasData_[(xpdest + ypdest * this.xp_)];
+            hue = this.normalisedCanvasData_[(xpdest + ypdest * this.xp_)];
             var tempColorRGB = this.hsvToRgb(hue, 1, 1);
             imageData.data[(ypdest * this.xp_ + xpdest) * 4] = tempColorRGB[0];
             imageData.data[(ypdest * this.xp_ + xpdest) * 4 + 1] = tempColorRGB[1];
@@ -667,7 +669,38 @@ AwesomePMUCanvasController.prototype.setMaxDisplayHue = function (num) {
     }
     
 };
-
+/*per Unit to hue converter setter*/
+AwesomePMUCanvasController.prototype.getHueFromPU = function(tempVal){
+    var hotColorPU = this.hotColorPU_;
+    var coolColorPU = this.coolColorPU_;
+    var hotCoolPUDiff = hotColorPU - coolColorPU;
+    var tempColor;
+    tempColor = this.maxHue_; //this is for hottest color pu value
+    if(tempVal<=coolColorPU){
+    	tempColor = 0;	//this is for coolest color pu value
+    } else if(tempVal<hotColorPU){
+    	tempColor = this.hueDiff_ * ((tempVal - coolColorPU)/hotCoolPUDiff);
+    }
+    return this.maxHue_ - tempColor;
+}
+/*hue to pu conversion*/
+AwesomePMUCanvasController.prototype.getPUFromHue = function(hue){
+    var hotColorPU = this.hotColorPU_;
+    var coolColorPU = this.coolColorPU_;
+    var hotCoolPUDiff = hotColorPU - coolColorPU;
+    if(hue > this.maxHue_)
+    {
+        return this.maxHue_;
+    } else if (hue < this.minHue_) {
+        return this.minHue_;
+    } else {
+        return (((this.maxHue_ - hue) * hotCoolPUDiff) / this.hueDiff_) + coolColorPU;
+    }
+}
+/*Get Minimum display per unit value*/
+AwesomePMUCanvasController.prototype.getMinDisplayPU = function(){
+    return this.maxHueToDisplay_;
+}
 /*
  * HSV to RGB color conversion
  *
