@@ -54,6 +54,8 @@ function AwesomePMUCanvasController(opt_options) {
     this.minHue_ = 0;
     this.maxHueToDisplay_ = this.maxHue_;
     this.hueDiff_ = this.maxHue_ - this.minHue_; //Lets go for red color for now
+    this.hueParts_ = 12;
+    this.hueDivider_ = Math.round(this.hueDiff_ / this.hueParts_);
     this.hotColorPU_ = 1.05;
     this.coolColorPU_ = 0.95;
     /**
@@ -414,7 +416,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
         for (ypdest = 0; ypdest < this.yp_; ypdest++) {
             //i = source iterator; xpdest = x axis iterator; ypdest = y axis iterator
             hue = this.normalisedCanvasData_[(xpdest + ypdest * this.xp_)];
-            var tempColorRGB = this.hsvToRgb(hue, 1, 1);
+            var tempColorRGB = this.hsvToRgb(hue - hue % this.hueDivider_ , 1, 1);
             imageData.data[(ypdest * this.xp_ + xpdest) * 4] = tempColorRGB[0];
             imageData.data[(ypdest * this.xp_ + xpdest) * 4 + 1] = tempColorRGB[1];
             imageData.data[(ypdest * this.xp_ + xpdest) * 4 + 2] = tempColorRGB[2];
