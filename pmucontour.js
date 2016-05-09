@@ -406,7 +406,7 @@ function getFromFrames() {
     getIsFrameBusy(true);
     //express frame fetch start
     document.getElementById("wrapper").style.border = "2px solid rgb(0,255,0)";
-    var pointsArray = timeFrames[frameToFetch];
+    var frameData = timeFrames[frameToFetch];
     //MODIFY THE sources ARRAY from pointsArray
     for (var i = 0; i < frameData.length; i++) {
         pmuVisualizer.sources_[i][2] = frameData[i];
