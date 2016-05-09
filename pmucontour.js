@@ -379,3 +379,52 @@ function getIsBusy() {
 function setIsBusy(val) {
     isBusy = val;
 }
+
+var frameTimingVar;
+var frameToFetch = 0;
+//Timing function
+function startFrameFetching() {
+    pauseFetching();
+    WriteLineConsole("Starting Frame Data Fetch", "info");
+    frameTimingVar = setInterval(getFromFrames, 2000);
+}
+
+//Timing function
+function pauseFrameFetching() {
+    frameToFetch = 0;
+    WriteLineConsole("Pausing Frame Data Fetch", "warning");
+    clearInterval(frameTimingVar);
+}
+
+//Timing function
+function getFromFrames() {
+    if (getIsFrameBusy()) {
+        return;
+    }
+    getIsFrameBusy(true);
+    //express frame fetch start
+    document.getElementById("wrapper").style.border = "2px solid rgb(0,255,0)";
+    var pointsArray = timeFrames[frameToFetch];
+    //MODIFY THE sources ARRAY from pointsArray
+    for (var i = 0; i < frameData.length; i++) {
+        pmuVisualizer.sources_[i][2] = frameData[i];
+    }
+    //RUN the plotting algorithm
+    pmuVisualizer.runAlgorithm();
+    setIsFrameBusy(false);
+    //express server fetch stop / finish
+    document.getElementById("wrapper").style.border = "2px solid #999999";
+    frameToFetch++;
+    if(frameToFetch == 97){
+        pauseFrameFetching();
+    }
+}
+//isBusy getter
+function getIsFrameBusy() {
+    return isFrameBusy;
+}
+
+//isBusy setter
+function setIsFrameBusy(val) {
+    isFrameBusy = val;
+}
