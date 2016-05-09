@@ -409,7 +409,7 @@ function getFromFrames() {
     var frameData = timeFrames.frames[frameToFetch];
     //MODIFY THE sources ARRAY from pointsArray
     for (var i = 0; i < frameData.length; i++) {
-        pmuVisualizer.sources_[i][2] = frameData[i];
+        pmuVisualizer.sources_[i][2] = (frameData[i] * 1.73205080757) / pmuVisualizer.sources_[i][4];
     }
     //RUN the plotting algorithm
     pmuVisualizer.runAlgorithm();
