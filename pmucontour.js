@@ -396,6 +396,8 @@ function pauseFrameFetching() {
     clearInterval(frameTimingVar);
 }
 
+var isFrameBusy = false;
+
 //Timing function
 function getFromFrames() {
     if (getIsFrameBusy()) {
