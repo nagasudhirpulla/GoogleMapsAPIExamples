@@ -203,6 +203,17 @@ function createLegend(){
         legendCanvasCtx.lineTo(legendWidth,i);
         legendCanvasCtx.stroke();
     }
+    //draw labels
+    var lowVal = 0.95;
+    var highVal = 1.05;
+    var parts = 10;
+    var label;
+    var labelFactor = (highVal - lowVal + 1) / parts;
+    for(i = 0; i < parts; i++){
+        label = highVal - i * labelFactor;
+        legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
+        legendCanvasCtx.strokeText(label, legendWidth + 2, i * ( canvasHgt / parts ) );
+    }
 }
 function onMapSourceLoaded() {
     //initialize controller
