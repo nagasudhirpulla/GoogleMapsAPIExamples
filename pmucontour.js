@@ -189,7 +189,7 @@ function createLegend(){
     var legendCanvas = document.getElementById("right_pane_canvas");
     var legendCanvasCtx = legendCanvas.getContext("2d");
     var canvasHgt = legendCanvas.height;
-    var legendWidth = Math.Round(legendCanvas.width / 3);
+    var legendWidth = Math.round(legendCanvas.width / 3);
     var hueScalingFactor = (180 - 0)/canvasHgt;
     var hue;
     var rgbColor;
