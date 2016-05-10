@@ -194,6 +194,7 @@ function createLegend(){
     var hue;
     var rgbColor;
     legendCanvasCtx.lineWidth = 1;
+    legendCanvasCtx.font = "12px Arial";
     for(var i = 0; i < canvasHgt; i++){
         hue = i * hueScalingFactor;
         rgbColor = pmuVisualizer.hsvToRgb(hue , 1, 1);
