@@ -189,6 +189,7 @@ function createLegend(){
     var legendCanvas = document.getElementById("right_pane_canvas");
     var legendCanvasCtx = legendCanvas.getContext("2d");
     var canvasHgt = legendCanvas.style.height;
+    canvasHgt = canvasHgt.substring(0, canvasHgt.length-2);
     var hueScalingFactor = (180 - 0)/canvasHgt;
     var hue;
     var rgbColor;
