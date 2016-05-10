@@ -177,12 +177,31 @@ function isNumberKey(evt, id) {
 //On DOM ready for manipulation, sources and assets may not have been loaded
 function onDomReady() {
     //get Console and SourceTable objects
-
     mConsole = document.getElementById("console");
     mSourceTable = document.getElementById("mSourceTable");
     pmuVisualizer.setPaintCanvas(document.getElementById("myCanvas"));
     pmuVisualizer.onDomReady();
     addVoltPointsToTable();
+    createLegend();
+}
+
+function createLegend(){
+    var legendCanvas = document.getElementById("right_pane_canvas");
+    var legendCanvasCtx = legendCanvas.getContext("2d");
+    var canvasHgt = legendCanvas.style.height;
+    var hueScalingFactor = (180 - 0)/canvasHgt;
+    var hue;
+    var rgbColor;
+    legendCanvasCtx.lineWidth = 1;
+    for(var i = 0; i < canvasHgt; i++){
+        hue = i * hueScalingFactor;
+        rgbColor = pmuVisualizer.hsvToRgb(hue , 1, 1);
+        legendCanvasCtx.strokeStyle = "rgb("+rgbColor[0]+","+rgbColor[1]+","+rgbColor[2]+")";
+        legendCanvasCtx.beginPath();
+        legendCanvasCtx.moveTo(0,i);
+        legendCanvasCtx.lineTo(20,i);
+        legendCanvasCtx.stroke();
+    }
 }
 function onMapSourceLoaded() {
     //initialize controller
