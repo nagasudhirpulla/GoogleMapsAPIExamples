@@ -209,10 +209,11 @@ function createLegend(){
     var parts = 10;
     var label;
     var labelFactor = (highVal - lowVal + 1) / parts;
+    legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
+    legendCanvasCtx.textAlign="start"; 
     for(i = 0; i < parts; i++){
         label = highVal - i * labelFactor;
-        legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
-        legendCanvasCtx.strokeText(label.toFixed(3), legendWidth + 5, Math.Round(i * ( canvasHgt / parts )) );
+        legendCanvasCtx.fillText(label.toFixed(3), legendWidth + 2, Math.Round(i * ( canvasHgt / parts )) );
     }
 }
 function onMapSourceLoaded() {
