@@ -189,7 +189,7 @@ function createLegend(){
     var legendCanvas = document.getElementById("right_pane_canvas");
     var legendCanvasCtx = legendCanvas.getContext("2d");
     var canvasHgt = legendCanvas.height;
-    var legendWidth = legendCanvas.width / 3;
+    var legendWidth = Math.Round(legendCanvas.width / 3);
     var hueScalingFactor = (180 - 0)/canvasHgt;
     var hue;
     var rgbColor;
@@ -212,7 +212,7 @@ function createLegend(){
     for(i = 0; i < parts; i++){
         label = highVal - i * labelFactor;
         legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
-        legendCanvasCtx.strokeText(label.toFixed(3), legendWidth + 10, Math.Round(i * ( canvasHgt / parts )) );
+        legendCanvasCtx.strokeText(label.toFixed(3), legendWidth + 5, Math.Round(i * ( canvasHgt / parts )) );
     }
 }
 function onMapSourceLoaded() {
