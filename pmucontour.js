@@ -188,8 +188,8 @@ function onDomReady() {
 function createLegend(){
     var legendCanvas = document.getElementById("right_pane_canvas");
     var legendCanvasCtx = legendCanvas.getContext("2d");
-    var canvasHgt = legendCanvas.style.height;
-    canvasHgt = canvasHgt.substring(0, canvasHgt.length-2);
+    var canvasHgt = legendCanvas.height;
+    var legendWidth = legendCanvas.width / 2;
     var hueScalingFactor = (180 - 0)/canvasHgt;
     var hue;
     var rgbColor;
@@ -200,7 +200,7 @@ function createLegend(){
         legendCanvasCtx.strokeStyle = "rgb("+rgbColor[0]+","+rgbColor[1]+","+rgbColor[2]+")";
         legendCanvasCtx.beginPath();
         legendCanvasCtx.moveTo(0,i);
-        legendCanvasCtx.lineTo(20,i);
+        legendCanvasCtx.lineTo(legendWidth,i);
         legendCanvasCtx.stroke();
     }
 }
