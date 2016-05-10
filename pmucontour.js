@@ -212,7 +212,7 @@ function createLegend(){
     for(i = 0; i < parts; i++){
         label = highVal - i * labelFactor;
         legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
-        legendCanvasCtx.strokeText(label, legendWidth + 2, i * ( canvasHgt / parts ) );
+        legendCanvasCtx.strokeText(label.toFixed(3);, legendWidth + 10, i * ( canvasHgt / parts ) );
     }
 }
 function onMapSourceLoaded() {
