@@ -219,7 +219,6 @@ function createLegend(){
     legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
     legendCanvasCtx.font = "17px serif";
     legendCanvasCtx.textAlign = "start"; 
-    legendCanvasCtx.scale(scaleX, 1);
     for(i = 0; i < parts + 1; i++){
         label = highVal - i * labelFactor;
         legendCanvasCtx.fillText("" + label.toFixed(3), (legendWidth + 10), Math.round(i * ( canvasHgt / parts )), 10000 );
