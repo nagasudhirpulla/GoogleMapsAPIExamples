@@ -30,6 +30,7 @@
     
     <button onclick="startFrameFetching()">StartPlayback</button>
     <button onclick="pauseFrameFetching()">StopPlayback</button>
+    <span id="playbackStatus"></span>
     <br><br>
     
     <h3 class="showHideButton" onclick="showHide(this,'> Voltage Points','^ Voltage Points')"> ^ Voltage Points</h3><br>
@@ -37,11 +38,11 @@
         <table>
             <thead>
             <tr>
-                <td>SNo</td>
-                <td>Name</td>
-                <td>Latitude</td>
-                <td>Longitude</td>
-                <td>Value</td>
+                <td><h3>SNo</h3></td>
+                <td><h3>Name</h3></td>
+                <td><h3>Latitude</h3></td>
+                <td><h3>Longitude</h3></td>
+                <td><h3>Value</h3></td>
             </tr>
             </thead>
             <tbody id="mSourceTable"></tbody>
