@@ -213,6 +213,8 @@ function createLegend(){
     var labelFactor = (highVal - lowVal) / parts;
     legendCanvas.setAttribute('width', legendCanvas.style.width.substring(0,legendCanvas.style.width.length - 2));
     legendCanvas.setAttribute('height', legendCanvas.style.height.substring(0,legendCanvas.style.height.length - 2));
+    legendWidth = Math.round(legendCanvas.width / 3);
+    canvasHgt = legendCanvas.height;
     legendCanvasCtx = legendCanvas.getContext("2d");
     legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
     legendCanvasCtx.font = "17px serif";
@@ -220,7 +222,7 @@ function createLegend(){
     legendCanvasCtx.scale(scaleX, 1);
     for(i = 0; i < parts + 1; i++){
         label = highVal - i * labelFactor;
-        legendCanvasCtx.fillText("" + label.toFixed(3), (legendWidth + 20), Math.round(i * ( canvasHgt / parts )), 10000 );
+        legendCanvasCtx.fillText("" + label.toFixed(3), (legendWidth + 10), Math.round(i * ( canvasHgt / parts )), 10000 );
     }
 }
 function onMapSourceLoaded() {
