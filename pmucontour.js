@@ -219,7 +219,7 @@ function createLegend(){
     legendCanvasCtx.textAlign = "start"; 
     for(i = 0; i < parts + 1; i++){
         label = highVal - i * labelFactor;
-        legendCanvasCtx.fillText("" + label.toFixed(3), (legendWidth + 10), Math.round(i * ( canvasHgt / parts )), 10000 );
+        legendCanvasCtx.fillText("" + label.toFixed(3), (legendWidth + 5), Math.round(i * ( canvasHgt / parts )), 10000 );
     }
 }
 function onMapSourceLoaded() {
