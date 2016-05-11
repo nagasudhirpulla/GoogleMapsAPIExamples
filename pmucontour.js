@@ -194,7 +194,6 @@ function createLegend(){
     var hue;
     var rgbColor;
     legendCanvasCtx.lineWidth = 1;
-    legendCanvasCtx.font = "12px Arial";
     for(var i = 0; i < canvasHgt; i++){
         hue = i * hueScalingFactor;
         rgbColor = pmuVisualizer.hsvToRgb(hue , 1, 1);
@@ -211,6 +210,7 @@ function createLegend(){
     var label;
     var labelFactor = (highVal - lowVal + 1) / parts;
     legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
+    legendCanvasCtx.font = "20px Arial";
     legendCanvasCtx.textAlign="start"; 
     for(i = 0; i < parts; i++){
         label = highVal - i * labelFactor;
