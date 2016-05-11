@@ -211,8 +211,9 @@ function createLegend(){
     var labelFactor = (highVal - lowVal + 1) / parts;
     legendCanvasCtx = legendCanvas.getContext("2d");
     legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
-    legendCanvasCtx.font = "12px serif";
+    legendCanvasCtx.font = "15px serif";
     legendCanvasCtx.textAlign="start"; 
+    legendCanvasCtx.scale(2, 1);
     for(i = 0; i < parts; i++){
         label = highVal - i * labelFactor;
         legendCanvasCtx.fillText("" + label.toFixed(3), legendWidth + 2, Math.round(i * ( canvasHgt / parts )), 10000 );
