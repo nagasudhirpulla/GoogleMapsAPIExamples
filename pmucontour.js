@@ -73,7 +73,9 @@ function addVoltPointsToTable() {
     clearTable();
     var sources = pmuVisualizer.getVoltagePoints();
     for (var i = 0; i < sources.length; i++) {
-        addRow(i + 1, sources[i][5], sources[i][0], sources[i][1], (sources[i][2]).toFixed(4));
+        if(sources[i].status = "OK"){
+            addRow(i + 1, sources[i][5], sources[i][0], sources[i][1], (sources[i][2]).toFixed(4));
+        }
     }
 }
 //Utility Functions
