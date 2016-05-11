@@ -189,6 +189,8 @@ function onDomReady() {
 
 function createLegend(){
     var legendCanvas = document.getElementById("right_pane_canvas");
+    legendCanvas.setAttribute('width', legendCanvas.style.width.substring(0,legendCanvas.style.width.length - 2));
+    legendCanvas.setAttribute('height', legendCanvas.style.height.substring(0,legendCanvas.style.height.length - 2));
     var legendCanvasCtx = legendCanvas.getContext("2d");
     var canvasHgt = legendCanvas.height;
     var legendWidth = Math.round(legendCanvas.width / 3);
@@ -211,13 +213,9 @@ function createLegend(){
     var parts = 10;
     var label;
     var labelFactor = (highVal - lowVal) / parts;
-    legendCanvas.setAttribute('width', legendCanvas.style.width.substring(0,legendCanvas.style.width.length - 2));
-    legendCanvas.setAttribute('height', legendCanvas.style.height.substring(0,legendCanvas.style.height.length - 2));
-    legendWidth = Math.round(legendCanvas.width / 3);
-    canvasHgt = legendCanvas.height;
-    legendCanvasCtx = legendCanvas.getContext("2d");
+    //legendCanvasCtx = legendCanvas.getContext("2d");
     legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
-    legendCanvasCtx.font = "17px serif";
+    legendCanvasCtx.font = "12px serif";
     legendCanvasCtx.textAlign = "start"; 
     for(i = 0; i < parts + 1; i++){
         label = highVal - i * labelFactor;
