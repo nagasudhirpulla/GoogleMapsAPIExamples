@@ -431,6 +431,7 @@ function startFrameFetching() {
 function pauseFrameFetching() {
     frameToFetch = 0;
     WriteLineConsole("Pausing Frame Data Fetch", "warning");
+    document.getElementById("playbackStatus").value = "PlayBack Paused"
     clearInterval(frameTimingVar);
 }
 
@@ -454,6 +455,7 @@ function getFromFrames() {
     setIsFrameBusy(false);
     //express server fetch stop / finish
     document.getElementById("wrapper").style.border = "2px solid #999999";
+    document.getElementById("playbackStatus").value = (frameToFetch + 1) * 15 + " minutes"
     frameToFetch++;
     if(frameToFetch == 97){
         pauseFrameFetching();
