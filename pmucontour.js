@@ -204,6 +204,7 @@ function createLegend(){
         legendCanvasCtx.stroke();
     }
     //draw labels
+    var scaleX = 2.1;
     var lowVal = 0.95;
     var highVal = 1.05;
     var parts = 10;
@@ -213,10 +214,10 @@ function createLegend(){
     legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
     legendCanvasCtx.font = "15px serif";
     legendCanvasCtx.textAlign="start"; 
-    legendCanvasCtx.scale(2, 1);
+    legendCanvasCtx.scale(scaleX, 1);
     for(i = 0; i < parts; i++){
         label = highVal - i * labelFactor;
-        legendCanvasCtx.fillText("" + label.toFixed(3), legendWidth + 2, Math.round(i * ( canvasHgt / parts )), 10000 );
+        legendCanvasCtx.fillText("" + label.toFixed(3), (legendWidth + 2)/scaleX, Math.round(i * ( canvasHgt / parts )), 10000 );
     }
 }
 function onMapSourceLoaded() {
