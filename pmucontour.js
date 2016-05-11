@@ -204,16 +204,16 @@ function createLegend(){
         legendCanvasCtx.stroke();
     }
     //draw labels
-    var scaleX = 2.4;
+    var scaleX = 2.8;
     var lowVal = 0.95;
     var highVal = 1.05;
     var parts = 10;
     var label;
-    var labelFactor = (highVal - lowVal + 1) / parts;
+    var labelFactor = (highVal - lowVal) / parts;
     legendCanvasCtx = legendCanvas.getContext("2d");
     legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
     legendCanvasCtx.font = "bold 15px serif";
-    legendCanvasCtx.textAlign="start"; 
+    legendCanvasCtx.textAlign = "start"; 
     legendCanvasCtx.scale(scaleX, 1);
     for(i = 0; i < parts; i++){
         label = highVal - i * labelFactor;
