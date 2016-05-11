@@ -455,7 +455,7 @@ function getFromFrames() {
     setIsFrameBusy(false);
     //express server fetch stop / finish
     document.getElementById("wrapper").style.border = "2px solid #999999";
-    document.getElementById("playbackStatus").innerHTML = (frameToFetch + 1) * 3.75 + " Hours"
+    document.getElementById("playbackStatus").innerHTML = (frameToFetch + 1) * 0.25 + " Hours"
     frameToFetch++;
     if(frameToFetch == 97){
         pauseFrameFetching();
