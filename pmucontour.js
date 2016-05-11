@@ -204,7 +204,7 @@ function createLegend(){
         legendCanvasCtx.stroke();
     }
     //draw labels
-    var scaleX = 2.8;
+    var scaleX = 3;
     var lowVal = 0.95;
     var highVal = 1.05;
     var parts = 10;
