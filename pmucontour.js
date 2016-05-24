@@ -480,8 +480,9 @@ function getFromFrames() {
     //express server fetch stop / finish
     document.getElementById("wrapper").style.border = "2px solid #999999";
     var hours = Math.floor((frameToFetch) / 60);
-    document.getElementById("playbackStatus").innerHTML = hours + ":" + (frameToFetch - hours * 60) + " Hrs"
-    document.getElementById("over_map").innerHTML = hours + ":" + (frameToFetch - hours * 60) + " Hrs"
+    var timeStringToDisplay = FormatNumberLength(hours, 2) + ":" + FormatNumberLength((frameToFetch - hours * 60), 2) + " Hrs";
+    document.getElementById("playbackStatus").innerHTML = timeStringToDisplay;
+    document.getElementById("over_map").innerHTML = timeStringToDisplay;
     frameToFetch += framesToIncreament;
     if(frameToFetch >= 1440){
         jumpToFrame(0);
@@ -496,4 +497,12 @@ function getIsFrameBusy() {
 //isBusy setter
 function setIsFrameBusy(val) {
     isFrameBusy = val;
+}
+
+function FormatNumberLength(num, length) {
+    var r = num.toString();
+    while (r.length < length) {
+        r = "0" + r;
+    }
+    return r;
 }
