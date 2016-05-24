@@ -425,7 +425,7 @@ var framesToIncreament = 1;
 //Jump to a frame
 function jumpToFrame(framenumber){
     if(framenumber < 1440 && framenumber >= 0){
-        frameToFetch = framenumber;
+        frameToFetch = parseInt(framenumber);
     }
 }
 
@@ -436,7 +436,7 @@ function jumpToFrameGUI(){
 //set frame rate
 function setFrameRate(framerate){
     if(framerate < 1440){
-        framesToIncreament = framerate;
+        framesToIncreament = parseInt(framerate);
     }
 }
 
