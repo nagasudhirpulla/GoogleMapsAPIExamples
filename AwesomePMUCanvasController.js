@@ -264,7 +264,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     var yCoord;
     for (var i = 0; i < sources.length; i++) {
         //skip from the for loop if sources status is not "OK"
-        if (sources[i][6] != "OK" && sources[i][2] < 0.8) {
+        if (sources[i][6] != "OK" || sources[i][2] < 0.8) {
             continue;
         }
         vsource = sources[i][2];
@@ -437,7 +437,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     this.ctx_.lineWidth = 1;//LINE WIDTH IN PIXELS
     ////Use source status to create alternate source markers
     for (i = 0; i < sources.length; i++) {
-        if (sources[i][6] != "OK") {
+        if (sources[i][6] != "OK" || sources[i][2] < 0.8) {
             //Use red marker
             sources[i][7].setIcon(this.iconImageRed_);
         } else {
