@@ -455,7 +455,7 @@ function startFrameFetching() {
 function pauseFrameFetching() {
     //frameToFetch = 0;
     WriteLineConsole("Pausing Frame Data Fetch", "warning");
-    document.getElementById("playbackStatus").innerHTML = "PlayBack Paused"
+    document.getElementById("playbackStatus").innerHTML += " PlayBack Paused"
     clearInterval(frameTimingVar);
 }
 
@@ -480,7 +480,7 @@ function getFromFrames() {
     //express server fetch stop / finish
     document.getElementById("wrapper").style.border = "2px solid #999999";
     var hours = Math.floor((frameToFetch) / 60);
-    document.getElementById("playbackStatus").innerHTML = hours + " Hours " + (frameToFetch - hours) + " minutes"
+    document.getElementById("playbackStatus").innerHTML = hours + " Hours " + (frameToFetch - hours * 60) + " minutes"
     frameToFetch += framesToIncreament;
     if(frameToFetch >= 1440){
         jumpToFrame(0);
