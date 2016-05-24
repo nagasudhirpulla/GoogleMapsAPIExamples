@@ -8,14 +8,14 @@
 #over_map {
     position: absolute;
     top: 30px;
-    right: 30px;
+    right: 100px;
     /*
     width: 200px;
     height: 100px;
     */
     border: 1px solid red;
     z-index: 90;
-    color: red;
+    /*color: red;*/
     background-color: rgba(0,255,255,0.8);
 }
 
