@@ -424,9 +424,13 @@ var framesToIncreament = 1;
 
 //Jump to a frame
 function jumpToFrame(framenumber){
-    if(framenumber){
-        frameToFetch = framenumber;   
+    if(framenumber < 1440 && framenumber >= 0){
+        frameToFetch = framenumber;
     }
+}
+
+function jumpToFrameGUI(){
+    jumpToFrame(document.getElementById("jumpToFrameInput").value);    
 }
 
 //set frame rate
@@ -434,6 +438,10 @@ function setFrameRate(framerate){
     if(framerate < 1440){
         framesToIncreament = framerate;
     }
+}
+
+function setFrameRateGUI(){
+    setFrameRate(document.getElementById("frameRateInput").value);    
 }
 
 //Timing function
@@ -471,9 +479,10 @@ function getFromFrames() {
     setIsFrameBusy(false);
     //express server fetch stop / finish
     document.getElementById("wrapper").style.border = "2px solid #999999";
-    document.getElementById("playbackStatus").innerHTML = (frameToFetch + 1) / 60 + " Hours"
+    var hours = Math.floor((frameToFetch) / 60);
+    document.getElementById("playbackStatus").innerHTML = hours + " Hours " + (frameToFetch - hours) + " minutes"
     frameToFetch += framesToIncreament;
-    if(frameToFetch >= 1441){
+    if(frameToFetch >= 1440){
         jumpToFrame(0);
         pauseFrameFetching();
     }
