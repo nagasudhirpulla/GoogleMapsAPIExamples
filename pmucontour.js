@@ -455,7 +455,7 @@ function startFrameFetching() {
 function pauseFrameFetching() {
     //frameToFetch = 0;
     WriteLineConsole("Pausing Frame Data Fetch", "warning");
-    document.getElementById("playbackStatus").innerHTML += " PlayBack Paused"
+    document.getElementById("playbackStatus").innerHTML += " (PlayBack Paused)"
     clearInterval(frameTimingVar);
 }
 
