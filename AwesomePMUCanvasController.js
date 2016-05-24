@@ -264,7 +264,7 @@ AwesomePMUCanvasController.prototype.runAlgorithm = function () {
     var yCoord;
     for (var i = 0; i < sources.length; i++) {
         //skip from the for loop if sources status is not "OK"
-        if (sources[i][6] != "OK") {
+        if (sources[i][6] != "OK" && sources[i][2] <= 0.8) {
             continue;
         }
         vsource = sources[i][2];
