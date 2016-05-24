@@ -420,6 +420,22 @@ function setIsBusy(val) {
 
 var frameTimingVar;
 var frameToFetch = 0;
+var framesToIncreament = 1;
+
+//Jump to a frame
+function jumpToFrame(framenumber){
+    if(framenumber){
+        frameToFetch = framenumber;   
+    }
+}
+
+//set frame rate
+function setFrameRate(framerate){
+    if(framerate < 1440){
+        framesToIncreament = framerate;
+    }
+}
+
 //Timing function
 function startFrameFetching() {
     pauseFetching();
@@ -429,7 +445,7 @@ function startFrameFetching() {
 
 //Timing function
 function pauseFrameFetching() {
-    frameToFetch = 0;
+    //frameToFetch = 0;
     WriteLineConsole("Pausing Frame Data Fetch", "warning");
     document.getElementById("playbackStatus").innerHTML = "PlayBack Paused"
     clearInterval(frameTimingVar);
@@ -456,8 +472,9 @@ function getFromFrames() {
     //express server fetch stop / finish
     document.getElementById("wrapper").style.border = "2px solid #999999";
     document.getElementById("playbackStatus").innerHTML = (frameToFetch + 1) / 60 + " Hours"
-    frameToFetch++;
-    if(frameToFetch == 1441){
+    frameToFetch += framesToIncreament;
+    if(frameToFetch >= 1441){
+        jumpToFrame(0);
         pauseFrameFetching();
     }
 }
