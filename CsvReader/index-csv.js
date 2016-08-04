@@ -10,3 +10,10 @@ window.onload = function () {
         csvReader.afterEachRead();
     });
 };
+
+function readFramesFromCSV(pmuSourcesArray){
+    var arr = (pmuSourcesArray.slice(3,1443)).map(function(insideArray){
+        return insideArray.slice(1,insideArray.length);
+    });
+    return arr;
+}
