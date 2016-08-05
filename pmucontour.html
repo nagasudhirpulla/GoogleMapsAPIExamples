@@ -15,6 +15,8 @@
     <script src="CsvReader/csvToArray.js"></script>
     <script src="CsvReader/CSVReader.js"></script>
     <script src="CsvReader/index-csv.js"></script>
+    <link rel="shortcut icon" type="image/ico"
+          href="https://raw.githubusercontent.com/nagasudhirpulla/Wrldc_RRAS_Ramp_Correction/gh-pages/favicon.ico"/>
 </head>
 <body>
 <img id="filter" src="filter.png" alt="No Image Available" style="display: none">
@@ -26,7 +28,8 @@
     <canvas id="myCanvas">Your browser does not support the HTML5 canvas tag.</canvas>
     <p id="over_map" style="font-size: 30px;color: red">00:00 Hrs</p>
 </div>
-<canvas id="right_pane_canvas" style="position:absolute;margin-left:1010px;margin-top:-100px;width:60px;height:100px"></canvas>
+<canvas id="right_pane_canvas"
+        style="position:absolute;margin-left:1010px;margin-top:-100px;width:60px;height:100px"></canvas>
 <div id="controlInputs" style="margin:10px 5px 5px 10px;"><!--top right bottom left-->
     <button onclick="startFetching()">StartFetching</button>
     <button onclick="pauseFetching()">StopFetching</button>
@@ -36,15 +39,17 @@
     <span id="playbackStatus"></span>
     <span style="padding-left:20px;"></span>
     <input id="jumpToFrameInput" type="number" value="0" style="width:45px;"/>
-    <button onclick="jumpToFrameGUI()">   JumpToMinute</button>
+    <button onclick="jumpToFrameGUI()"> JumpToMinute</button>
     <span style="padding-left:20px;"></span>
     <input id="frameRateInput" type="number" value="1" style="width:35px;"/>
-    <button onclick="setFrameRateGUI()">   SetMinuteRate</button>
+    <button onclick="setFrameRateGUI()"> SetMinuteRate</button>
     <br><br>
     <span>Select the voltage files</span>
     <input type="file" id="fileInput">
     <br><br>
+
     <h3 class="showHideButton" onclick="showHide(this,'> Voltage Points','^ Voltage Points')"> ^ Voltage Points</h3><br>
+
     <div class="hidingClass" style="display:block;margin-top:5px">
         <table>
             <thead>
@@ -82,13 +87,14 @@
     <h3 class="showHideButton" onclick="showHide(this,'> SourceRadius','^ SourceRadius')"> > SourceRadius</h3><br>
 
     <div class="hidingClass" style="display:none;margin-top:5px">
-        <input id="sourceRadiusControl" style="width:50px;" type="text" onkeypress="return isNumberKey(event, this.id)"/>
+        <input id="sourceRadiusControl" style="width:50px;" type="text"
+               onkeypress="return isNumberKey(event, this.id)"/>
         <!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
         <button onclick="getSourceRadius()" style="margin:0px 10px;">GetSourceRadius</button>
         <button onclick="setSourceRadius()">SetSourceRadius</button>
     </div>
     <br>
-    
+
     <h3 class="showHideButton" onclick="showHide(this,'> Opacity','^ Opacity')"> > Opacity</h3><br>
 
     <div class="hidingClass" style="display:none;margin-top:5px">
@@ -102,7 +108,8 @@
     <h3 class="showHideButton" onclick="showHide(this,'> MaxDisplayHue','^ MaxDisplayHue')"> > MaxDisplayHue</h3><br>
 
     <div class="hidingClass" style="display:none;margin-top:5px">
-        <input id="maxDisplayHueControl" style="width:50px;" type="text" onkeypress="return isNumberKey(event, this.id)"/>
+        <input id="maxDisplayHueControl" style="width:50px;" type="text"
+               onkeypress="return isNumberKey(event, this.id)"/>
         <!-- <input id="alphaTextControl" style="width:50px;" type="text" onkeydown="return numericListener()" /> -->
         <button onclick="getMaxDisplayHue()" style="margin:0px 10px;">GetMaxDisplayHue</button>
         <button onclick="setMaxDisplayHue()">SetMaxDisplayHue</button>
@@ -117,6 +124,15 @@
         <button onclick="clearConsole()">ClearConsole</button>
     </div>
     <br>
+</div>
+<div id='footer'
+     style='display: table;overflow: hidden;margin-bottom:0;margin-top:3em;background-color:#217346;color:#EEEEEE;width:100%;padding-top:5px;padding-left:1em;height:3em'>
+    <div style="display: table-cell; vertical-align: middle;font-size: 0.8em">
+        The Code for this WebApp is hosted at <a
+            href="https://github.com/nagasudhirpulla/GoogleMapsAPIExamples"
+            target="_blank"
+            style="color:#dddddd;font-size: inherit">https://github.com/nagasudhirpulla/GoogleMapsAPIExamples</a>
+    </div>
 </div>
 <!-- Do stuff after a timeout clearing previous timeouts - http://stackoverflow.com/questions/9252493/google-maps-event-addlistenermap-idle-function-is-it-possible-to-specif -->
 <!-- A complete interactive experience of google maps API- http://gmaps-samples-v3.googlecode.com/svn/trunk/map_events/map_events.html -->
