@@ -44,7 +44,7 @@ function AwesomePMUCanvasController(opt_options) {
         return obj[3];
     }).join(',');
     this.sourceRadius_ = 1;//111 kilometres
-    this.alpha_ = 1.5;
+    this.alpha_ = 0.8;
     this.transparency_ = 120; //between 0 - 255
     this.canvasData_ = [];
     this.normalisedCanvasData_ = [];
@@ -124,7 +124,7 @@ AwesomePMUCanvasController.prototype.onMapMoveZoom = function () {
     this.ctx_.clearRect(0, 0, this.xp_, this.yp_);
     this.ctx_.drawImage(this.crapCanvas_, 0, 0, this.xp_, this.yp_, offset.x, offset.y, zoomRatio * this.xp_, zoomRatio * this.yp_);
     this.isPaintBusy_ = false;
-}
+};
 
 AwesomePMUCanvasController.prototype.onMapStateChanged = function () {
     //get map bounds
