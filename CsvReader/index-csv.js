@@ -17,3 +17,7 @@ function readFramesFromCSV(pmuSourcesArray){
     });
     return arr;
 }
+
+function modifyDateString(str){
+    document.getElementById("over_map_date").innerHTML = "PMU Voltage contour for " + str.split(" ")[0];
+}

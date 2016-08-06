@@ -21,8 +21,12 @@ document.onreadystatechange = function () {
         pmuVisualizer = new AwesomePMUCanvasController(
             {
                 'consoleWriteFunction': WriteLineConsole,
-                'computingExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid rgb(255,0,0)"; },
-                'computingStopExpressFunction' : function(){ document.getElementById("wrapper").style.border = "2px solid rgb(0,255,0)"; }
+                'computingExpressFunction': function () {
+                    document.getElementById("wrapper").style.border = "2px solid rgb(255,0,0)";
+                },
+                'computingStopExpressFunction': function () {
+                    document.getElementById("wrapper").style.border = "2px solid rgb(0,255,0)";
+                }
             }
         );
 
@@ -73,8 +77,8 @@ function addVoltPointsToTable() {
     clearTable();
     var sources = pmuVisualizer.getVoltagePoints();
     for (var i = 0; i < sources.length; i++) {
-        if(sources[i][6] == "OK" && sources[i][2] >= 0.8){
-            addRow(i + 1, sources[i][5], sources[i][0], sources[i][1], (sources[i][2]).toFixed(4));
+        if (sources[i][6] == "OK" && sources[i][2] >= 0.8) {
+            addRow(i + 1, sources[i][5], sources[i][0].toFixed(5), sources[i][1].toFixed(5), (sources[i][2]).toFixed(4), (sources[i][2] * sources[i][4]).toFixed(2));
         }
     }
 }
@@ -86,6 +90,9 @@ function addRow() {
     for (var i = arguments.length - 1; i >= 0; i--) {
         //alert(arguments[i]);
         var newCell = row.insertCell(0);
+        if (i == arguments.length - 2 || i == arguments.length - 1) {
+            newCell.align = "center";
+        }
         var t = document.createTextNode(arguments[i]);
         var s = document.createElement("span");
         s.appendChild(t);
@@ -94,6 +101,7 @@ function addRow() {
     newCell = row.insertCell(arguments.length);
     t = document.createTextNode("Delete");
     s = document.createElement("button");
+    s.style.marginLeft = "5px";
     s.appendChild(t);
     newCell.appendChild(s);
     s.onclick = function () {
@@ -157,17 +165,17 @@ function isNumberKey(evt, id) {
     //charcodes info http://www.cambiaresearch.com/articles/15/javascript-key-codes
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if(charCode == 13){
-        if(id == "alphaTextControl"){
+    if (charCode == 13) {
+        if (id == "alphaTextControl") {
             setAlpha();
             return true;
-        } else if (id == "transControl"){
+        } else if (id == "transControl") {
             setTrans();
             return true;
-        } else if (id == "maxDisplayHueControl"){
+        } else if (id == "maxDisplayHueControl") {
             setMaxDisplayHue();
             return true;
-        } else if (id == "sourceRadiusControl"){
+        } else if (id == "sourceRadiusControl") {
             setSourceRadius();
             return true;
         }
@@ -187,24 +195,24 @@ function onDomReady() {
     createLegend();
 }
 
-function createLegend(){
+function createLegend() {
     var legendCanvas = document.getElementById("right_pane_canvas");
-    legendCanvas.setAttribute('width', legendCanvas.style.width.substring(0,legendCanvas.style.width.length - 2));
-    legendCanvas.setAttribute('height', legendCanvas.style.height.substring(0,legendCanvas.style.height.length - 2));
+    legendCanvas.setAttribute('width', legendCanvas.style.width.substring(0, legendCanvas.style.width.length - 2));
+    legendCanvas.setAttribute('height', legendCanvas.style.height.substring(0, legendCanvas.style.height.length - 2));
     var legendCanvasCtx = legendCanvas.getContext("2d");
     var canvasHgt = legendCanvas.height;
     var legendWidth = Math.round(legendCanvas.width / 3);
-    var hueScalingFactor = (180 - 0)/canvasHgt;
+    var hueScalingFactor = (180 - 0) / canvasHgt;
     var hue;
     var rgbColor;
     legendCanvasCtx.lineWidth = 1;
-    for(var i = 0; i < canvasHgt; i++){
+    for (var i = 0; i < canvasHgt; i++) {
         hue = i * hueScalingFactor;
-        rgbColor = pmuVisualizer.hsvToRgb(hue , 1, 1);
-        legendCanvasCtx.strokeStyle = "rgb("+rgbColor[0]+","+rgbColor[1]+","+rgbColor[2]+")";
+        rgbColor = pmuVisualizer.hsvToRgb(hue, 1, 1);
+        legendCanvasCtx.strokeStyle = "rgb(" + rgbColor[0] + "," + rgbColor[1] + "," + rgbColor[2] + ")";
         legendCanvasCtx.beginPath();
-        legendCanvasCtx.moveTo(0,i);
-        legendCanvasCtx.lineTo(legendWidth,i);
+        legendCanvasCtx.moveTo(0, i);
+        legendCanvasCtx.lineTo(legendWidth, i);
         legendCanvasCtx.stroke();
     }
     //draw labels
@@ -216,10 +224,10 @@ function createLegend(){
     //legendCanvasCtx = legendCanvas.getContext("2d");
     legendCanvasCtx.strokeStyle = "rgb(10,10,10)";
     legendCanvasCtx.font = "10px serif";
-    legendCanvasCtx.textAlign = "start"; 
-    for(i = 0; i < parts + 1; i++){
+    legendCanvasCtx.textAlign = "start";
+    for (i = 0; i < parts + 1; i++) {
         label = highVal - i * labelFactor;
-        legendCanvasCtx.fillText("" + label.toFixed(3), (legendWidth + 5), Math.round(i * ( canvasHgt / parts )), 10000 );
+        legendCanvasCtx.fillText("" + label.toFixed(3), (legendWidth + 5), Math.round(i * ( canvasHgt / parts )), 10000);
     }
 }
 function onMapSourceLoaded() {
@@ -257,7 +265,7 @@ function getTrans() {
 function setTrans() {
     var num = Number(document.getElementById("transControl").value);
     if (!isNaN(num) && num >= 0) {
-        if(num > 255){
+        if (num > 255) {
             num = 255;
         }
         document.getElementById("transControl").style.color = 'black';
@@ -423,25 +431,25 @@ var frameToFetch = 0;
 var framesToIncreament = 1;
 
 //Jump to a frame
-function jumpToFrame(framenumber){
-    if(framenumber < 1440 && framenumber >= 0){
+function jumpToFrame(framenumber) {
+    if (framenumber < 1440 && framenumber >= 0) {
         frameToFetch = parseInt(framenumber);
     }
 }
 
-function jumpToFrameGUI(){
-    jumpToFrame(document.getElementById("jumpToFrameInput").value);    
+function jumpToFrameGUI() {
+    jumpToFrame(document.getElementById("jumpToFrameInput").value);
 }
 
 //set frame rate
-function setFrameRate(framerate){
-    if(framerate < 1440){
+function setFrameRate(framerate) {
+    if (framerate < 1440) {
         framesToIncreament = parseInt(framerate);
     }
 }
 
-function setFrameRateGUI(){
-    setFrameRate(document.getElementById("frameRateInput").value);    
+function setFrameRateGUI() {
+    setFrameRate(document.getElementById("frameRateInput").value);
 }
 
 //Timing function
@@ -484,7 +492,7 @@ function getFromFrames() {
     document.getElementById("playbackStatus").innerHTML = timeStringToDisplay;
     document.getElementById("over_map").innerHTML = timeStringToDisplay;
     frameToFetch += framesToIncreament;
-    if(frameToFetch >= 1440){
+    if (frameToFetch >= 1440) {
         jumpToFrame(0);
         pauseFrameFetching();
     }
