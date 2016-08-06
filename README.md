@@ -95,4 +95,4 @@ So, color temp = blue for <=0.95 and red for >=1.05 --- done
 
 ---calculate the number of pixels per latitude or longitude by using the fromLatLngToContainerPixel function on any two latlong coordinates like LanLng(0,0) and LanLng(1,1)
 
----add a scroll to top button that appears if page scrolled down
+---add a scroll to top button that appears if page scrolled down --- done

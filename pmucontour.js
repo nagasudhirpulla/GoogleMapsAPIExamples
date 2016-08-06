@@ -33,6 +33,7 @@ document.onreadystatechange = function () {
         onDomReady();
     } else if (document.readyState == "complete") {
         //DOM load initialization function
+        activateScrollToTopAndBottomButtons();
         google.maps.event.addDomListener(window, 'load', onMapSourceLoaded);
         pmuVisualizer.onDomComplete();
     }
@@ -513,4 +514,15 @@ function FormatNumberLength(num, length) {
         r = "0" + r;
     }
     return r;
+}
+
+function activateScrollToTopAndBottomButtons() {
+    $('#scrollToBottom').bind("click", function () {
+        $('html, body').animate({scrollTop: $(document).height()}, 300);
+        return false;
+    });
+    $('#scrollToTop').bind("click", function () {
+        $('html, body').animate({scrollTop: 0}, 300);
+        return false;
+    });
 }
